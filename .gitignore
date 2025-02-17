@@ -1,0 +1,11 @@
+# Dependecies
+node_modules/
+
+# Log files
+yarn.lock
+
+# Enviroment variables
+.env
+
+# Build and distribution directories
+dist/
