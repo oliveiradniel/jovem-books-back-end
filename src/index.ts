@@ -1,1 +1,3 @@
-console.log('start project!');
+import 'dotenv/config';
+
+import './server';
