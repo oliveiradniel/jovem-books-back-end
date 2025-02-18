@@ -6,6 +6,30 @@ const app = express();
 
 const { PORT } = env;
 
+// Handle authentication user and sign-up
+
+app.post('/sign-in', (request, response) => {
+  response.send('Generate token e sign-in');
+});
+
+app.post('/sign-up', (request, response) => {
+  response.send('Create account');
+});
+
+// Handle with users
+
+app.get('users/:id', (request, response) => {
+  response.send('Get user by id');
+});
+
+app.put('users/:id', (request, response) => {
+  response.send('Edit user by id');
+});
+
+app.delete('users/:id', (request, response) => {
+  response.send('Delete user by id');
+});
+
 // Handle with Google API Books
 
 app.get('/books/google', (request, response) => {
