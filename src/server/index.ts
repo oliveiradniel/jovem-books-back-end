@@ -1,8 +1,10 @@
 import express from 'express';
 
+import { env } from '../config/env';
+
 const app = express();
 
-const { PORT } = process.env;
+const { PORT } = env;
 
 // Handle with Google API Books
 
