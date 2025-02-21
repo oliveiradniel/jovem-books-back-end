@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  username  String   @unique
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  books       Book[]
+  collections Collection[]
+  reads       Read[]
+
+  @@index([username, email])
+  @@map("users")
+}
+
+model Book {
+  id                String    @id @default(uuid()) @db.Uuid
+  userId            String    @map("user_id") @db.Uuid
+  title             String
+  author            String?
+  sinopse           String?
+  numberOfPages     Int?      @map("number_of_pages")
+  type              TypeBook
+  dateOfPublication DateTime? @map("date_of_publication")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @map("updated_at")
+
+  reads       Read[]
+  book_collections BookCollection[]
+  collections_data BookCollectionMetadata[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, title, author, type])
+  @@map("books")
+}
+
+model Collection {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @map("updated_at")
+
+  books BookCollectionMetadata[]
+  book_collections BookCollection[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, name])
+  @@map("collections")
+}
+
+model BookCollection {
+  bookId       String @map("book_id") @db.Uuid
+  collectionId String @map("collection_id") @db.Uuid
+
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([bookId, collectionId])
+  @@map("book_collections")
+}
+
+model BookCollectionMetadata {
+  id           String   @id @default(uuid()) @db.Uuid
+  bookId       String   @map("book_id") @db.Uuid
+  collectionId String   @map("collection_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @map("updated_at")
+
+  book       Book       @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([bookId, collectionId])
+  @@map("book_collections_metadata")
+}
+
+model Read {
+  id          String        @unique @db.Uuid
+  userId    String        @map("user_id") @db.Uuid
+  currentPage Int           @map("current_page")
+  status      ReadingStatus
+  notes       String
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @map("updated_at")
+
+  book Book @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, status])
+  @@map("reads")
+}
+
+enum TypeBook {
+  ROMANCE
+  SCIENCE_FICTION
+  ADVENTURE
+  PHILOSOPHY
+  DRAMA
+  RELIGIOUS
+  MYSTERY
+  HORROR
+  BIOGRAPHY
+  HISTORICAL
+  FANTASY
+  THRILLER
+  HUMOR
+  CHILDRENS
+  YOUNG_ADULT
+  POETRY
+  ART_AND_DESIGN
+  POLITICS
+  ECONOMICS
+  SELF_HELP
+  CRIME
+  DYSTOPIAN
+  WESTERN
+  GOTHIC
+  EROTIC
+  CYBERPUNK
+  STEAMPUNK
+  COOKING
+  TRAVEL
+  SPORTS
+  FAIRYTALE
+  OTHER
+}
+
+enum ReadingStatus {
+  NOT_READING
+  READING
+  ON_HOLD
+  FINISHED
+}
