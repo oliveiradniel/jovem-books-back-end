@@ -18,15 +18,15 @@ app.post('/sign-up', (request, response) => {
 
 // Handle with users
 
-app.get('users/:id', (request, response) => {
+app.get('/users/:id', (request, response) => {
   response.send('Get user by id');
 });
 
-app.put('users/:id', (request, response) => {
+app.put('/users/:id', (request, response) => {
   response.send('Edit user by id');
 });
 
-app.delete('users/:id', (request, response) => {
+app.delete('/users/:id', (request, response) => {
   response.send('Delete user by id');
 });
 
@@ -87,7 +87,7 @@ app.delete('/collections/:id', (request, response) => {
 // Handle with books in my collection
 
 app.get('/collections/:collectionId/books', (request, response) => {
-  response.send('List books my collection by id');
+  response.send('List books from my collection by id');
 });
 
 app.post('/collections/books/:bookId', (request, response) => {
