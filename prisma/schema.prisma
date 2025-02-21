@@ -15,7 +15,7 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  updatedAt DateTime? @map("updated_at")
 
   books       Book[]
   collections Collection[]
@@ -35,7 +35,7 @@ model Book {
   type              TypeBook
   dateOfPublication DateTime? @map("date_of_publication")
   createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime  @map("updated_at")
+  updatedAt         DateTime?  @map("updated_at")
 
   reads       Read[]
   book_collections BookCollection[]
@@ -52,7 +52,7 @@ model Collection {
   userId    String   @map("user_id") @db.Uuid
   name      String
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @map("updated_at")
+  updatedAt DateTime? @map("updated_at")
 
   books BookCollectionMetadata[]
   book_collections BookCollection[]
@@ -79,7 +79,7 @@ model BookCollectionMetadata {
   bookId       String   @map("book_id") @db.Uuid
   collectionId String   @map("collection_id") @db.Uuid
   createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @map("updated_at")
+  updatedAt    DateTime? @map("updated_at")
 
   book       Book       @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -91,11 +91,11 @@ model BookCollectionMetadata {
 model Read {
   id          String        @unique @db.Uuid
   userId    String        @map("user_id") @db.Uuid
-  currentPage Int           @map("current_page")
-  status      ReadingStatus
-  notes       String
+  currentPage Int?           @map("current_page")
+  status      ReadingStatus?
+  notes       String?
   createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @map("updated_at")
+  updatedAt   DateTime?      @map("updated_at")
 
   book Book @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
