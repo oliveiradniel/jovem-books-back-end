@@ -2,7 +2,7 @@ import express from 'express';
 
 import { env } from '../config/env';
 
-import { SignUpUseCase } from '../application/useCases/SignUpUseCase';
+import { SignUpController } from '../application/controllers/SignUpController';
 
 const app = express();
 
@@ -16,40 +16,15 @@ app.post('/sign-in', (request, response) => {
   response.send('Generate token e sign-in');
 });
 
-app.post(
-  '/sign-up',
-  async (
-    request: {
-      body: {
-        username: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        password: string;
-      };
-    },
-    response,
-  ) => {
-    const { username, firstName, lastName, email, password } = request.body;
+app.post('/sign-up', async (request, response) => {
+  const signUpController = new SignUpController();
 
-    if (!username || !firstName || !lastName || !email || !password) {
-      throw new Error();
-    }
-    const user = {
-      username,
-      firstName,
-      lastName,
-      email,
-      password,
-    };
+  const { statusCode, body } = await signUpController.handle({
+    body: request.body,
+  });
 
-    const signUpUseCase = new SignUpUseCase();
-
-    await signUpUseCase.execute(user);
-
-    response.sendStatus(201);
-  },
-);
+  response.status(statusCode).json(body);
+});
 
 // Handle with users
 
