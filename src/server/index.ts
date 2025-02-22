@@ -2,9 +2,13 @@ import express from 'express';
 
 import { env } from '../config/env';
 
+import { SignUpUseCase } from '../application/useCases/SignUpUseCase';
+
 const app = express();
 
 const { PORT } = env;
+
+app.use(express.json());
 
 // Handle authentication user and sign-up
 
@@ -12,9 +16,40 @@ app.post('/sign-in', (request, response) => {
   response.send('Generate token e sign-in');
 });
 
-app.post('/sign-up', (request, response) => {
-  response.send('Create account');
-});
+app.post(
+  '/sign-up',
+  async (
+    request: {
+      body: {
+        username: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+      };
+    },
+    response,
+  ) => {
+    const { username, firstName, lastName, email, password } = request.body;
+
+    if (!username || !firstName || !lastName || !email || !password) {
+      throw new Error();
+    }
+    const user = {
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    };
+
+    const signUpUseCase = new SignUpUseCase();
+
+    await signUpUseCase.execute(user);
+
+    response.sendStatus(201);
+  },
+);
 
 // Handle with users
 
