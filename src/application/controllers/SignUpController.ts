@@ -3,15 +3,15 @@ import { SignUpUseCase } from '../useCases/SignUpUseCase';
 import { IController } from '../interfaces/IController';
 import { IRequest } from '../interfaces/IRequest';
 import { IResponse } from '../interfaces/IResponse';
+import { SignUpSchema } from './schemas/SignUpSchema';
+import { ZodError } from 'zod';
 
 export class SignUpController implements IController {
-  async handle(request: IRequest): Promise<IResponse> {
+  async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const { username, firstName, lastName, email, password } = request.body;
+      const { username, firstName, lastName, email, password } =
+        SignUpSchema.parse(body);
 
-      if (!username || !firstName || !lastName || !email || !password) {
-        throw new Error();
-      }
       const user = {
         username,
         firstName,
@@ -28,7 +28,13 @@ export class SignUpController implements IController {
         statusCode: 201,
         body: null,
       };
-    } catch {
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return {
+          statusCode: 400,
+          body: error.issues,
+        };
+      }
       return {
         statusCode: 400,
         body: null,
