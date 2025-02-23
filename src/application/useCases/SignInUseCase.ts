@@ -24,7 +24,6 @@ export class SignInUseCase {
     });
 
     if (!user) throw new InvalidCredentials();
-    console.log(password, user.password);
 
     const isPasswordMatch = await compare(password, user.password);
 

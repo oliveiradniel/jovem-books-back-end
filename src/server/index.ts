@@ -5,6 +5,9 @@ import { env } from '../config/env';
 import { SignUpController } from '../application/controllers/SignUpController';
 import { SignInControler } from '../application/controllers/SignInController';
 
+import { SignInUseCase } from '../application/useCases/SignInUseCase';
+import { SignUpUseCase } from '../application/useCases/SignUpUseCase';
+
 const app = express();
 
 const { PORT } = env;
@@ -14,7 +17,8 @@ app.use(express.json());
 // Handle authentication user and sign-up
 
 app.post('/sign-in', async (request, response) => {
-  const signInController = new SignInControler();
+  const signInUseCase = new SignInUseCase();
+  const signInController = new SignInControler(signInUseCase);
 
   const { statusCode, body } = await signInController.handle({
     body: request.body,
@@ -24,7 +28,8 @@ app.post('/sign-in', async (request, response) => {
 });
 
 app.post('/sign-up', async (request, response) => {
-  const signUpController = new SignUpController();
+  const signUpUseCase = new SignUpUseCase();
+  const signUpController = new SignUpController(signUpUseCase);
 
   const { statusCode, body } = await signUpController.handle({
     body: request.body,

@@ -11,6 +11,8 @@ import { IRequest } from '../interfaces/IRequest';
 import { IResponse } from '../interfaces/IResponse';
 
 export class SignUpController implements IController {
+  constructor(private readonly signUpUseCase: SignUpUseCase) {}
+
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
       const { username, firstName, lastName, email, password } =
@@ -24,9 +26,7 @@ export class SignUpController implements IController {
         password,
       };
 
-      const signUpUseCase = new SignUpUseCase();
-
-      await signUpUseCase.execute(user);
+      await this.signUpUseCase.execute(user);
 
       return {
         statusCode: 201,

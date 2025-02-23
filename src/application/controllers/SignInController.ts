@@ -11,15 +11,15 @@ import { IRequest } from '../interfaces/IRequest';
 import { IResponse } from '../interfaces/IResponse';
 
 export class SignInControler implements IController {
+  constructor(private readonly signInUseCase: SignInUseCase) {}
+
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
       const { username, password } = SignInSchema.parse(body);
 
       const credentials = { username, password };
 
-      const signInUseCase = new SignInUseCase();
-
-      const { accessToken } = await signInUseCase.execute(credentials);
+      const { accessToken } = await this.signInUseCase.execute(credentials);
 
       return {
         statusCode: 200,
