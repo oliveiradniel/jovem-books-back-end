@@ -1,11 +1,13 @@
 import { verify } from 'jsonwebtoken';
+
+import { env } from '../../config/env';
+
 import {
   IData,
   IMiddleware,
   IRequest,
   IResponse,
 } from '../interfaces/IMiddleware';
-import { env } from '../../config/env';
 
 export class AuthenticationMiddleware implements IMiddleware {
   async handle({ headers }: IRequest): Promise<IResponse | IData> {
