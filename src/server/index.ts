@@ -2,11 +2,8 @@ import express from 'express';
 
 import { env } from '../config/env';
 
-import { SignUpController } from '../application/controllers/SignUpController';
-import { SignInControler } from '../application/controllers/SignInController';
-
-import { SignInUseCase } from '../application/useCases/SignInUseCase';
-import { SignUpUseCase } from '../application/useCases/SignUpUseCase';
+import { makeSignUpController } from '../factories/makeSignUpController';
+import { makeSignInController } from '../factories/makeSignInController';
 
 const app = express();
 
@@ -17,8 +14,7 @@ app.use(express.json());
 // Handle authentication user and sign-up
 
 app.post('/sign-in', async (request, response) => {
-  const signInUseCase = new SignInUseCase();
-  const signInController = new SignInControler(signInUseCase);
+  const signInController = makeSignUpController();
 
   const { statusCode, body } = await signInController.handle({
     body: request.body,
@@ -28,8 +24,7 @@ app.post('/sign-in', async (request, response) => {
 });
 
 app.post('/sign-up', async (request, response) => {
-  const signUpUseCase = new SignUpUseCase();
-  const signUpController = new SignUpController(signUpUseCase);
+  const signUpController = makeSignInController();
 
   const { statusCode, body } = await signUpController.handle({
     body: request.body,
