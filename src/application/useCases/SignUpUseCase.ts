@@ -3,6 +3,7 @@ import { prismaClient } from '../lib/prismaClient';
 import { hash } from 'bcrypt';
 
 import { AccountAlreadyExists } from '../errors/AccountAlreadyExists';
+import { UsernameAlreadyExists } from '../errors/UsernameAlreadyExists';
 
 interface IInput {
   username: string;
@@ -26,7 +27,7 @@ export class SignUpUseCase {
       },
     );
 
-    if (accountWithUsernameAlreadyExists) throw new AccountAlreadyExists();
+    if (accountWithUsernameAlreadyExists) throw new UsernameAlreadyExists();
 
     const hashedPassword = await hash(password, 10);
 

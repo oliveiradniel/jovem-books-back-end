@@ -29,7 +29,7 @@ export class SignInControler implements IController {
       if (error instanceof ZodError) {
         return {
           statusCode: 400,
-          body: error.issues,
+          body: { error: error.errors[0].message },
         };
       }
 

@@ -5,6 +5,7 @@ import { SignUpUseCase } from '../useCases/SignUpUseCase';
 import { SignUpSchema } from './schemas/SignUpSchema';
 
 import { AccountAlreadyExists } from '../errors/AccountAlreadyExists';
+import { UsernameAlreadyExists } from '../errors/UsernameAlreadyExists';
 
 import { IController } from '../interfaces/IController';
 import { IRequest } from '../interfaces/IRequest';
@@ -36,14 +37,21 @@ export class SignUpController implements IController {
       if (error instanceof ZodError) {
         return {
           statusCode: 400,
-          body: error.issues,
+          body: { error: error.errors[0].message },
         };
       }
 
       if (error instanceof AccountAlreadyExists) {
         return {
           statusCode: 409,
-          body: { error: 'This username or this e-mail already in use' },
+          body: { error: 'This credentials already in use' },
+        };
+      }
+
+      if (error instanceof UsernameAlreadyExists) {
+        return {
+          statusCode: 409,
+          body: { error: 'This username already in use' },
         };
       }
 
