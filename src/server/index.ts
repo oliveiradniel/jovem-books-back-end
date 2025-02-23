@@ -2,6 +2,8 @@ import express from 'express';
 
 import { env } from '../config/env';
 
+import { routeAdapter } from './adapters/routeAdapater';
+
 import { makeSignUpController } from '../factories/makeSignUpController';
 import { makeSignInController } from '../factories/makeSignInController';
 
@@ -13,25 +15,9 @@ app.use(express.json());
 
 // Handle authentication user and sign-up
 
-app.post('/sign-in', async (request, response) => {
-  const signInController = makeSignUpController();
+app.post('/sign-in', routeAdapter(makeSignInController()));
 
-  const { statusCode, body } = await signInController.handle({
-    body: request.body,
-  });
-
-  response.status(statusCode).json(body);
-});
-
-app.post('/sign-up', async (request, response) => {
-  const signUpController = makeSignInController();
-
-  const { statusCode, body } = await signUpController.handle({
-    body: request.body,
-  });
-
-  response.status(statusCode).json(body);
-});
+app.post('/sign-up', routeAdapter(makeSignUpController()));
 
 // Handle with users
 
