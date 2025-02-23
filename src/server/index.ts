@@ -3,6 +3,7 @@ import express from 'express';
 import { env } from '../config/env';
 
 import { SignUpController } from '../application/controllers/SignUpController';
+import { SignInControler } from '../application/controllers/SignInController';
 
 const app = express();
 
@@ -12,8 +13,14 @@ app.use(express.json());
 
 // Handle authentication user and sign-up
 
-app.post('/sign-in', (request, response) => {
-  response.send('Generate token e sign-in');
+app.post('/sign-in', async (request, response) => {
+  const signInController = new SignInControler();
+
+  const { statusCode, body } = await signInController.handle({
+    body: request.body,
+  });
+
+  response.status(statusCode).json(body);
 });
 
 app.post('/sign-up', async (request, response) => {

@@ -24,9 +24,11 @@ export class SignInUseCase {
     });
 
     if (!user) throw new InvalidCredentials();
+    console.log(password, user.password);
 
-    const isPasswordsMatch = await compare(password, user.password);
-    if (!isPasswordsMatch) throw new InvalidCredentials();
+    const isPasswordMatch = await compare(password, user.password);
+
+    if (!isPasswordMatch) throw new InvalidCredentials();
 
     const accessToken = sign({ sub: user.id }, env.JWT_SECRET, {
       expiresIn: '1d',

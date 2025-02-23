@@ -47,10 +47,7 @@ export class SignUpController implements IController {
         };
       }
 
-      return {
-        statusCode: 400,
-        body: null,
-      };
+      throw error;
     }
   }
 }
