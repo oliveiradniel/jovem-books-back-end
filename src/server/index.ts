@@ -2,15 +2,14 @@ import express from 'express';
 
 import { env } from '../config/env';
 
+import userRoutes from './routes/userRoutes';
+
 import { routeAdapter } from './adapters/routeAdapater';
 
 import { makeSignUpController } from '../factories/makeSignUpController';
 import { makeSignInController } from '../factories/makeSignInController';
 import { middlewareAdapater } from './adapters/middlewareAdapter';
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddlware';
-import { makeGetUserByIdController } from '../factories/makeGetUserByIdController';
-import { makeEditUserController } from '../factories/makeEditUserController';
-import { makeDeleteUserController } from '../factories/makeDeleteUserController';
 
 const app = express();
 
@@ -26,23 +25,7 @@ app.post('/sign-up', routeAdapter(makeSignUpController()));
 
 // Handle with users
 
-app.get(
-  '/users',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetUserByIdController()),
-);
-
-app.put(
-  '/users',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeEditUserController()),
-);
-
-app.delete(
-  '/users',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeDeleteUserController()),
-);
+app.use('/users', userRoutes);
 
 // Handle with Google API Books
 
