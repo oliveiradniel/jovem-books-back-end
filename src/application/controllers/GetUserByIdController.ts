@@ -16,7 +16,7 @@ export class GetUserByIdController implements IController {
     try {
       const id = IdSchema.parse(userId);
 
-      const user = await this.getUserByIdUseCase.execute({ id });
+      const user = await this.getUserByIdUseCase.execute(id);
 
       return {
         statusCode: 201,

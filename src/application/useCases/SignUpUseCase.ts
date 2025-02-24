@@ -5,6 +5,8 @@ import { hash } from 'bcrypt';
 import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
 import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
 
+import { IUseCase } from '../interfaces/IUseCase';
+
 interface IInput {
   username: string;
   firstName: string;
@@ -13,8 +15,9 @@ interface IInput {
   password: string;
 }
 
-export class SignUpUseCase {
+export class SignUpUseCase implements IUseCase<IInput, void> {
   async execute({ username, firstName, lastName, email, password }: IInput) {
+    console.log(username);
     const isTheEmailInUse = await prismaClient.user.findUnique({
       where: { email },
     });

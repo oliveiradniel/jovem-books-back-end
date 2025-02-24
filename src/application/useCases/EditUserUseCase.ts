@@ -7,20 +7,23 @@ import { GetUserByIdUseCase } from './GetUserByIdUseCase';
 import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
 import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
 
+import { IUseCase } from '../interfaces/IUseCase';
+
 interface IInput {
+  id: string;
   user: Omit<Omit<Partial<Omit<User, 'id'>>, 'createdAt'>, 'updatedAt'>;
 }
 
-export class EditUserUseCase {
+export class EditUserUseCase implements IUseCase<IInput, void> {
   constructor(private readonly getUserByIdUseCase: GetUserByIdUseCase) {}
 
-  async execute(id: string, { user }: IInput) {
+  async execute({ id, user }: IInput) {
     if (
       !Object.values(user).some(value => value !== null && value !== undefined)
     ) {
       return;
     }
-    const userExists = await this.getUserByIdUseCase.execute({ id });
+    const userExists = await this.getUserByIdUseCase.execute(id);
 
     if (user.email) {
       const IsTheEmailInUse = await prismaClient.user.findUnique({

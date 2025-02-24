@@ -32,11 +32,12 @@ export class EditUserController implements IController {
       const { id, username, email, password, firstName, lastName } =
         EditUserSchema.parse(userData);
 
-      const user = await this.getUserByIdUseCase.execute({ id });
+      const user = await this.getUserByIdUseCase.execute(id);
 
       const hashedPassword = await hash(password!, 10);
 
-      await this.editUserUseCase.execute(id, {
+      await this.editUserUseCase.execute({
+        id,
         user: {
           username: username ?? user.username,
           email: email ?? user.email,
