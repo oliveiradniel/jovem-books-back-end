@@ -8,6 +8,9 @@ import { makeSignUpController } from '../factories/makeSignUpController';
 import { makeSignInController } from '../factories/makeSignInController';
 import { middlewareAdapater } from './adapters/middlewareAdapter';
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddlware';
+import { makeGetUserByIdController } from '../factories/makeGetUserByIdController';
+import { makeEditUserController } from '../factories/makeEditUserController';
+import { makeDeleteUserController } from '../factories/makeDeleteUserController';
 
 const app = express();
 
@@ -24,27 +27,21 @@ app.post('/sign-up', routeAdapter(makeSignUpController()));
 // Handle with users
 
 app.get(
-  '/users/:id',
+  '/users',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Get user by id');
-  },
+  routeAdapter(makeGetUserByIdController()),
 );
 
 app.put(
-  '/users/:id',
+  '/users',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Edit user by id');
-  },
+  routeAdapter(makeEditUserController()),
 );
 
 app.delete(
-  '/users/:id',
+  '/users',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Delete user by id');
-  },
+  routeAdapter(makeDeleteUserController()),
 );
 
 // Handle with Google API Books

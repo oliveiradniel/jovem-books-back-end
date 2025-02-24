@@ -2,8 +2,8 @@ import { prismaClient } from '../lib/prismaClient';
 
 import { hash } from 'bcrypt';
 
-import { AccountAlreadyExists } from '../errors/AccountAlreadyExists';
-import { UsernameAlreadyExists } from '../errors/UsernameAlreadyExists';
+import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
+import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
 
 interface IInput {
   username: string;
@@ -15,19 +15,17 @@ interface IInput {
 
 export class SignUpUseCase {
   async execute({ username, firstName, lastName, email, password }: IInput) {
-    const accountWithEmailAlreadyExists = await prismaClient.user.findUnique({
+    const isTheEmailInUse = await prismaClient.user.findUnique({
       where: { email },
     });
 
-    if (accountWithEmailAlreadyExists) throw new AccountAlreadyExists();
+    if (isTheEmailInUse) throw new EmailAlreadyInUse();
 
-    const accountWithUsernameAlreadyExists = await prismaClient.user.findUnique(
-      {
-        where: { username },
-      },
-    );
+    const isTheUserNameInUse = await prismaClient.user.findUnique({
+      where: { username },
+    });
 
-    if (accountWithUsernameAlreadyExists) throw new UsernameAlreadyExists();
+    if (isTheUserNameInUse) throw new UsernameAlreadyInUse();
 
     const hashedPassword = await hash(password, 10);
 

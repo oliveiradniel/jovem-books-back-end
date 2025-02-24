@@ -4,12 +4,10 @@ import { SignUpUseCase } from '../useCases/SignUpUseCase';
 
 import { SignUpSchema } from './schemas/SignUpSchema';
 
-import { AccountAlreadyExists } from '../errors/AccountAlreadyExists';
-import { UsernameAlreadyExists } from '../errors/UsernameAlreadyExists';
+import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
+import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
 
-import { IController } from '../interfaces/IController';
-import { IRequest } from '../interfaces/IRequest';
-import { IResponse } from '../interfaces/IResponse';
+import { IController, IRequest, IResponse } from '../interfaces/IController';
 
 export class SignUpController implements IController {
   constructor(private readonly signUpUseCase: SignUpUseCase) {}
@@ -41,17 +39,17 @@ export class SignUpController implements IController {
         };
       }
 
-      if (error instanceof AccountAlreadyExists) {
+      if (error instanceof EmailAlreadyInUse) {
         return {
           statusCode: 409,
-          body: { error: 'This credentials already in use' },
+          body: { error: 'Email already in use' },
         };
       }
 
-      if (error instanceof UsernameAlreadyExists) {
+      if (error instanceof UsernameAlreadyInUse) {
         return {
           statusCode: 409,
-          body: { error: 'This username already in use' },
+          body: { error: 'Username already in use' },
         };
       }
 

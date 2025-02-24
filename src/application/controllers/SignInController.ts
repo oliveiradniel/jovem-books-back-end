@@ -6,9 +6,7 @@ import { SignInUseCase } from '../useCases/SignInUseCase';
 
 import { SignInSchema } from './schemas/SignInSchema';
 
-import { IController } from '../interfaces/IController';
-import { IRequest } from '../interfaces/IRequest';
-import { IResponse } from '../interfaces/IResponse';
+import { IController, IRequest, IResponse } from '../interfaces/IController';
 
 export class SignInControler implements IController {
   constructor(private readonly signInUseCase: SignInUseCase) {}
