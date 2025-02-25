@@ -2,7 +2,5 @@ import { DeleteUserController } from '../application/controllers/DeleteUserContr
 import { makeDeleteUserUseCase } from './makeDeleteUserUseCase';
 
 export function makeDeleteUserController() {
-  const deleteUserUseCase = makeDeleteUserUseCase();
-
-  return new DeleteUserController(deleteUserUseCase);
+  return new DeleteUserController(makeDeleteUserUseCase());
 }

@@ -2,8 +2,8 @@ import { ZodError } from 'zod';
 
 import { hash } from 'bcrypt';
 
-import { EditUserSchema } from './schemas/EditUserSchema';
-import { EditUserUseCase } from '../useCases/EditUserUseCase';
+import { UpdateUserSchema } from './schemas/UpdateUserSchema';
+import { UpdateUserUseCase } from '../useCases/UpdateUserUseCase';
 import { GetUserByIdUseCase } from '../useCases/GetUserByIdUseCase';
 
 import { UserNotFound } from '../errors/UserNotFound';
@@ -12,9 +12,9 @@ import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
 
 import { IController, IRequest, IResponse } from '../interfaces/IController';
 
-export class EditUserController implements IController {
+export class UpdateUserController implements IController {
   constructor(
-    private readonly editUserUseCase: EditUserUseCase,
+    private readonly updateUserUseCase: UpdateUserUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
@@ -30,13 +30,13 @@ export class EditUserController implements IController {
       };
 
       const { id, username, email, password, firstName, lastName } =
-        EditUserSchema.parse(userData);
+        UpdateUserSchema.parse(userData);
 
       const user = await this.getUserByIdUseCase.execute(id);
 
       const hashedPassword = await hash(password!, 10);
 
-      await this.editUserUseCase.execute({
+      await this.updateUserUseCase.execute({
         id,
         user: {
           username: username ?? user.username,
@@ -44,6 +44,7 @@ export class EditUserController implements IController {
           password: (password && hashedPassword) ?? user.password,
           firstName: firstName ?? user.firstName,
           lastName: lastName ?? user.lastName,
+          updatedAt: new Date(),
         },
       });
 

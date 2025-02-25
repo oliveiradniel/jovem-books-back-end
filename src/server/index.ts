@@ -6,9 +6,11 @@ import userRoutes from './routes/userRoutes';
 
 import { routeAdapter } from './adapters/routeAdapater';
 
-import { makeSignUpController } from '../factories/makeSignUpController';
 import { makeSignInController } from '../factories/makeSignInController';
+import { makeCreateUserController } from '../factories/makeCreateUserController';
+
 import { middlewareAdapater } from './adapters/middlewareAdapter';
+
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddlware';
 
 const app = express();
@@ -21,7 +23,7 @@ app.use(express.json());
 
 app.post('/sign-in', routeAdapter(makeSignInController()));
 
-app.post('/sign-up', routeAdapter(makeSignUpController()));
+app.post('/sign-up', routeAdapter(makeCreateUserController()));
 
 // Handle with users
 

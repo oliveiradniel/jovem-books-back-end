@@ -1,21 +1,21 @@
 import { ZodError } from 'zod';
 
-import { SignUpUseCase } from '../useCases/SignUpUseCase';
+import { CreateUserUseCase } from '../useCases/CreateUserUseCase';
 
-import { SignUpSchema } from './schemas/SignUpSchema';
+import { CreateUserSchema } from './schemas/CreateUserSchema';
 
 import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
 import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
 
 import { IController, IRequest, IResponse } from '../interfaces/IController';
 
-export class SignUpController implements IController {
-  constructor(private readonly signUpUseCase: SignUpUseCase) {}
+export class CreateUserController implements IController {
+  constructor(private readonly createUserUpUseCase: CreateUserUseCase) {}
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
       const { username, firstName, lastName, email, password } =
-        SignUpSchema.parse(body);
+        CreateUserSchema.parse(body);
 
       const user = {
         username,
@@ -25,7 +25,7 @@ export class SignUpController implements IController {
         password,
       };
 
-      await this.signUpUseCase.execute(user);
+      await this.createUserUpUseCase.execute(user);
 
       return {
         statusCode: 201,

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const EditUserSchema = z.object({
+export const UpdateUserSchema = z.object({
   id: z.string({ message: 'Id must be a string' }).uuid('Invalid uuid'),
   username: z
     .string({ message: 'Username must be a string' })

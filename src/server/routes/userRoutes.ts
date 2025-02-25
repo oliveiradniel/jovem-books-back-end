@@ -2,7 +2,7 @@ import express from 'express';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 import { makeDeleteUserController } from '../../factories/makeDeleteUserController';
-import { makeEditUserController } from '../../factories/makeEditUserController';
+import { makeUpdateUserController } from '../../factories/makeUpdateUserController';
 import { makeGetUserByIdController } from '../../factories/makeGetUserByIdController';
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapater';
@@ -18,7 +18,7 @@ router.get(
 router.put(
   '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeEditUserController()),
+  routeAdapter(makeUpdateUserController()),
 );
 
 router.delete(

@@ -1,12 +1,14 @@
-import { prismaClient } from '../lib/prismaClient';
-
 import { sign } from 'jsonwebtoken';
 
 import { compare } from 'bcrypt';
 
 import { env } from '../../config/env';
 
+import { UserRepository } from '../repositories/UserRepository';
+
 import { InvalidCredentials } from '../errors/InvalidCredentials';
+
+import { IUseCase } from '../interfaces/IUseCase';
 
 interface IInput {
   username: string;
@@ -17,11 +19,11 @@ interface IOuput {
   accessToken: string;
 }
 
-export class SignInUseCase {
+export class SignInUseCase implements IUseCase<IInput, IOuput> {
+  constructor(private readonly userRepository: UserRepository) {}
+
   async execute({ username, password }: IInput): Promise<IOuput> {
-    const user = await prismaClient.user.findUnique({
-      where: { username },
-    });
+    const user = await this.userRepository.findByUsername(username);
 
     if (!user) throw new InvalidCredentials();
 

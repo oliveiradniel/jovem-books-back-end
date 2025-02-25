@@ -1,13 +1,19 @@
+import { UserRepository } from '../repositories/UserRepository';
+
+import { UserNotFound } from '../errors/UserNotFound';
+
 import { IUseCase } from '../interfaces/IUseCase';
-import { prismaClient } from '../lib/prismaClient';
-import { GetUserByIdUseCase } from './GetUserByIdUseCase';
 
 export class DeleteUserUseCase implements IUseCase<string, void> {
-  constructor(private readonly getUserByIdUseCase: GetUserByIdUseCase) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async execute(id: string) {
-    await this.getUserByIdUseCase.execute(id);
+    const user = await this.userRepository.findById(id);
 
-    await prismaClient.user.delete({ where: { id } });
+    if (!user) {
+      throw new UserNotFound();
+    }
+
+    await this.userRepository.delete(id);
   }
 }

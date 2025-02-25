@@ -1,8 +1,7 @@
 import { DeleteUserUseCase } from '../application/useCases/DeleteUserUseCase';
-import { makeGetUserByIdUseCase } from './makeGetUserByIdUseCase';
+
+import { makeUserRepository } from './makeUserRepository';
 
 export function makeDeleteUserUseCase() {
-  const getUserByIdUseCase = makeGetUserByIdUseCase();
-
-  return new DeleteUserUseCase(getUserByIdUseCase);
+  return new DeleteUserUseCase(makeUserRepository());
 }

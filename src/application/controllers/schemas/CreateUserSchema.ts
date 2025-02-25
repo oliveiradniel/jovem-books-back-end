@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const SignUpSchema = z.object({
+export const CreateUserSchema = z.object({
   username: z
     .string({ message: 'Username must be a string' })
     .min(5, 'Username must be at least 5 characters long'),
