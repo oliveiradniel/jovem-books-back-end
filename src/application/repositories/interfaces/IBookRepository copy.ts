@@ -1,16 +1,45 @@
 import { Book } from '@prisma/client';
 
 export interface IBookRepository {
-  list(): Promise<Book[] | null>;
-  findById(id: string): Promise<Book | null>;
-  findByName(name: string): Promise<Book[] | null>;
-  findByAuthor(authorName: string): Promise<Book[] | null>;
+  list({
+    userId,
+    orderBy,
+  }: {
+    userId: string;
+    orderBy: 'asc' | 'desc';
+  }): Promise<Book[] | null>;
+  findById({
+    id,
+    userId,
+  }: {
+    id: string;
+    userId: string;
+  }): Promise<Book | null>;
+  findByTitle({
+    title,
+    userId,
+  }: {
+    title: string;
+    userId: string;
+  }): Promise<Book[] | null>;
+  findByAuthor({
+    authorName,
+    userId,
+  }: {
+    authorName: string;
+    userId: string;
+  }): Promise<Book[] | null>;
   create(
-    data: Omit<Omit<Partial<Omit<Book, 'id'>>, 'createdAt'>, 'updatedAt'>,
-  ): Promise<any>;
-  update(
-    id: string,
-    data: Omit<Partial<Omit<Book, 'id'>>, 'createdAt'>,
-  ): Promise<void>;
-  delete(id: string): Promise<void>;
+    data: Omit<Omit<Omit<Book, 'id'>, 'createdAt'>, 'updatedAt'>,
+  ): Promise<string>;
+  update({
+    id,
+    data,
+    userId,
+  }: {
+    id: string;
+    data: Omit<Partial<Omit<Book, 'id'>>, 'createdAt'>;
+    userId: string;
+  }): Promise<void>;
+  delete({ id, userId }: { id: string; userId: string }): Promise<void>;
 }

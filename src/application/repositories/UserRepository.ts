@@ -1,6 +1,17 @@
-import { User } from '@prisma/client';
-import { IUserRepository } from './interfaces/IUserRepository';
 import { prismaClient } from '../lib/prismaClient';
+
+import { User } from '@prisma/client';
+
+import { IUserRepository } from './interfaces/IUserRepository';
+
+type UserDataCreate = Omit<Omit<Omit<User, 'id'>, 'createdAt'>, 'updatedAt'>;
+
+type UserDataUpdate = Omit<Partial<Omit<User, 'id'>>, 'createdAt'>;
+
+interface IUpdate {
+  id: string;
+  data: UserDataUpdate;
+}
 
 export class UserRepository implements IUserRepository {
   async findById(id: string): Promise<User | null> {
@@ -21,9 +32,7 @@ export class UserRepository implements IUserRepository {
     );
   }
 
-  async create(
-    data: Omit<Omit<Omit<User, 'id'>, 'createdAt'>, 'updatedAt'>,
-  ): Promise<string> {
+  async create(data: UserDataCreate): Promise<string> {
     const { firstName, lastName } = await prismaClient.user.create({
       data,
       select: {
@@ -35,10 +44,7 @@ export class UserRepository implements IUserRepository {
     return `${firstName} ${lastName}`;
   }
 
-  async update(
-    id: string,
-    data: Omit<Partial<Omit<User, 'id'>>, 'createdAt'>,
-  ): Promise<void> {
+  async update({ id, data }: IUpdate): Promise<void> {
     await prismaClient.user.update({
       where: { id },
       data,

@@ -1,11 +1,10 @@
 import { hash } from 'bcrypt';
 
-import { UserRepository } from '../../repositories/UserRepository';
-
 import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
 import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
+import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {
   username: string;
@@ -16,7 +15,7 @@ interface IInput {
 }
 
 export class CreateUserUseCase implements IUseCase<IInput, void> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
   async execute({ username, firstName, lastName, email, password }: IInput) {
     const isUsernameInUse = await this.userRepository.findByUsername(username);

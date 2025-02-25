@@ -1,11 +1,10 @@
-import { UserRepository } from '../../repositories/UserRepository';
-
 import { UserNotFound } from '../../errors/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
+import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 export class DeleteUserUseCase implements IUseCase<string, void> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(id: string) {
     const user = await this.userRepository.findById(id);

@@ -4,11 +4,10 @@ import { compare } from 'bcrypt';
 
 import { env } from '../../config/env';
 
-import { UserRepository } from '../repositories/UserRepository';
-
 import { InvalidCredentials } from '../errors/InvalidCredentials';
 
 import { IUseCase } from '../interfaces/IUseCase';
+import { IUserRepository } from '../repositories/interfaces/IUserRepository';
 
 interface IInput {
   username: string;
@@ -20,7 +19,7 @@ interface IOuput {
 }
 
 export class SignInUseCase implements IUseCase<IInput, IOuput> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
   async execute({ username, password }: IInput): Promise<IOuput> {
     const user = await this.userRepository.findByUsername(username);

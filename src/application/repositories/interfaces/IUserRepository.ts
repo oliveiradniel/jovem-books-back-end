@@ -5,11 +5,14 @@ export interface IUserRepository {
   findByUsername(username: string): Promise<User | null>;
   findByEmail(email: string): Promise<boolean>;
   create(
-    data: Omit<Omit<Partial<Omit<User, 'id'>>, 'createdAt'>, 'updatedAt'>,
+    data: Omit<Omit<Omit<User, 'id'>, 'createdAt'>, 'updatedAt'>,
   ): Promise<any>;
-  update(
-    id: string,
-    data: Omit<Partial<Omit<User, 'id'>>, 'createdAt'>,
-  ): Promise<void>;
+  update({
+    id,
+    data,
+  }: {
+    id: string;
+    data: Omit<Partial<Omit<User, 'id'>>, 'createdAt'>;
+  }): Promise<void>;
   delete(id: string): Promise<void>;
 }

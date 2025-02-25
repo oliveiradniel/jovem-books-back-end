@@ -1,12 +1,11 @@
 import { User } from '@prisma/client';
 
-import { UserRepository } from '../../repositories/UserRepository';
-
 import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
 import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
 import { UserNotFound } from '../../errors/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
+import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {
   id: string;
@@ -14,7 +13,7 @@ interface IInput {
 }
 
 export class UpdateUserUseCase implements IUseCase<IInput, void> {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
   async execute({ id, user }: IInput) {
     if (
@@ -45,6 +44,6 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
         throw new UsernameAlreadyInUse();
     }
 
-    await this.userRepository.update(id, user);
+    await this.userRepository.update({ id, data: user });
   }
 }
