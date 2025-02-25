@@ -1,8 +1,8 @@
-import { UserRepository } from '../repositories/UserRepository';
+import { UserRepository } from '../../repositories/UserRepository';
 
-import { UserNotFound } from '../errors/UserNotFound';
+import { UserNotFound } from '../../errors/UserNotFound';
 
-import { IUseCase } from '../interfaces/IUseCase';
+import { IUseCase } from '../../interfaces/IUseCase';
 
 export class DeleteUserUseCase implements IUseCase<string, void> {
   constructor(private readonly userRepository: UserRepository) {}

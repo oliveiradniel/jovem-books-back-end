@@ -1,10 +1,13 @@
 import express from 'express';
 
-import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
-import { makeDeleteUserController } from '../../factories/makeDeleteUserController';
-import { makeUpdateUserController } from '../../factories/makeUpdateUserController';
-import { makeGetUserByIdController } from '../../factories/makeGetUserByIdController';
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
+
+import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
+
+import { makeDeleteUserController } from '../../factories/user/makeDeleteUserController';
+import { makeUpdateUserController } from '../../factories/user/makeUpdateUserController';
+import { makeGetUserByIdController } from '../../factories/user/makeGetUserByIdController';
+
 import { routeAdapter } from '../adapters/routeAdapater';
 
 const router = express.Router();

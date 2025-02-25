@@ -1,13 +1,13 @@
 import { ZodError } from 'zod';
 
-import { CreateUserUseCase } from '../useCases/CreateUserUseCase';
+import { CreateUserUseCase } from '../../useCases/user/CreateUserUseCase';
 
-import { CreateUserSchema } from './schemas/CreateUserSchema';
+import { CreateUserSchema } from '../schemas/user/CreateUserSchema';
 
-import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
-import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
+import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
 
-import { IController, IRequest, IResponse } from '../interfaces/IController';
+import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class CreateUserController implements IController {
   constructor(private readonly createUserUpUseCase: CreateUserUseCase) {}

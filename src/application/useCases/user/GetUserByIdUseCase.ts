@@ -1,10 +1,10 @@
 import { User } from '@prisma/client';
 
-import { UserRepository } from '../repositories/UserRepository';
+import { UserRepository } from '../../repositories/UserRepository';
 
-import { UserNotFound } from '../errors/UserNotFound';
+import { UserNotFound } from '../../errors/UserNotFound';
 
-import { IUseCase } from '../interfaces/IUseCase';
+import { IUseCase } from '../../interfaces/IUseCase';
 
 export class GetUserByIdUseCase implements IUseCase<string, User> {
   constructor(private readonly userRepository: UserRepository) {}

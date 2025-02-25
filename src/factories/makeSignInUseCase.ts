@@ -1,5 +1,6 @@
 import { SignInUseCase } from '../application/useCases/SignInUseCase';
-import { makeUserRepository } from './makeUserRepository';
+
+import { makeUserRepository } from './user/makeUserRepository';
 
 export function makeSignInUseCase() {
   return new SignInUseCase(makeUserRepository());

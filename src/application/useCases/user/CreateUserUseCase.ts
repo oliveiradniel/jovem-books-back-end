@@ -1,11 +1,11 @@
 import { hash } from 'bcrypt';
 
-import { UserRepository } from '../repositories/UserRepository';
+import { UserRepository } from '../../repositories/UserRepository';
 
-import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
-import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
+import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
 
-import { IUseCase } from '../interfaces/IUseCase';
+import { IUseCase } from '../../interfaces/IUseCase';
 
 interface IInput {
   username: string;

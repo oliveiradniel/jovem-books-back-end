@@ -1,17 +1,21 @@
-import { DeleteUserUseCase } from '../useCases/DeleteUserUseCase';
+import { z, ZodError } from 'zod';
 
-import { IdSchema } from './schemas/IdSchema';
+import { DeleteUserUseCase } from '../../useCases/user/DeleteUserUseCase';
 
-import { IController, IRequest, IResponse } from '../interfaces/IController';
-import { ZodError } from 'zod';
-import { UserNotFound } from '../errors/UserNotFound';
+import { UserNotFound } from '../../errors/UserNotFound';
+
+import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class DeleteUserController implements IController {
   constructor(private readonly deleteUserUseCase: DeleteUserUseCase) {}
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const id = IdSchema.parse(userId);
+      const Schema = z
+        .string({ message: 'Id must be a string' })
+        .uuid({ message: 'Invalid uuid' });
+
+      const id = Schema.parse(userId);
 
       await this.deleteUserUseCase.execute(id);
 

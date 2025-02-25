@@ -1,20 +1,22 @@
-import { ZodError } from 'zod';
+import { z, ZodError } from 'zod';
 
-import { GetUserByIdUseCase } from '../useCases/GetUserByIdUseCase';
+import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
 
-import { UserNotFound } from '../errors/UserNotFound';
-import { IdIsRequired } from '../errors/IdIsRequired';
+import { UserNotFound } from '../../errors/UserNotFound';
+import { IdIsRequired } from '../../errors/IdIsRequired';
 
-import { IdSchema } from './schemas/IdSchema';
-
-import { IController, IRequest, IResponse } from '../interfaces/IController';
+import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class GetUserByIdController implements IController {
   constructor(private readonly getUserByIdUseCase: GetUserByIdUseCase) {}
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const id = IdSchema.parse(userId);
+      const Schema = z
+        .string({ message: 'Id must be a string' })
+        .uuid({ message: 'Invalid uuid' });
+
+      const id = Schema.parse(userId);
 
       const user = await this.getUserByIdUseCase.execute(id);
 

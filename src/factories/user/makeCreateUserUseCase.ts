@@ -1,4 +1,4 @@
-import { CreateUserUseCase } from '../application/useCases/CreateUserUseCase';
+import { CreateUserUseCase } from '../../application/useCases/user/CreateUserUseCase';
 
 import { makeUserRepository } from './makeUserRepository';
 

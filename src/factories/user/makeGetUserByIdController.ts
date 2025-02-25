@@ -1,4 +1,5 @@
-import { GetUserByIdController } from '../application/controllers/GetUserByIdController';
+import { GetUserByIdController } from '../../application/controllers/user/GetUserByIdController';
+
 import { makeGetUserByIdUseCase } from './makeGetUserByIdUseCase';
 
 export function makeGetUserByIdController() {

@@ -1,12 +1,12 @@
 import { User } from '@prisma/client';
 
-import { UserRepository } from '../repositories/UserRepository';
+import { UserRepository } from '../../repositories/UserRepository';
 
-import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
-import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
-import { UserNotFound } from '../errors/UserNotFound';
+import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
+import { UserNotFound } from '../../errors/UserNotFound';
 
-import { IUseCase } from '../interfaces/IUseCase';
+import { IUseCase } from '../../interfaces/IUseCase';
 
 interface IInput {
   id: string;

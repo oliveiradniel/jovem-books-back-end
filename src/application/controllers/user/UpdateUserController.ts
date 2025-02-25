@@ -2,15 +2,16 @@ import { ZodError } from 'zod';
 
 import { hash } from 'bcrypt';
 
-import { UpdateUserSchema } from './schemas/UpdateUserSchema';
-import { UpdateUserUseCase } from '../useCases/UpdateUserUseCase';
-import { GetUserByIdUseCase } from '../useCases/GetUserByIdUseCase';
+import { UpdateUserSchema } from '../schemas/user/UpdateUserSchema';
 
-import { UserNotFound } from '../errors/UserNotFound';
-import { EmailAlreadyInUse } from '../errors/EmailAlreadyInUse';
-import { UsernameAlreadyInUse } from '../errors/UsernameAlreadyInUse';
+import { UpdateUserUseCase } from '../../useCases/user/UpdateUserUseCase';
+import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
 
-import { IController, IRequest, IResponse } from '../interfaces/IController';
+import { UserNotFound } from '../../errors/UserNotFound';
+import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
+
+import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class UpdateUserController implements IController {
   constructor(

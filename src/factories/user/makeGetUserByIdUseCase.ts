@@ -1,4 +1,4 @@
-import { GetUserByIdUseCase } from '../application/useCases/GetUserByIdUseCase';
+import { GetUserByIdUseCase } from '../../application/useCases/user/GetUserByIdUseCase';
 
 import { makeUserRepository } from './makeUserRepository';
 

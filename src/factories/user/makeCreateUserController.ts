@@ -1,4 +1,4 @@
-import { CreateUserController } from '../application/controllers/CreateUserController';
+import { CreateUserController } from '../../application/controllers/user/CreateUserController';
 
 import { makeCreateUserUseCase } from './makeCreateUserUseCase';
 

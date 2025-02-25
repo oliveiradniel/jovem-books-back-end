@@ -1,4 +1,4 @@
-import { DeleteUserUseCase } from '../application/useCases/DeleteUserUseCase';
+import { DeleteUserUseCase } from '../../application/useCases/user/DeleteUserUseCase';
 
 import { makeUserRepository } from './makeUserRepository';
 

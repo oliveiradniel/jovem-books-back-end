@@ -4,7 +4,7 @@ import { InvalidCredentials } from '../errors/InvalidCredentials';
 
 import { SignInUseCase } from '../useCases/SignInUseCase';
 
-import { SignInSchema } from './schemas/SignInSchema';
+import { SignInSchema } from './schemas/user/SignInSchema';
 
 import { IController, IRequest, IResponse } from '../interfaces/IController';
 

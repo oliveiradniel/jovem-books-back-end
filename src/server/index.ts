@@ -7,7 +7,7 @@ import userRoutes from './routes/userRoutes';
 import { routeAdapter } from './adapters/routeAdapater';
 
 import { makeSignInController } from '../factories/makeSignInController';
-import { makeCreateUserController } from '../factories/makeCreateUserController';
+import { makeCreateUserController } from '../factories/user/makeCreateUserController';
 
 import { middlewareAdapater } from './adapters/middlewareAdapter';
 
