@@ -1,8 +1,9 @@
 import { User } from '@prisma/client';
 
-import { UserNotFound } from '../../errors/UserNotFound';
+import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
+
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 export class GetUserByIdUseCase implements IUseCase<string, User> {

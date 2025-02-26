@@ -4,7 +4,7 @@ import { compare } from 'bcrypt';
 
 import { env } from '../../config/env';
 
-import { InvalidCredentials } from '../errors/InvalidCredentials';
+import { InvalidCredentials } from '../errors/user/InvalidCredentials';
 
 import { IUseCase } from '../interfaces/IUseCase';
 import { IUserRepository } from '../repositories/interfaces/IUserRepository';

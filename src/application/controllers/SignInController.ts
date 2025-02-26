@@ -1,6 +1,6 @@
 import { ZodError } from 'zod';
 
-import { InvalidCredentials } from '../errors/InvalidCredentials';
+import { InvalidCredentials } from '../errors/user/InvalidCredentials';
 
 import { SignInUseCase } from '../useCases/SignInUseCase';
 

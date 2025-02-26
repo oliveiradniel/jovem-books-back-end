@@ -2,8 +2,8 @@ import { z, ZodError } from 'zod';
 
 import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
 
-import { UserNotFound } from '../../errors/UserNotFound';
-import { IdIsRequired } from '../../errors/IdIsRequired';
+import { UserNotFound } from '../../errors/user/UserNotFound';
+import { IdIsRequired } from '../../errors/user/IdIsRequired';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 

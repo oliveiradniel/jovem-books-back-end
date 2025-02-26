@@ -2,7 +2,7 @@ import { z, ZodError } from 'zod';
 
 import { DeleteUserUseCase } from '../../useCases/user/DeleteUserUseCase';
 
-import { UserNotFound } from '../../errors/UserNotFound';
+import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 

@@ -7,9 +7,9 @@ import { UpdateUserSchema } from '../schemas/user/UpdateUserSchema';
 import { UpdateUserUseCase } from '../../useCases/user/UpdateUserUseCase';
 import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
 
-import { UserNotFound } from '../../errors/UserNotFound';
-import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
-import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
+import { UserNotFound } from '../../errors/user/UserNotFound';
+import { EmailAlreadyInUse } from '../../errors/user/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/user/UsernameAlreadyInUse';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 

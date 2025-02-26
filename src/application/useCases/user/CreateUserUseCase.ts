@@ -1,7 +1,7 @@
 import { hash } from 'bcrypt';
 
-import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
-import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/user/UsernameAlreadyInUse';
+import { EmailAlreadyInUse } from '../../errors/user/EmailAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';

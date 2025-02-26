@@ -4,8 +4,8 @@ import { CreateUserUseCase } from '../../useCases/user/CreateUserUseCase';
 
 import { CreateUserSchema } from '../schemas/user/CreateUserSchema';
 
-import { UsernameAlreadyInUse } from '../../errors/UsernameAlreadyInUse';
-import { EmailAlreadyInUse } from '../../errors/EmailAlreadyInUse';
+import { UsernameAlreadyInUse } from '../../errors/user/UsernameAlreadyInUse';
+import { EmailAlreadyInUse } from '../../errors/user/EmailAlreadyInUse';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
