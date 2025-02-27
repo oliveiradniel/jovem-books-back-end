@@ -1,12 +1,14 @@
 import { Book } from '@prisma/client';
 
+import { TOrderBy } from '../../../@types/TOrderBy';
+
 export interface IBookRepository {
   list({
     userId,
     orderBy,
   }: {
     userId: string;
-    orderBy: 'asc' | 'desc';
+    orderBy: TOrderBy;
   }): Promise<Book[] | null>;
   findById({
     id,
@@ -21,7 +23,7 @@ export interface IBookRepository {
   }: {
     title: string;
     userId: string;
-  }): Promise<Book[] | null>;
+  }): Promise<Book | null>;
   findByAuthor({
     authorName,
     userId,
@@ -30,16 +32,14 @@ export interface IBookRepository {
     userId: string;
   }): Promise<Book[] | null>;
   create(
-    data: Omit<Omit<Omit<Book, 'id'>, 'createdAt'>, 'updatedAt'>,
+    data: Omit<Omit<Omit<Partial<Book>, 'id'>, 'createdAt'>, 'updatedAt'>,
   ): Promise<string>;
   update({
     id,
     data,
-    userId,
   }: {
     id: string;
     data: Omit<Partial<Omit<Book, 'id'>>, 'createdAt'>;
-    userId: string;
   }): Promise<void>;
   delete({ id, userId }: { id: string; userId: string }): Promise<void>;
 }

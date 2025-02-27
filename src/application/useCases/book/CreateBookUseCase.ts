@@ -1,19 +1,31 @@
-import { TypeBook } from '@prisma/client';
+import { Book } from '@prisma/client';
+
+import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
+import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository copy';
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
-import { UserNotFound } from '../../errors/user/UserNotFound';
 
 interface IInput {
-  userId: string;
-  title: string;
-  author: string | null;
-  sinopse: string | null;
-  numberOfPages: number | null;
-  type: TypeBook;
-  dateOfPublication: Date | null;
+  data: Omit<
+    Book,
+    | 'author'
+    | 'sinopse'
+    | 'numberOfPages'
+    | 'type'
+    | 'dateOfPublication'
+    | 'id'
+    | 'createdAt'
+    | 'updatedAt'
+  > &
+    Partial<
+      Pick<
+        Book,
+        'author' | 'sinopse' | 'numberOfPages' | 'type' | 'dateOfPublication'
+      >
+    >;
 }
 
 export class CreateBookUseCase implements IUseCase<IInput, void> {
@@ -22,18 +34,22 @@ export class CreateBookUseCase implements IUseCase<IInput, void> {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute({ userId, ...data }: IInput): Promise<void> {
-    const user = await this.userRepository.findById(userId);
+  async execute({ data }: IInput): Promise<void> {
+    const user = await this.userRepository.findById(data.userId);
 
     if (!user) {
       throw new UserNotFound();
     }
 
-    const bookData = {
-      userId,
-      ...data,
-    };
+    const isTitleInUse = await this.bookRepository.findByTitle({
+      userId: data.userId,
+      title: data.title,
+    });
 
-    await this.bookRepository.create(bookData);
+    if (isTitleInUse) {
+      throw new TitleAlreadyInUse();
+    }
+
+    await this.bookRepository.create(data);
   }
 }

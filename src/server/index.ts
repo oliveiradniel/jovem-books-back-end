@@ -13,6 +13,12 @@ import { middlewareAdapater } from './adapters/middlewareAdapter';
 
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddlware';
 
+import { makeListBooksController } from '../factories/book/makeListBooksController';
+import { makeCreateBookController } from '../factories/book/makeCreateBookController';
+import { makeUpdateBookController } from '../factories/book/makeUpdateBookController';
+import { makeGetBookByIdController } from '../factories/book/makeGetBookByIdController';
+import { makeDeleteBookController } from '../factories/book/makeDeleteBookController';
+
 const app = express();
 
 const { PORT } = env;
@@ -52,41 +58,31 @@ app.get(
 app.get(
   '/books',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('List my books');
-  },
+  routeAdapter(makeListBooksController()),
 );
 
 app.get(
   '/books/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Get my book by id');
-  },
+  routeAdapter(makeGetBookByIdController()),
 );
 
 app.post(
   '/books',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Add book');
-  },
+  routeAdapter(makeCreateBookController()),
 );
 
 app.put(
   '/books/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Edit book');
-  },
+  routeAdapter(makeUpdateBookController()),
 );
 
 app.delete(
   '/books/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Delete book');
-  },
+  routeAdapter(makeDeleteBookController()),
 );
 
 // Handle with my collections

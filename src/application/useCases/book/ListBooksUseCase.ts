@@ -7,9 +7,11 @@ import { IUseCase } from '../../interfaces/IUseCase';
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository copy';
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
+import { TOrderBy } from '../../../@types/TOrderBy';
+
 interface IInput {
   userId: string;
-  orderBy: 'asc' | 'desc';
+  orderBy: TOrderBy;
 }
 
 interface IOutput {

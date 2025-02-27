@@ -14,18 +14,9 @@ export class CreateUserController implements IController {
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const { username, firstName, lastName, email, password } =
-        CreateUserSchema.parse(body);
+      const data = CreateUserSchema.parse(body);
 
-      const user = {
-        username,
-        firstName,
-        lastName,
-        email,
-        password,
-      };
-
-      await this.createUserUpUseCase.execute(user);
+      await this.createUserUpUseCase.execute(data);
 
       return {
         statusCode: 201,

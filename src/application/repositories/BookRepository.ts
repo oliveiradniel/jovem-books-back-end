@@ -4,6 +4,8 @@ import { Book } from '@prisma/client';
 
 import { IBookRepository } from './interfaces/IBookRepository copy';
 
+import { TOrderBy } from '../../@types/TOrderBy';
+
 type BookDataCreate = Omit<Omit<Omit<Book, 'id'>, 'createdAt'>, 'updatedAt'>;
 
 type BookDataUpdate = Omit<Partial<Omit<Book, 'id'>>, 'createdAt'>;
@@ -20,7 +22,7 @@ export class BookRepository implements IBookRepository {
     orderBy,
   }: {
     userId: string;
-    orderBy: 'asc' | 'desc';
+    orderBy: TOrderBy;
   }): Promise<Book[] | null> {
     const books = await prismaClient.book.findMany({
       where: { userId },
@@ -52,12 +54,12 @@ export class BookRepository implements IBookRepository {
   }: {
     title: string;
     userId: string;
-  }): Promise<Book[] | null> {
-    const books = await prismaClient.book.findMany({
+  }): Promise<Book | null> {
+    const books = await prismaClient.book.findFirst({
       where: { title, userId },
     });
 
-    return books;
+    return books ? books : null;
   }
 
   async findByAuthor({
@@ -75,19 +77,14 @@ export class BookRepository implements IBookRepository {
   }
 
   async create(data: BookDataCreate): Promise<any> {
-    const title = await prismaClient.book.create({
+    await prismaClient.book.create({
       data,
-      select: {
-        title: true,
-      },
     });
-
-    return title;
   }
 
-  async update({ id, data, userId }: IUpdate): Promise<void> {
+  async update({ id, data }: IUpdate): Promise<void> {
     await prismaClient.book.update({
-      where: { id, userId },
+      where: { id, userId: data.userId },
       data,
     });
   }

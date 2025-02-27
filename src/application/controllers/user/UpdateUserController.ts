@@ -2,10 +2,10 @@ import { ZodError } from 'zod';
 
 import { hash } from 'bcrypt';
 
-import { UpdateUserSchema } from '../schemas/user/UpdateUserSchema';
-
 import { UpdateUserUseCase } from '../../useCases/user/UpdateUserUseCase';
 import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
+
+import { UpdateUserSchema } from '../schemas/user/UpdateUserSchema';
 
 import { UserNotFound } from '../../errors/user/UserNotFound';
 import { EmailAlreadyInUse } from '../../errors/user/EmailAlreadyInUse';
@@ -21,7 +21,7 @@ export class UpdateUserController implements IController {
 
   async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
-      const userData = {
+      const data = {
         id: userId,
         username: body.username,
         email: body.email,
@@ -31,7 +31,7 @@ export class UpdateUserController implements IController {
       };
 
       const { id, username, email, password, firstName, lastName } =
-        UpdateUserSchema.parse(userData);
+        UpdateUserSchema.parse(data);
 
       const user = await this.getUserByIdUseCase.execute(id);
 
@@ -39,7 +39,7 @@ export class UpdateUserController implements IController {
 
       await this.updateUserUseCase.execute({
         id,
-        user: {
+        data: {
           username: username ?? user.username,
           email: email ?? user.email,
           password: (password && hashedPassword) ?? user.password,
