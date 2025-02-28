@@ -1,37 +1,39 @@
-import { Book } from '@prisma/client';
+import { Collection } from '@prisma/client';
+
+import { TOrderBy } from '../../../@types/TOrderBy';
 
 import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
+import { ICollectionRepository } from '../../repositories/interfaces/ICollectionRepository';
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
-
-import { TOrderBy } from '../../../@types/TOrderBy';
 
 interface IInput {
   userId: string;
   orderBy: TOrderBy;
 }
 
-export class ListBooksUseCase implements IUseCase<IInput, Book[] | null> {
+export class ListCollectionsUseCase
+  implements IUseCase<IInput, Collection[] | null>
+{
   constructor(
-    private readonly bookRepository: IBookRepository,
+    private readonly collectionRepository: ICollectionRepository,
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute({ userId, orderBy }: IInput): Promise<Book[] | null> {
+  async execute({ userId, orderBy }: IInput): Promise<Collection[] | null> {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
       throw new UserNotFound();
     }
 
-    const books = await this.bookRepository.list({
+    const collections = await this.collectionRepository.list({
       userId,
       orderBy,
     });
 
-    return books;
+    return collections;
   }
 }

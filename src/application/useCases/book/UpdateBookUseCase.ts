@@ -10,7 +10,7 @@ import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 
 interface IInput {
-  id: string;
+  bookId: string;
   data: Omit<
     Book,
     | 'author'
@@ -36,7 +36,7 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute({ id, data }: IInput): Promise<void> {
+  async execute({ bookId, data }: IInput): Promise<void> {
     const { userId } = data;
 
     const user = await this.userRepository.findById(userId);
@@ -46,7 +46,7 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
     }
 
     const book = await this.bookRepository.findById({
-      id,
+      id: bookId,
       userId,
     });
 
@@ -59,12 +59,12 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
       title: data.title,
     });
 
-    if (isTitleInUse && isTitleInUse.id !== id) {
+    if (isTitleInUse && isTitleInUse.id !== bookId) {
       throw new TitleAlreadyInUse();
     }
 
     await this.bookRepository.update({
-      id,
+      id: bookId,
       data,
     });
   }

@@ -13,17 +13,13 @@ interface IInput {
   userId: string;
 }
 
-interface IOutput {
-  book: Book | null;
-}
-
-export class GetBookByIdUseCase implements IUseCase<IInput, IOutput> {
+export class GetBookByIdUseCase implements IUseCase<IInput, Book> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute({ bookId, userId }: IInput): Promise<IOutput> {
+  async execute({ bookId, userId }: IInput): Promise<Book> {
     const user = await this.userRepository.findById(userId);
 
     if (!user) {
@@ -39,6 +35,6 @@ export class GetBookByIdUseCase implements IUseCase<IInput, IOutput> {
       throw new BookNotFound();
     }
 
-    return { book };
+    return book;
   }
 }
