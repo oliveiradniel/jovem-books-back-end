@@ -3,21 +3,15 @@ import express from 'express';
 import { env } from '../config/env';
 
 import userRoutes from './routes/userRoutes';
-
-import { routeAdapter } from './adapters/routeAdapater';
-
-import { makeSignInController } from '../factories/makeSignInController';
-import { makeCreateUserController } from '../factories/user/makeCreateUserController';
+import bookRoutes from './routes/bookRoutes';
 
 import { middlewareAdapater } from './adapters/middlewareAdapter';
+import { routeAdapter } from './adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddlware';
 
-import { makeListBooksController } from '../factories/book/makeListBooksController';
-import { makeCreateBookController } from '../factories/book/makeCreateBookController';
-import { makeUpdateBookController } from '../factories/book/makeUpdateBookController';
-import { makeGetBookByIdController } from '../factories/book/makeGetBookByIdController';
-import { makeDeleteBookController } from '../factories/book/makeDeleteBookController';
+import { makeSignInController } from '../factories/makeSignInController';
+import { makeCreateUserController } from '../factories/user/makeCreateUserController';
 
 const app = express();
 
@@ -55,35 +49,7 @@ app.get(
 
 // Handle with books added by me
 
-app.get(
-  '/books',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeListBooksController()),
-);
-
-app.get(
-  '/books/:id',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetBookByIdController()),
-);
-
-app.post(
-  '/books',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeCreateBookController()),
-);
-
-app.put(
-  '/books/:id',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeUpdateBookController()),
-);
-
-app.delete(
-  '/books/:id',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeDeleteBookController()),
-);
+app.use('/books', bookRoutes);
 
 // Handle with my collections
 

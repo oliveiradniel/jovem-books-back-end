@@ -1,6 +1,7 @@
-import express from 'express';
+import { Router } from 'express';
 
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
+import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
@@ -8,9 +9,7 @@ import { makeDeleteUserController } from '../../factories/user/makeDeleteUserCon
 import { makeUpdateUserController } from '../../factories/user/makeUpdateUserController';
 import { makeGetUserByIdController } from '../../factories/user/makeGetUserByIdController';
 
-import { routeAdapter } from '../adapters/routeAdapater';
-
-const router = express.Router();
+const router = Router();
 
 router.get(
   '/',
