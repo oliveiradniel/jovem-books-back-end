@@ -2,7 +2,7 @@ import { prismaClient } from '../lib/prismaClient';
 
 import { Book } from '@prisma/client';
 
-import { IBookRepository } from './interfaces/IBookRepository copy';
+import { IBookRepository } from './interfaces/IBookRepository';
 
 import { TOrderBy } from '../../@types/TOrderBy';
 
@@ -55,11 +55,11 @@ export class BookRepository implements IBookRepository {
     title: string;
     userId: string;
   }): Promise<Book | null> {
-    const books = await prismaClient.book.findFirst({
+    const book = await prismaClient.book.findFirst({
       where: { title, userId },
     });
 
-    return books ? books : null;
+    return book ? book : null;
   }
 
   async findByAuthor({
@@ -69,11 +69,11 @@ export class BookRepository implements IBookRepository {
     authorName: string;
     userId: string;
   }): Promise<Book[] | null> {
-    const books = await prismaClient.book.findMany({
+    const book = await prismaClient.book.findMany({
       where: { author: authorName, userId },
     });
 
-    return books;
+    return book;
   }
 
   async create(data: BookDataCreate): Promise<any> {

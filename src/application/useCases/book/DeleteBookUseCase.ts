@@ -3,7 +3,7 @@ import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository copy';
+import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {

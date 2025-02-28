@@ -5,7 +5,7 @@ import { BookNotFound } from '../../errors/book/BookNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository copy';
+import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {

@@ -2,12 +2,12 @@ import { Book } from '@prisma/client';
 
 import { UserNotFound } from '../../errors/user/UserNotFound';
 import { BookNotFound } from '../../errors/book/BookNotFound';
+import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository copy';
-import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
+import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 
 interface IInput {
   id: string;
