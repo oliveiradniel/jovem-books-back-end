@@ -1,12 +1,9 @@
-import { ZodError } from 'zod';
-
-import { InvalidCredentials } from '../errors/user/InvalidCredentials';
-
 import { SignInUseCase } from '../useCases/SignInUseCase';
 
 import { SignInSchema } from './schemas/user/SignInSchema';
 
 import { IController, IRequest, IResponse } from '../interfaces/IController';
+import { verifyUserErrors } from '../../utils/verifyUserErrors';
 
 export class SignInControler implements IController {
   constructor(private readonly signInUseCase: SignInUseCase) {}
@@ -24,21 +21,7 @@ export class SignInControler implements IController {
         body: { accessToken },
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      if (error instanceof InvalidCredentials) {
-        return {
-          statusCode: 401,
-          body: { error: 'Invalid credentials' },
-        };
-      }
-
-      throw error;
+      return verifyUserErrors(error);
     }
   }
 }

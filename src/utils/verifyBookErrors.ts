@@ -1,21 +1,20 @@
 import { ZodError } from 'zod';
 
-import { EmailAlreadyInUse } from '../application/errors/user/EmailAlreadyInUse';
-import { InvalidCredentials } from '../application/errors/user/InvalidCredentials';
-import { UsernameAlreadyInUse } from '../application/errors/user/UsernameAlreadyInUse';
+import { BookNotFound } from '../application/errors/book/BookNotFound';
+import { TitleAlreadyInUse } from '../application/errors/book/TitleAlreadyInUse';
+
 import { UserNotFound } from '../application/errors/user/UserNotFound';
 
 import { IResponse } from '../server/interfaces/IMiddleware';
 
 export type Errors =
   | ZodError
-  | EmailAlreadyInUse
-  | InvalidCredentials
-  | UsernameAlreadyInUse
+  | BookNotFound
+  | TitleAlreadyInUse
   | UserNotFound
   | unknown;
 
-export function verifyUserErrors(error: Errors): IResponse {
+export function verifyBookErrors(error: Errors): IResponse {
   if (error instanceof ZodError) {
     return {
       statusCode: 400,
@@ -23,21 +22,14 @@ export function verifyUserErrors(error: Errors): IResponse {
     };
   }
 
-  if (error instanceof EmailAlreadyInUse) {
+  if (error instanceof BookNotFound) {
     return {
-      statusCode: 409,
+      statusCode: 404,
       body: { error: error.message },
     };
   }
 
-  if (error instanceof InvalidCredentials) {
-    return {
-      statusCode: 409,
-      body: { error: error.message },
-    };
-  }
-
-  if (error instanceof UsernameAlreadyInUse) {
+  if (error instanceof TitleAlreadyInUse) {
     return {
       statusCode: 409,
       body: { error: error.message },

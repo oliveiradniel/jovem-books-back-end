@@ -1,8 +1,8 @@
-import { z, ZodError } from 'zod';
+import { z } from 'zod';
+
+import { verifyUserErrors } from '../../../utils/verifyUserErrors';
 
 import { DeleteUserUseCase } from '../../useCases/user/DeleteUserUseCase';
-
-import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -24,21 +24,7 @@ export class DeleteUserController implements IController {
         body: null,
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      if (error instanceof UserNotFound) {
-        return {
-          statusCode: 404,
-          body: { error: 'User not found' },
-        };
-      }
-
-      throw error;
+      return verifyUserErrors(error);
     }
   }
 }
