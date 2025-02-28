@@ -9,16 +9,16 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 export class ListBooksController implements IController {
   constructor(private readonly listBooksUseCase: ListBooksUseCase) {}
 
-  async handle({ params, ...data }: IRequest): Promise<IResponse> {
+  async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
       const Schema = z
         .string({ message: 'User id must be a string' })
         .uuid('Invalid uuid');
 
-      const userId = Schema.parse(data.userId);
+      const data = Schema.parse(userId as string);
 
       const { books } = await this.listBooksUseCase.execute({
-        userId,
+        userId: data,
         orderBy: params?.orderBy ?? 'asc',
       });
 

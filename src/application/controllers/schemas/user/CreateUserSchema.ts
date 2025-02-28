@@ -13,5 +13,7 @@ export const CreateUserSchema = z.object({
   email: z
     .string({ message: 'E-mail must be a string' })
     .email('Enter a valid email'),
-  password: z.string().min(8, 'Password must be at least 8 characters long'),
+  password: z
+    .string({ message: 'Password must be a string' })
+    .min(8, 'Password must be at least 8 characters long'),
 });

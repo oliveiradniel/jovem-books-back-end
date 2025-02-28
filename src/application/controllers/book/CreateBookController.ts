@@ -24,10 +24,10 @@ export class CreateBookController implements IController {
         dateOfPublication: body.dateOfPublication,
       };
 
-      const book = CreateBookSchema.parse(bookData);
+      const data = CreateBookSchema.parse(bookData);
 
       await this.createBookUseCase.execute({
-        data: book,
+        data,
       });
 
       return {

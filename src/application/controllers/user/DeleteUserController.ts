@@ -15,9 +15,9 @@ export class DeleteUserController implements IController {
         .string({ message: 'Id must be a string' })
         .uuid({ message: 'Invalid uuid' });
 
-      const id = Schema.parse(userId);
+      const data = Schema.parse(userId);
 
-      await this.deleteUserUseCase.execute(id);
+      await this.deleteUserUseCase.execute(data);
 
       return {
         statusCode: 204,
