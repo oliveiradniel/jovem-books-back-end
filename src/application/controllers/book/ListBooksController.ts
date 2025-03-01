@@ -17,13 +17,13 @@ export class ListBooksController implements IController {
 
       const data = Schema.parse(userId as string);
 
-      const { books } = await this.listBooksUseCase.execute({
+      const books = await this.listBooksUseCase.execute({
         userId: data,
         orderBy: params?.orderBy ?? 'asc',
       });
 
       return {
-        statusCode: 201,
+        statusCode: 200,
         body: { books },
       };
     } catch (error) {

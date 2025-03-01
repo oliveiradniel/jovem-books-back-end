@@ -2,11 +2,11 @@ import { User } from '@prisma/client';
 
 import { EmailAlreadyInUse } from '../../errors/user/EmailAlreadyInUse';
 import { UsernameAlreadyInUse } from '../../errors/user/UsernameAlreadyInUse';
-import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
+import { GetUserByIdUseCase } from './GetUserByIdUseCase';
 
 interface IInput {
   id: string;
@@ -14,7 +14,10 @@ interface IInput {
 }
 
 export class UpdateUserUseCase implements IUseCase<IInput, void> {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
+  ) {}
 
   async execute({ id, data }: IInput) {
     if (
@@ -23,16 +26,12 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
       return;
     }
 
-    const userExists = await this.userRepository.findById(id);
-
-    if (!userExists) {
-      throw new UserNotFound();
-    }
+    const user = await this.getUserByIdUseCase.execute(id);
 
     if (data.email) {
       const isEmailInUse = await this.userRepository.findByEmail(data.email);
 
-      if (isEmailInUse && userExists.email !== data.email)
+      if (isEmailInUse && user.email !== data.email)
         throw new EmailAlreadyInUse();
     }
 
@@ -41,7 +40,7 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
         data.username,
       );
 
-      if (isUsernameInUse && userExists.username !== data.username)
+      if (isUsernameInUse && user.username !== data.username)
         throw new UsernameAlreadyInUse();
     }
 

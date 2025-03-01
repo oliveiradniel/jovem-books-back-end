@@ -1,8 +1,8 @@
 import { ListBooksUseCase } from '../../application/useCases/book/ListBooksUseCase';
 
-import { makeUserRepository } from '../user/makeUserRepository';
+import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
 import { makeBookRepository } from './makeBookRepository';
 
 export function makeListBooksUseCase() {
-  return new ListBooksUseCase(makeBookRepository(), makeUserRepository());
+  return new ListBooksUseCase(makeBookRepository(), makeGetUserByIdUseCase());
 }

@@ -1,10 +1,9 @@
-import { BookNotFound } from '../../errors/book/BookNotFound';
-import { UserNotFound } from '../../errors/user/UserNotFound';
+import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
+import { GetBookByIdUseCase } from './GetBookByIdUseCase';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {
   bookId: string;
@@ -14,24 +13,17 @@ interface IInput {
 export class DeleteBookUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
-    private readonly userRepository: IUserRepository,
+    private readonly getBookByIdUseCase: GetBookByIdUseCase,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ bookId, userId }: IInput): Promise<void> {
-    const user = await this.userRepository.findById(userId);
+    await this.getUserByIdUseCase.execute(userId);
 
-    if (!user) {
-      throw new UserNotFound();
-    }
-
-    const book = await this.bookRepository.findById({
-      id: bookId,
+    await this.getBookByIdUseCase.execute({
+      bookId,
       userId,
     });
-
-    if (!book) {
-      throw new BookNotFound();
-    }
 
     await this.bookRepository.delete({ id: bookId, userId });
   }

@@ -1,12 +1,12 @@
 import { Book } from '@prisma/client';
 
-import { UserNotFound } from '../../errors/user/UserNotFound';
-import { BookNotFound } from '../../errors/book/BookNotFound';
+import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
+import { GetBookByIdUseCase } from './GetBookByIdUseCase';
+
 import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 
 interface IInput {
@@ -33,26 +33,19 @@ interface IInput {
 export class UpdateBookUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
-    private readonly userRepository: IUserRepository,
+    private readonly getBookByIdUseCase: GetBookByIdUseCase,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ bookId, data }: IInput): Promise<void> {
     const { userId } = data;
 
-    const user = await this.userRepository.findById(userId);
+    await this.getUserByIdUseCase.execute(userId);
 
-    if (!user) {
-      throw new UserNotFound();
-    }
-
-    const book = await this.bookRepository.findById({
-      id: bookId,
+    await this.getBookByIdUseCase.execute({
+      bookId,
       userId,
     });
-
-    if (!book) {
-      throw new BookNotFound();
-    }
 
     const isTitleInUse = await this.bookRepository.findByTitle({
       userId,

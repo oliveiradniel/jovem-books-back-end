@@ -1,10 +1,10 @@
 import { NameAlreadyInUse } from '../../errors/collection/NameAlreadyInUse';
-import { UserNotFound } from '../../errors/user/UserNotFound';
+
+import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { ICollectionRepository } from '../../repositories/interfaces/ICollectionRepository';
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {
   userId: string;
@@ -14,15 +14,11 @@ interface IInput {
 export class CreateBookUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly collectionRepository: ICollectionRepository,
-    private readonly userRepository: IUserRepository,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ userId, name }: IInput): Promise<void> {
-    const user = await this.userRepository.findById(userId);
-
-    if (!user) {
-      throw new UserNotFound();
-    }
+    await this.getUserByIdUseCase.execute(userId);
 
     const collection = await this.collectionRepository.findByName({
       name,

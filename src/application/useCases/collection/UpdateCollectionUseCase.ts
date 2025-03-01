@@ -1,13 +1,13 @@
 import { Collection } from '@prisma/client';
 
-import { UserNotFound } from '../../errors/user/UserNotFound';
-import { CollectionNotFound } from '../../errors/collection/CollectionNotFound';
+import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
+import { GetCollectionByIdUseCase } from './GetCollectionByIdUseCase';
+
 import { NameAlreadyInUse } from '../../errors/collection/NameAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { ICollectionRepository } from '../../repositories/interfaces/ICollectionRepository';
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {
   collectionId: string;
@@ -17,26 +17,19 @@ interface IInput {
 export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly collectionRepository: ICollectionRepository,
-    private readonly userRepository: IUserRepository,
+    private readonly getCollectionByIdUseCase: GetCollectionByIdUseCase,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ collectionId, data }: IInput): Promise<void> {
     const { userId } = data;
 
-    const user = await this.userRepository.findById(userId);
+    await this.getUserByIdUseCase.execute(userId);
 
-    if (!user) {
-      throw new UserNotFound();
-    }
-
-    const collection = await this.collectionRepository.findById({
-      id: collectionId,
+    await this.getCollectionByIdUseCase.execute({
+      collectionId,
       userId,
     });
-
-    if (!collection) {
-      throw new CollectionNotFound();
-    }
 
     const isNameInUse = await this.collectionRepository.findByName({
       userId,

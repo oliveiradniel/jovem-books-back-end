@@ -1,12 +1,12 @@
 import { Book } from '@prisma/client';
 
+import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
+
 import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
-import { UserNotFound } from '../../errors/user/UserNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 interface IInput {
   data: Omit<
@@ -31,15 +31,11 @@ interface IInput {
 export class CreateBookUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
-    private readonly userRepository: IUserRepository,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ data }: IInput): Promise<void> {
-    const user = await this.userRepository.findById(data.userId);
-
-    if (!user) {
-      throw new UserNotFound();
-    }
+    await this.getUserByIdUseCase.execute(data.userId);
 
     const isTitleInUse = await this.bookRepository.findByTitle({
       userId: data.userId,
