@@ -9,11 +9,11 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 export class ListBooksController implements IController {
   constructor(private readonly listBooksUseCase: ListBooksUseCase) {}
 
-  async handle({ userId, params }: IRequest): Promise<IResponse> {
+  async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
       const bookData = {
         userId,
-        orderBy: params?.orderBy,
+        orderBy: queryParams?.orderBy,
       };
 
       const data = UserIdAndOrderBySchema.parse(bookData);

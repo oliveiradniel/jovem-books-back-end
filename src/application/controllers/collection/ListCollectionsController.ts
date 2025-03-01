@@ -11,11 +11,11 @@ export class ListCollectionsController implements IController {
     private readonly listCollectionsUseCase: ListCollectionsUseCase,
   ) {}
 
-  async handle({ userId, params }: IRequest): Promise<IResponse> {
+  async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
       const collectionData = {
         userId,
-        orderBy: params?.orderBy,
+        orderBy: queryParams?.orderBy,
       };
 
       const data = UserIdAndOrderBySchema.parse(collectionData);
