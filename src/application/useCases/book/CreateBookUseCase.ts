@@ -1,8 +1,7 @@
 import { Book } from '@prisma/client';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
-
-import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
+import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
@@ -31,20 +30,17 @@ interface IInput {
 export class CreateBookUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
+    private readonly getBookByTitleUseCase: GetBookByTitleUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ data }: IInput): Promise<void> {
     await this.getUserByIdUseCase.execute(data.userId);
 
-    const isTitleInUse = await this.bookRepository.findByTitle({
+    await this.getBookByTitleUseCase.execute({
       userId: data.userId,
       title: data.title,
     });
-
-    if (isTitleInUse) {
-      throw new TitleAlreadyInUse();
-    }
 
     await this.bookRepository.create(data);
   }

@@ -24,12 +24,10 @@ export class UserRepository implements IUserRepository {
     return await prismaClient.user.findUnique({ where: { username } });
   }
 
-  async findByEmail(email: string): Promise<boolean> {
-    return (
-      (await prismaClient.user.count({
-        where: { email },
-      })) > 0
-    );
+  async findByEmail(email: string): Promise<User | null> {
+    return await prismaClient.user.findUnique({
+      where: { email },
+    });
   }
 
   async create(data: UserDataCreate): Promise<string> {

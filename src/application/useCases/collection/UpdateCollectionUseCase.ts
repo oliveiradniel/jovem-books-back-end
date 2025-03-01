@@ -2,6 +2,7 @@ import { Collection } from '@prisma/client';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 import { GetCollectionByIdUseCase } from './GetCollectionByIdUseCase';
+import { GetCollectionByNameUseCase } from './GetCollectionByNameUseCase';
 
 import { NameAlreadyInUse } from '../../errors/collection/NameAlreadyInUse';
 
@@ -18,6 +19,7 @@ export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly collectionRepository: ICollectionRepository,
     private readonly getCollectionByIdUseCase: GetCollectionByIdUseCase,
+    private readonly getCollectionByNameUseCase: GetCollectionByNameUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
@@ -31,12 +33,16 @@ export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
       userId,
     });
 
-    const isNameInUse = await this.collectionRepository.findByName({
-      userId,
-      name: data.name,
-    });
+    const collectionDataWithTheNameInUse =
+      await this.getCollectionByNameUseCase.execute({
+        userId,
+        name: data.name,
+      });
 
-    if (isNameInUse && isNameInUse.id !== collectionId) {
+    if (
+      collectionDataWithTheNameInUse &&
+      collectionDataWithTheNameInUse.id !== collectionId
+    ) {
       throw new NameAlreadyInUse();
     }
 

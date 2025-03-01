@@ -2,6 +2,7 @@ import { Book } from '@prisma/client';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 import { GetBookByIdUseCase } from './GetBookByIdUseCase';
+import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
 
 import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
 
@@ -34,6 +35,7 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
+    private readonly getBookByTitleUseCase: GetBookByTitleUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
@@ -47,12 +49,12 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
       userId,
     });
 
-    const isTitleInUse = await this.bookRepository.findByTitle({
+    const bookDataWithTheTitleInUse = await this.getBookByTitleUseCase.execute({
       userId,
       title: data.title,
     });
 
-    if (isTitleInUse && isTitleInUse.id !== bookId) {
+    if (bookDataWithTheTitleInUse && bookDataWithTheTitleInUse.id !== bookId) {
       throw new TitleAlreadyInUse();
     }
 
