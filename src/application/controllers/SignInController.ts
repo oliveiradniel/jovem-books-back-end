@@ -1,6 +1,6 @@
 import { SignInUseCase } from '../useCases/SignInUseCase';
 
-import { SignInSchema } from './schemas/user/SignInSchema';
+import { SignInSchema } from './../schemas/user/SignInSchema';
 
 import { IController, IRequest, IResponse } from '../interfaces/IController';
 import { verifyUserErrors } from '../../utils/verifyUserErrors';

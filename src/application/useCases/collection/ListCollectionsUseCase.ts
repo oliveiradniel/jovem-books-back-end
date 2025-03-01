@@ -10,7 +10,7 @@ import { ICollectionRepository } from '../../repositories/interfaces/ICollection
 
 interface IInput {
   userId: string;
-  orderBy: TOrderBy;
+  orderBy?: TOrderBy;
 }
 
 export class ListCollectionsUseCase
@@ -21,7 +21,10 @@ export class ListCollectionsUseCase
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ userId, orderBy }: IInput): Promise<Collection[] | null> {
+  async execute({
+    userId,
+    orderBy = 'asc',
+  }: IInput): Promise<Collection[] | null> {
     await this.getUserByIdUseCase.execute(userId);
 
     const collections = await this.collectionRepository.list({

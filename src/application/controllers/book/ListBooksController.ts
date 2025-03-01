@@ -1,8 +1,8 @@
-import { z } from 'zod';
-
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { ListBooksUseCase } from '../../useCases/book/ListBooksUseCase';
+
+import { UserIdAndOrderBySchema } from '../../schemas/UserIdAndOrderBySchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -11,16 +11,14 @@ export class ListBooksController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const Schema = z
-        .string({ message: 'User id must be a string' })
-        .uuid('Invalid uuid');
+      const bookData = {
+        userId,
+        orderBy: params?.orderBy,
+      };
 
-      const data = Schema.parse(userId as string);
+      const data = UserIdAndOrderBySchema.parse(bookData);
 
-      const books = await this.listBooksUseCase.execute({
-        userId: data,
-        orderBy: params?.orderBy ?? 'asc',
-      });
+      const books = await this.listBooksUseCase.execute(data);
 
       return {
         statusCode: 200,

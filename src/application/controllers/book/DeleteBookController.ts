@@ -2,7 +2,7 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { DeleteBookUseCase } from '../../useCases/book/DeleteBookUseCase';
 
-import { BookIdAndUserIdSchema } from '../schemas/book/BookIdAndUserIdSchema';
+import { BookIdAndUserIdSchema } from '../../schemas/book/BookIdAndUserIdSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -11,12 +11,14 @@ export class DeleteBookController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const data = BookIdAndUserIdSchema.parse({ bookId: params?.id, userId });
+      const bookData = {
+        bookId: params?.id,
+        userId,
+      };
 
-      await this.deleteBookUseCase.execute({
-        bookId: data.bookId,
-        userId: data.userId,
-      });
+      const data = BookIdAndUserIdSchema.parse(bookData);
+
+      await this.deleteBookUseCase.execute(data);
 
       return {
         statusCode: 200,

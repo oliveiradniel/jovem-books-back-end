@@ -1,49 +1,46 @@
 import { Router } from 'express';
 
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
+import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
+
+import { makeCreateCollectionController } from '../../factories/collection/makeCreateCollectionController';
+import { makeListCollectionsController } from '../../factories/collection/makeListCollectionsController';
+import { makeGetCollectionByIdController } from '../../factories/collection/makeGetCollectionByIdController';
+import { makeUpdateCollectionController } from '../../factories/collection/makeUpdateCollectionController';
+import { makeDeleteCollectionController } from '../../factories/collection/makeDeleteCollectionController';
 
 const router = Router();
 
 router.get(
-  '/collections',
+  '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('list all collections');
-  },
+  routeAdapter(makeListCollectionsController()),
 );
 
 router.get(
-  '/collections/:id',
+  '/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Get collection by id');
-  },
+  routeAdapter(makeGetCollectionByIdController()),
 );
 
 router.post(
-  '/collections',
+  '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Add collection');
-  },
+  routeAdapter(makeCreateCollectionController()),
 );
 
 router.put(
-  '/collections/:id',
+  '/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Edit collection');
-  },
+  routeAdapter(makeUpdateCollectionController()),
 );
 
 router.delete(
-  '/collections/:id',
+  '/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Delete collection');
-  },
+  routeAdapter(makeDeleteCollectionController()),
 );
 
 export default router;

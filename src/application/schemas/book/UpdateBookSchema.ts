@@ -3,10 +3,12 @@ import { z } from 'zod';
 import { TypeBook } from '@prisma/client';
 
 export const UpdateBookSchema = z.object({
-  id: z.string({ message: 'Id must be a string' }).uuid('Invalid uuid'),
+  id: z
+    .string({ message: 'Book id must be a string' })
+    .uuid('Enter a valid uuid uuid'),
   userId: z
     .string({ message: 'User id must be a string' })
-    .uuid('Invalid uuid'),
+    .uuid('Enter a valid uuid'),
   title: z
     .string({ message: 'Title must be a string' })
     .min(5, 'Title must be at least 5 characters'),

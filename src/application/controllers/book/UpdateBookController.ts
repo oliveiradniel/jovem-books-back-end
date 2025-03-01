@@ -2,7 +2,7 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { UpdateBookUseCase } from '../../useCases/book/UpdateBookUseCase';
 
-import { UpdateBookSchema } from '../schemas/book/UpdateBookSchema';
+import { UpdateBookSchema } from '../../schemas/book/UpdateBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -25,7 +25,7 @@ export class UpdateBookController implements IController {
 
       const data = UpdateBookSchema.parse(bookData);
 
-      await this.updateBookUseCase.execute({ id: data.id, data });
+      await this.updateBookUseCase.execute(data);
 
       return {
         statusCode: 204,

@@ -33,7 +33,7 @@ export class GetBookByTitleUseCase implements IUseCase<IInput, Book | void> {
       return book;
     }
 
-    if (!book) {
+    if (book) {
       throw new TitleAlreadyInUse();
     }
   }

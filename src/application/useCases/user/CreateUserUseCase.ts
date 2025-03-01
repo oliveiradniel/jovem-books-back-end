@@ -17,7 +17,7 @@ export class CreateUserUseCase implements IUseCase<IInput, void> {
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
   ) {}
 
-  async execute(data: User) {
+  async execute(data: IInput) {
     await this.getUserByUsernameUseCase.execute({
       username: data.username,
     });

@@ -2,7 +2,7 @@ import { verifyUserErrors } from '../../../utils/verifyUserErrors';
 
 import { CreateUserUseCase } from '../../useCases/user/CreateUserUseCase';
 
-import { CreateUserSchema } from '../schemas/user/CreateUserSchema';
+import { CreateUserSchema } from '../../schemas/user/CreateUserSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 

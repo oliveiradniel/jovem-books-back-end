@@ -9,7 +9,7 @@ import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
 interface IInput {
   userId: string;
-  orderBy: TOrderBy;
+  orderBy?: TOrderBy;
 }
 
 export class ListBooksUseCase implements IUseCase<IInput, Book[] | null> {
@@ -18,7 +18,7 @@ export class ListBooksUseCase implements IUseCase<IInput, Book[] | null> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ userId, orderBy }: IInput): Promise<Book[] | null> {
+  async execute({ userId, orderBy = 'asc' }: IInput): Promise<Book[] | null> {
     await this.getUserByIdUseCase.execute(userId);
 
     const books = await this.bookRepository.list({

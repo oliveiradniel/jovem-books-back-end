@@ -1,4 +1,4 @@
 export class NameAlreadyInUse extends Error {
-  name = 'CollectionNotFound';
-  message = 'Collection not found';
+  name = 'NameAlreadyInUse';
+  message = 'Name already in use';
 }

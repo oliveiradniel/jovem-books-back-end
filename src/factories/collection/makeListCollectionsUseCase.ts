@@ -2,7 +2,7 @@ import { ListCollectionsUseCase } from '../../application/useCases/collection/Li
 import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
 import { makeCollectionRepository } from './makeCollectionRepository';
 
-export function makeListCollectionUseCase() {
+export function makeListCollectionsUseCase() {
   return new ListCollectionsUseCase(
     makeCollectionRepository(),
     makeGetUserByIdUseCase(),

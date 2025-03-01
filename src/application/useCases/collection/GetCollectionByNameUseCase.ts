@@ -38,7 +38,7 @@ export class GetCollectionByNameUseCase
       return collection;
     }
 
-    if (!collection) {
+    if (collection) {
       throw new NameAlreadyInUse();
     }
   }
