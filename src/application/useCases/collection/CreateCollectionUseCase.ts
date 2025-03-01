@@ -10,7 +10,7 @@ interface IInput {
   name: string;
 }
 
-export class CreateBookUseCase implements IUseCase<IInput, void> {
+export class CreateCollectionUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly collectionRepository: ICollectionRepository,
     private readonly getCollectionByNameUseCase: GetCollectionByNameUseCase,
