@@ -13,6 +13,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
     const bookCollections = await prismaClient.bookCollection.findMany({
       where: {
         collectionId,
+        userId,
       },
       select: {
         book: true,
@@ -34,6 +35,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
     const bookCollections = await prismaClient.bookCollection.findMany({
       where: {
         bookId,
+        userId,
       },
       select: {
         collection: true,
@@ -48,15 +50,17 @@ export class BookCollectionRepository implements IBookCollectionRepository {
   }
 
   async findById({
-    bookCollectionId,
+    bookId,
+    collectionId,
     userId,
   }: {
-    bookCollectionId: string;
+    bookId: string;
+    collectionId: string;
     userId: string;
   }): Promise<BookCollection | null> {
-    const bookCollection = await prismaClient.bookCollectionMetadata.findUnique(
-      { where: { id: bookCollectionId } },
-    );
+    const bookCollection = await prismaClient.bookCollection.findUnique({
+      where: { bookId_collectionId: { bookId, collectionId }, userId },
+    });
 
     return bookCollection;
   }
@@ -74,6 +78,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
       data: {
         bookId,
         collectionId,
+        userId,
       },
     });
   }
@@ -88,7 +93,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
     userId: string;
   }): Promise<void> {
     await prismaClient.bookCollection.delete({
-      where: { bookId_collectionId: { bookId, collectionId } },
+      where: { bookId_collectionId: { bookId, collectionId }, userId },
     });
   }
 }

@@ -16,10 +16,12 @@ export interface IBookCollectionRepository {
     userId: string;
   }): Promise<Collection[] | null>;
   findById({
-    bookCollectionId,
+    bookId,
+    collectionId,
     userId,
   }: {
-    bookCollectionId: string;
+    bookId: string;
+    collectionId: string;
     userId: string;
   }): Promise<BookCollection | null>;
   create({

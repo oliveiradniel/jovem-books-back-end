@@ -20,6 +20,7 @@ model User {
   books       Book[]
   collections Collection[]
   reads       Read[]
+  bookCollections BookCollection[]
 
   @@index([username, email])
   @@map("users")
@@ -38,8 +39,7 @@ model Book {
   updatedAt         DateTime?  @map("updated_at")
 
   reads       Read[]
-  book_collections BookCollection[]
-  collections_data BookCollectionMetadata[]
+  bookCollections BookCollection[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
@@ -54,8 +54,7 @@ model Collection {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime? @map("updated_at")
 
-  books BookCollectionMetadata[]
-  book_collections BookCollection[]
+  bookCollections BookCollection[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
@@ -66,26 +65,15 @@ model Collection {
 model BookCollection {
   bookId       String @map("book_id") @db.Uuid
   collectionId String @map("collection_id") @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at")
 
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([bookId, collectionId])
   @@map("book_collections")
-}
-
-model BookCollectionMetadata {
-  id           String   @id @default(uuid()) @db.Uuid
-  bookId       String   @map("book_id") @db.Uuid
-  collectionId String   @map("collection_id") @db.Uuid
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime? @map("updated_at")
-
-  book       Book       @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@index([bookId, collectionId])
-  @@map("book_collections_metadata")
 }
 
 model Read {
