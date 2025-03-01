@@ -1,6 +1,4 @@
-import { ZodError } from 'zod';
-
-import { UserNotFound } from '../../errors/user/UserNotFound';
+import { verifyCollectionErrors } from '../../../utils/verifyCollectionErrors';
 
 import { ListCollectionsUseCase } from '../../useCases/collection/ListCollectionsUseCase';
 
@@ -29,24 +27,7 @@ export class ListCollectionsController implements IController {
         body: { collections },
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      if (error instanceof UserNotFound) {
-        return {
-          statusCode: 400,
-          body: { error: error.message },
-        };
-      }
-
-      return {
-        statusCode: 500,
-        body: { error: 'Internal Server Error' },
-      };
+      return verifyCollectionErrors(error);
     }
   }
 }

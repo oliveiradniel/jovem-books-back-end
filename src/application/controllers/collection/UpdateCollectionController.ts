@@ -1,8 +1,4 @@
-import { ZodError } from 'zod';
-
-import { CollectionNotFound } from '../../errors/collection/CollectionNotFound';
-import { UserNotFound } from '../../errors/user/UserNotFound';
-import { NameAlreadyInUse } from '../../errors/collection/NameAlreadyInUse';
+import { verifyCollectionErrors } from '../../../utils/verifyCollectionErrors';
 
 import { UpdateCollectionSchema } from '../../schemas/collection/UpdateCollectionSchema';
 
@@ -33,38 +29,7 @@ export class UpdateCollectionController implements IController {
         body: null,
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      if (error instanceof CollectionNotFound) {
-        return {
-          statusCode: 404,
-          body: { error: error.message },
-        };
-      }
-
-      if (error instanceof NameAlreadyInUse) {
-        return {
-          statusCode: 409,
-          body: { error: error.message },
-        };
-      }
-
-      if (error instanceof UserNotFound) {
-        return {
-          statusCode: 404,
-          body: { error: error.message },
-        };
-      }
-
-      return {
-        statusCode: 500,
-        body: { error: 'Internal Server Error' },
-      };
+      return verifyCollectionErrors(error);
     }
   }
 }
