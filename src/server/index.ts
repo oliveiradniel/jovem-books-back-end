@@ -5,6 +5,7 @@ import { env } from '../config/env';
 import userRoutes from './routes/userRoutes';
 import bookRoutes from './routes/bookRoutes';
 import collectionRoutes from './routes/collectionRoutes';
+import bookCollectionRoutes from './routes/bookCollectionRoutes';
 
 import { middlewareAdapater } from './adapters/middlewareAdapter';
 import { routeAdapter } from './adapters/routeAdapater';
@@ -58,37 +59,7 @@ app.use('/collections', collectionRoutes);
 
 // Handle with books in my collection
 
-app.get(
-  '/collections/:collectionId/books',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('List books from my collection by id');
-  },
-);
-
-app.post(
-  '/collections/books/:bookId',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Add book for my collection');
-  },
-);
-
-app.put(
-  '/collections/:collectionId/books',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Edit book and information of collection');
-  },
-);
-
-app.delete(
-  '/collections/:collectionId/books',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Delete book from my collection');
-  },
-);
+app.use('/book-collection', bookCollectionRoutes);
 
 // Handle with read books
 
