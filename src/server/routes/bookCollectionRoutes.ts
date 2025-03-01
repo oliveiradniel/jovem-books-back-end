@@ -7,6 +7,14 @@ import { makeAuthenticationMiddleware } from '../../factories/makeAuthentication
 const router = Router();
 
 router.get(
+  '/:bookCollectionId',
+  middlewareAdapater(makeAuthenticationMiddleware()),
+  (request, response) => {
+    response.send('Get book-collection by Id');
+  },
+);
+
+router.get(
   '/books/:collectionId',
   middlewareAdapater(makeAuthenticationMiddleware()),
   (request, response) => {
@@ -31,7 +39,7 @@ router.post(
 );
 
 router.delete(
-  '/:bookCollectionId',
+  '/bookCollectionId',
   middlewareAdapater(makeAuthenticationMiddleware()),
   (request, response) => {
     response.send('Delete book from my collection');
