@@ -13,12 +13,10 @@ export class DeleteCollectionController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const collectionData = {
+      const data = DeleteCollectionSchema.parse({
         collectionId: params?.id,
         userId,
-      };
-
-      const data = DeleteCollectionSchema.parse(collectionData);
+      });
 
       await this.deleteCollectionUseCase.execute(data);
 

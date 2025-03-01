@@ -13,12 +13,10 @@ export class GetCollectionByIdController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const collectionData = {
-        userId,
+      const data = GetCollectionByIdSchema.parse({
         collectionId: params?.id,
-      };
-
-      const data = GetCollectionByIdSchema.parse(collectionData);
+        userId,
+      });
 
       const collection = await this.getCollectionByIdUseCase.execute(data);
 

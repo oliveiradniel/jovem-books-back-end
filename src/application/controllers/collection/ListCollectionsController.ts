@@ -2,7 +2,7 @@ import { verifyCollectionErrors } from '../../../utils/verifyCollectionErrors';
 
 import { ListCollectionsUseCase } from '../../useCases/collection/ListCollectionsUseCase';
 
-import { UserIdAndOrderBySchema } from '../../schemas/UserIdAndOrderBySchema';
+import { ListCollectionsSchema } from '../../schemas/collection/ListCollectionsSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -13,12 +13,10 @@ export class ListCollectionsController implements IController {
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
-      const collectionData = {
+      const data = ListCollectionsSchema.parse({
         userId,
         orderBy: queryParams?.orderBy,
-      };
-
-      const data = UserIdAndOrderBySchema.parse(collectionData);
+      });
 
       const collections = await this.listCollectionsUseCase.execute(data);
 

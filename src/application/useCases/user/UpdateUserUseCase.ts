@@ -11,7 +11,10 @@ import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
-type IInput = Partial<Omit<User, 'id' | 'createdAt'>> & Pick<User, 'id'>;
+interface IInput {
+  userId: string;
+  data: Partial<Omit<User, 'id' | 'createdAt'>>;
+}
 
 export class UpdateUserUseCase implements IUseCase<IInput, void> {
   constructor(
@@ -21,13 +24,13 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
     private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
   ) {}
 
-  async execute(data: IInput) {
+  async execute({ userId, data }: IInput) {
     if (
       !Object.values(data).some(value => value !== null && value !== undefined)
     ) {
       return;
     }
-    await this.getUserByIdUseCase.execute(data.id);
+    await this.getUserByIdUseCase.execute(userId);
 
     if (data.email) {
       const userDataWithTheEmailInUse =
@@ -38,7 +41,7 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
 
       if (
         userDataWithTheEmailInUse &&
-        userDataWithTheEmailInUse.id !== data.id
+        userDataWithTheEmailInUse.id !== userId
       ) {
         throw new EmailAlreadyInUse();
       }
@@ -53,11 +56,11 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
 
       if (
         userDataWithTheUsernameInUse &&
-        userDataWithTheUsernameInUse.id !== data.id
+        userDataWithTheUsernameInUse.id !== userId
       )
         throw new UsernameAlreadyInUse();
     }
 
-    await this.userRepository.update({ id: data.id, data });
+    await this.userRepository.update({ id: userId, data });
   }
 }

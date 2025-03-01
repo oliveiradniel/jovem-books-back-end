@@ -4,6 +4,7 @@ import { hash } from 'bcrypt';
 
 import { UpdateUserUseCase } from '../../useCases/user/UpdateUserUseCase';
 
+import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 import { UpdateUserSchema } from '../../schemas/user/UpdateUserSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
@@ -11,19 +12,14 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserUseCase: UpdateUserUseCase) {}
 
-  async handle({ body, userId }: IRequest): Promise<IResponse> {
+  async handle({ body, userId: id }: IRequest): Promise<IResponse> {
     try {
-      const userData = {
-        id: userId,
-        username: body.username,
-        email: body.email,
-        password: body.password,
-        firstName: body.firstName,
-        lastName: body.lastName,
-        updatedAt: new Date(),
-      };
+      const userId = UserIdSchema.parse(id);
 
-      const data = UpdateUserSchema.parse(userData);
+      const data = UpdateUserSchema.parse({
+        ...body,
+        updatedAt: new Date(),
+      });
 
       let hashedPassword = data.password;
       if (data.password) {
@@ -31,8 +27,11 @@ export class UpdateUserController implements IController {
       }
 
       await this.updateUserUseCase.execute({
-        ...data,
-        password: hashedPassword,
+        userId,
+        data: {
+          ...data,
+          password: hashedPassword,
+        },
       });
 
       return {

@@ -5,7 +5,7 @@ import { TypeBook } from '@prisma/client';
 export const CreateBookSchema = z.object({
   userId: z
     .string({ message: 'User id must be a string' })
-    .uuid('Enter a valid uuid'),
+    .uuid('Enter a valid user id'),
   title: z
     .string({ message: 'Title must be a string' })
     .min(5, 'Title must be at least 5 characters'),

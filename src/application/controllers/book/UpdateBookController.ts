@@ -2,6 +2,7 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { UpdateBookUseCase } from '../../useCases/book/UpdateBookUseCase';
 
+import { BookIdSchema } from '../../schemas/book/BookIdSchema';
 import { UpdateBookSchema } from '../../schemas/book/UpdateBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
@@ -11,21 +12,15 @@ export class UpdateBookController implements IController {
 
   async handle({ body, params, userId }: IRequest): Promise<IResponse> {
     try {
-      const bookData = {
-        id: params?.id,
+      const bookId = BookIdSchema.parse(params?.id);
+
+      const data = UpdateBookSchema.parse({
         userId,
-        title: body.title,
-        author: body.author,
-        sinopse: body.sinopse,
-        numberOfPages: body.numberOfPages,
-        type: body.type,
-        dateOfPublication: body.dateOfPublication,
+        ...body,
         updatedAt: new Date(),
-      };
+      });
 
-      const data = UpdateBookSchema.parse(bookData);
-
-      await this.updateBookUseCase.execute(data);
+      await this.updateBookUseCase.execute({ bookId, data });
 
       return {
         statusCode: 204,

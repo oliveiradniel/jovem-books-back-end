@@ -1,5 +1,6 @@
 import { verifyCollectionErrors } from '../../../utils/verifyCollectionErrors';
 
+import { CollectionIdSchema } from '../../schemas/collection/CollectionIdSchema';
 import { UpdateCollectionSchema } from '../../schemas/collection/UpdateCollectionSchema';
 
 import { UpdateCollectionUseCase } from '../../useCases/collection/UpdateCollectionUseCase';
@@ -13,16 +14,15 @@ export class UpdateCollectionController implements IController {
 
   async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
-      const collectionData = {
-        id: params?.id,
+      const collectionId = CollectionIdSchema.parse(params?.id);
+
+      const data = UpdateCollectionSchema.parse({
         userId,
-        name: body.name,
+        ...body,
         updatedAt: new Date(),
-      };
+      });
 
-      const data = UpdateCollectionSchema.parse(collectionData);
-
-      await this.updateCollectionUseCase.execute(data);
+      await this.updateCollectionUseCase.execute({ collectionId, data });
 
       return {
         statusCode: 204,

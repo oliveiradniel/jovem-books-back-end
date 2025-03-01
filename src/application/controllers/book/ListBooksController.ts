@@ -2,7 +2,7 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { ListBooksUseCase } from '../../useCases/book/ListBooksUseCase';
 
-import { UserIdAndOrderBySchema } from '../../schemas/UserIdAndOrderBySchema';
+import { ListBooksSchema } from '../../schemas/book/ListBooksSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -11,18 +11,16 @@ export class ListBooksController implements IController {
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
-      const bookData = {
+      const data = ListBooksSchema.parse({
         userId,
         orderBy: queryParams?.orderBy,
-      };
-
-      const data = UserIdAndOrderBySchema.parse(bookData);
+      });
 
       const books = await this.listBooksUseCase.execute(data);
 
       return {
         statusCode: 200,
-        body: { books },
+        body: books,
       };
     } catch (error) {
       return verifyBookErrors(error);
