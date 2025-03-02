@@ -11,8 +11,10 @@ import { IUseCase } from '../../interfaces/IUseCase';
 import { IBookCollectionRepository } from '../../repositories/interfaces/IBookCollectionRepository';
 
 interface IInput {
-  bookId: string;
-  collectionId: string;
+  bookCollectionId: {
+    bookId: string;
+    collectionId: string;
+  };
   userId: string;
 }
 
@@ -26,11 +28,9 @@ export class GetBookCollectionByIdUseCase
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({
-    bookId,
-    collectionId,
-    userId,
-  }: IInput): Promise<BookCollection> {
+  async execute({ bookCollectionId, userId }: IInput): Promise<BookCollection> {
+    const { bookId, collectionId } = bookCollectionId;
+
     await this.getBookByIdUseCase.execute({ bookId, userId });
 
     await this.getCollectionByIdUseCase.execute({ collectionId, userId });
@@ -38,8 +38,7 @@ export class GetBookCollectionByIdUseCase
     await this.getUserByIdUseCase.execute(userId);
 
     const bookCollection = await this.bookCollectionRepository.findById({
-      bookId,
-      collectionId,
+      bookCollectionId,
       userId,
     });
 

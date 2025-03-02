@@ -1,49 +1,46 @@
 import { Router } from 'express';
 
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
+import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
+
+import { makeCreateBookCollectionController } from '../../factories/book-collection/makeCreateBookCollectionController';
+import { makeGetBookCollectionByIdController } from '../../factories/book-collection/makeGetBookCollectionByIdController';
+import { makeListBooksByCollectionIdController } from '../../factories/book-collection/makeListBooksByCollectionIdController';
+import { makeListCollectionsByBookIdController } from '../../factories/book-collection/makeListCollectionsByBookIdController';
+import { makeDeleteBookCollectionController } from '../../factories/book-collection/makeDeleteBookCollectionController';
 
 const router = Router();
 
 router.get(
   '/:bookCollectionId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Get book-collection by Id');
-  },
+  routeAdapter(makeGetBookCollectionByIdController()),
 );
 
 router.get(
   '/books/:collectionId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('List books from my collection by id');
-  },
+  routeAdapter(makeListBooksByCollectionIdController()),
 );
 
 router.get(
   '/collections/:bookId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('List collections from my book by id');
-  },
+  routeAdapter(makeListCollectionsByBookIdController()),
 );
 
 router.post(
   '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Add book for my collection');
-  },
+  routeAdapter(makeCreateBookCollectionController()),
 );
 
 router.delete(
   '/bookCollectionId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Delete book from my collection');
-  },
+  routeAdapter(makeDeleteBookCollectionController()),
 );
 
 export default router;

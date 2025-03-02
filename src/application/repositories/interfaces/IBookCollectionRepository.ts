@@ -16,12 +16,13 @@ export interface IBookCollectionRepository {
     userId: string;
   }): Promise<Collection[]>;
   findById({
-    bookId,
-    collectionId,
+    bookCollectionId,
     userId,
   }: {
-    bookId: string;
-    collectionId: string;
+    bookCollectionId: {
+      bookId: string;
+      collectionId: string;
+    };
     userId: string;
   }): Promise<BookCollection | null>;
   create({
@@ -34,12 +35,13 @@ export interface IBookCollectionRepository {
     userId: string;
   }): Promise<void>;
   delete({
-    bookId,
-    collectionId,
+    bookCollectionId,
     userId,
   }: {
-    bookId: string;
-    collectionId: string;
+    bookCollectionId: {
+      bookId: string;
+      collectionId: string;
+    };
     userId: string;
   }): Promise<void>;
 }

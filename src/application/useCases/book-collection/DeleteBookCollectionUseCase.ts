@@ -7,8 +7,10 @@ import { IUseCase } from '../../interfaces/IUseCase';
 import { IBookCollectionRepository } from '../../repositories/interfaces/IBookCollectionRepository';
 
 interface IInput {
-  bookId: string;
-  collectionId: string;
+  bookCollectionId: {
+    bookId: string;
+    collectionId: string;
+  };
   userId: string;
 }
 
@@ -20,7 +22,9 @@ export class DeleteBookCollectionUseCase implements IUseCase<IInput, void> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, collectionId, userId }: IInput): Promise<void> {
+  async execute({ bookCollectionId, userId }: IInput): Promise<void> {
+    const { bookId, collectionId } = bookCollectionId;
+
     await this.getBookByIdUseCase.execute({ bookId, userId });
 
     await this.getCollectionByIdUseCase.execute({ collectionId, userId });
@@ -28,8 +32,7 @@ export class DeleteBookCollectionUseCase implements IUseCase<IInput, void> {
     await this.getUserByIdUseCase.execute(userId);
 
     await this.bookCollectionRepository.delete({
-      bookId,
-      collectionId,
+      bookCollectionId,
       userId,
     });
   }
