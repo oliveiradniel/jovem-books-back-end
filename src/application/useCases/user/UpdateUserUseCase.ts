@@ -30,7 +30,7 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
     ) {
       return;
     }
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     if (data.email) {
       const userDataWithTheEmailInUse =
@@ -61,6 +61,10 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
         throw new UsernameAlreadyInUse();
     }
 
-    await this.userRepository.update({ id: userId, data });
+    if (!this.userRepository?.update) {
+      return;
+    }
+
+    await this.userRepository.update({ userId, data });
   }
 }

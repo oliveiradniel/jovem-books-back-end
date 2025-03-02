@@ -6,11 +6,15 @@ import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
-export class GetUserByIdUseCase implements IUseCase<string, User> {
+interface IInput {
+  userId: string;
+}
+
+export class GetUserByIdUseCase implements IUseCase<IInput, User> {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(id: string): Promise<User> {
-    const user = await this.userRepository.findById(id);
+  async execute({ userId }: IInput): Promise<User> {
+    const user = await this.userRepository.findById({ userId });
 
     if (!user) {
       throw new UserNotFound();

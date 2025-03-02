@@ -18,13 +18,13 @@ export class DeleteCollectionUseCase implements IUseCase<IInput, void> {
   ) {}
 
   async execute({ userId, collectionId }: IInput): Promise<void> {
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     await this.getCollectionByIdUseCase.execute({
       collectionId,
       userId,
     });
 
-    await this.collectionRepository.delete({ id: collectionId, userId });
+    await this.collectionRepository.delete({ collectionId, userId });
   }
 }

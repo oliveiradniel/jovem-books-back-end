@@ -6,6 +6,7 @@ import { GetUserByUsernameUseCase } from './GetUserByUsernameUseCase';
 import { GetUserByEmailUseCase } from './GetUserByEmailUseCase';
 
 import { IUseCase } from '../../interfaces/IUseCase';
+
 import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
 
 type IInput = Omit<User, 'id' | 'createdAt' | 'updatedAt'>;

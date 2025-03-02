@@ -1,9 +1,11 @@
 import { verifyCollectionErrors } from '../../../utils/verifyCollectionErrors';
 
-import { CollectionIdSchema } from '../../schemas/collection/CollectionIdSchema';
-import { UpdateCollectionSchema } from '../../schemas/collection/UpdateCollectionSchema';
-
 import { UpdateCollectionUseCase } from '../../useCases/collection/UpdateCollectionUseCase';
+
+import {
+  IdsSchema,
+  UpdateDataCollectionSchema,
+} from '../../schemas/collection/UpdateCollectionSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -14,15 +16,19 @@ export class UpdateCollectionController implements IController {
 
   async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
-      const collectionId = CollectionIdSchema.parse(params?.id);
+      const { collectionId: parsedCollectionId, userId: parsedUserId } =
+        IdsSchema.parse({ collectionId: params?.id, userId });
 
-      const data = UpdateCollectionSchema.parse({
-        userId,
-        ...body,
+      const data = UpdateDataCollectionSchema.parse({
+        name: body.name,
         updatedAt: new Date(),
       });
 
-      await this.updateCollectionUseCase.execute({ collectionId, data });
+      await this.updateCollectionUseCase.execute({
+        collectionId: parsedCollectionId,
+        userId: parsedUserId,
+        data,
+      });
 
       return {
         statusCode: 204,

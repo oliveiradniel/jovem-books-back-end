@@ -11,12 +11,14 @@ export class DeleteBookController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const data = DeleteBookSchema.parse({ bookId: params?.id, userId });
+      const bookId = params?.id;
+
+      const data = DeleteBookSchema.parse({ bookId, userId });
 
       await this.deleteBookUseCase.execute(data);
 
       return {
-        statusCode: 200,
+        statusCode: 204,
         body: null,
       };
     } catch (error) {

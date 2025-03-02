@@ -14,7 +14,7 @@ export class UpdateUserController implements IController {
 
   async handle({ body, userId: id }: IRequest): Promise<IResponse> {
     try {
-      const userId = UserIdSchema.parse(id);
+      const parsedUserId = UserIdSchema.parse(id);
 
       const data = UpdateUserSchema.parse({
         ...body,
@@ -26,12 +26,14 @@ export class UpdateUserController implements IController {
         hashedPassword = await hash(data.password!, 10);
       }
 
+      const userData = {
+        ...data,
+        password: hashedPassword,
+      };
+
       await this.updateUserUseCase.execute({
-        userId,
-        data: {
-          ...data,
-          password: hashedPassword,
-        },
+        userId: parsedUserId,
+        data: userData,
       });
 
       return {

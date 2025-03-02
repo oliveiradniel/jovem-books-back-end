@@ -7,23 +7,27 @@ import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 
-type IInput = Omit<
+type BookDataCreate = Omit<
   Book,
+  | 'id'
+  | 'userId'
   | 'author'
   | 'sinopse'
   | 'numberOfPages'
   | 'type'
   | 'dateOfPublication'
-  | 'id'
   | 'createdAt'
   | 'updatedAt'
 > &
   Partial<
-    Pick<
-      Book,
-      'author' | 'sinopse' | 'numberOfPages' | 'type' | 'dateOfPublication'
-    >
-  >;
+    Pick<Book, 'author' | 'sinopse' | 'numberOfPages' | 'dateOfPublication'>
+  > &
+  Pick<Book, 'type'>;
+
+interface IInput {
+  userId: string;
+  data: BookDataCreate;
+}
 
 export class CreateBookUseCase implements IUseCase<IInput, void> {
   constructor(
@@ -32,14 +36,14 @@ export class CreateBookUseCase implements IUseCase<IInput, void> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute(data: IInput): Promise<void> {
-    await this.getUserByIdUseCase.execute(data.userId);
+  async execute({ userId, data }: IInput): Promise<void> {
+    await this.getUserByIdUseCase.execute({ userId });
 
     await this.getBookByTitleUseCase.execute({
-      userId: data.userId,
+      userId,
       title: data.title,
     });
 
-    await this.bookRepository.create(data);
+    await this.bookRepository.create({ userId, data });
   }
 }

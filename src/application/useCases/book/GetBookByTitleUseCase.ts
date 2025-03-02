@@ -25,7 +25,7 @@ export class GetBookByTitleUseCase implements IUseCase<IInput, Book | void> {
     userId,
     shouldReturn = false,
   }: IInput): Promise<Book | void> {
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     const book = await this.bookRepository.findByTitle({ title, userId });
 

@@ -1,3 +1,5 @@
+import { Book } from '@prisma/client';
+
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { ListBooksUseCase } from '../../useCases/book/ListBooksUseCase';
@@ -11,16 +13,18 @@ export class ListBooksController implements IController {
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
+      const orderBy = queryParams?.orderBy;
+
       const data = ListBooksSchema.parse({
         userId,
-        orderBy: queryParams?.orderBy,
+        orderBy,
       });
 
       const books = await this.listBooksUseCase.execute(data);
 
       return {
         statusCode: 200,
-        body: books,
+        body: books as Book[],
       };
     } catch (error) {
       return verifyBookErrors(error);

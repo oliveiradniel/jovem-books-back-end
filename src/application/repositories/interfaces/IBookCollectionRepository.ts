@@ -1,47 +1,52 @@
 import { Book, BookCollection, Collection } from '@prisma/client';
 
-export interface IBookCollectionRepository {
+import { IRepository } from '../../interfaces/IRepository';
+
+export interface IFindBookCollectionById {
+  bookCollectionId: {
+    bookId: string;
+    collectionId: string;
+  };
+  userId: string;
+}
+
+export interface ICreate {
+  bookId: string;
+  collectionId: string;
+  userId: string;
+}
+
+export interface IDelete {
+  bookCollectionId: {
+    bookId: string;
+    collectionId: string;
+  };
+  userId: string;
+}
+
+export interface IListBooksByCollectionId {
+  collectionId: string;
+  userId: string;
+}
+
+export interface IListCollectionsByBookId {
+  bookId: string;
+  userId: string;
+}
+
+export interface IBookCollectionRepository
+  extends IRepository<
+    BookCollection,
+    IFindBookCollectionById,
+    ICreate,
+    IDelete
+  > {
   listBooksByCollectionId({
     collectionId,
     userId,
-  }: {
-    collectionId: string;
-    userId: string;
-  }): Promise<Book[]>;
+  }: IListBooksByCollectionId): Promise<Book[]>;
   listCollectionsByBookId({
     bookId,
     userId,
-  }: {
-    bookId: string;
-    userId: string;
-  }): Promise<Collection[]>;
-  findById({
-    bookCollectionId,
-    userId,
-  }: {
-    bookCollectionId: {
-      bookId: string;
-      collectionId: string;
-    };
-    userId: string;
-  }): Promise<BookCollection | null>;
-  create({
-    bookId,
-    collectionId,
-    userId,
-  }: {
-    bookId: string;
-    collectionId: string;
-    userId: string;
-  }): Promise<void>;
-  delete({
-    bookCollectionId,
-    userId,
-  }: {
-    bookCollectionId: {
-      bookId: string;
-      collectionId: string;
-    };
-    userId: string;
-  }): Promise<void>;
+  }: IListCollectionsByBookId): Promise<Collection[]>;
 }

@@ -1,24 +1,34 @@
 import { Read } from '@prisma/client';
 
-export interface IReadRepository {
-  list({ userId }: { userId: string }): Promise<Read[] | null>;
+type ReadDataCreate = Omit<
+  Partial<Read>,
+  'userId' | 'bookId' | 'createdAt' | 'updatedAt'
+>;
 
-  findById({
-    id,
-    userId,
-  }: {
-    id: string;
-    userId: string;
-  }): Promise<Read | null>;
+type ReadDataUpdate = Omit<Partial<Read>, 'bookId' | 'createdAt'>;
 
-  create(
-    data: Omit<Omit<Omit<Partial<Read>, 'id'>, 'createdAt'>, 'updatedAt'>,
-  ): Promise<void>;
-  update(
-    data: Partial<Omit<Read, 'id' | 'createdAt' | 'userId'>> & {
-      id: string;
-      userId: string;
-    },
-  ): Promise<void>;
-  delete({ id, userId }: { id: string; userId: string }): Promise<void>;
+export interface IList {
+  userId: string;
+}
+
+export interface IFindReadById {
+  bookId: string;
+  userId: string;
+}
+
+export interface ICreate {
+  bookId: string;
+  userId: string;
+  data: ReadDataCreate;
+}
+
+export interface IUpdate {
+  bookId: string;
+  userId: string;
+  data: ReadDataUpdate;
+}
+
+export interface IDelete {
+  bookId: string;
+  userId: string;
 }

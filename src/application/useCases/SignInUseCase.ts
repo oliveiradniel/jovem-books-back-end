@@ -22,7 +22,7 @@ export class SignInUseCase implements IUseCase<IInput, IOuput> {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute({ username, password }: IInput): Promise<IOuput> {
-    const user = await this.userRepository.findByUsername(username);
+    const user = await this.userRepository.findByUsername({ username });
 
     if (!user) throw new InvalidCredentials();
 

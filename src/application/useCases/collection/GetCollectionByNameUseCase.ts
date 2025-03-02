@@ -27,7 +27,7 @@ export class GetCollectionByNameUseCase
     userId,
     shouldReturn = false,
   }: IInput): Promise<Collection | void> {
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     const collection = await this.collectionRepository.findByName({
       name,

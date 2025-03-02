@@ -1,10 +1,10 @@
 import { ParsedQs } from 'qs';
 
 export interface IRequest {
+  userId: string;
   body: Record<string, any>;
-  queryParams?: ParsedQs;
   params?: Record<string, any>;
-  userId?: string | undefined;
+  queryParams?: ParsedQs;
 }
 
 export interface IResponse {

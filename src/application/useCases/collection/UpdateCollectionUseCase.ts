@@ -12,7 +12,8 @@ import { ICollectionRepository } from '../../repositories/interfaces/ICollection
 
 interface IInput {
   collectionId: string;
-  data: Omit<Collection, 'createdAt' | 'id'>;
+  userId: string;
+  data: Omit<Collection, 'createdAt' | 'id' | 'userId'>;
 }
 
 export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
@@ -23,10 +24,8 @@ export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ collectionId, data }: IInput): Promise<void> {
-    const { userId } = data;
-
-    await this.getUserByIdUseCase.execute(userId);
+  async execute({ collectionId, userId, data }: IInput): Promise<void> {
+    await this.getUserByIdUseCase.execute({ userId });
 
     await this.getCollectionByIdUseCase.execute({
       collectionId,
@@ -47,8 +46,13 @@ export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
       throw new NameAlreadyInUse();
     }
 
+    if (!this.collectionRepository?.update) {
+      return;
+    }
+
     await this.collectionRepository.update({
-      id: collectionId,
+      collectionId,
+      userId,
       data,
     });
   }

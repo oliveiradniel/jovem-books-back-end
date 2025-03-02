@@ -2,18 +2,21 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { CreateBookUseCase } from '../../useCases/book/CreateBookUseCase';
 
-import { CreateBookSchema } from '../../schemas/book/CreateBookSchema';
+import { CreateDataBookSchema } from '../../schemas/book/CreateBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
+import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 
 export class CreateBookController implements IController {
   constructor(private readonly createBookUseCase: CreateBookUseCase) {}
 
-  async handle({ body, userId }: IRequest): Promise<IResponse> {
+  async handle({ userId, body }: IRequest): Promise<IResponse> {
     try {
-      const data = CreateBookSchema.parse({ userId, ...body });
+      const parsedUserId = UserIdSchema.parse(userId);
 
-      await this.createBookUseCase.execute(data);
+      const data = CreateDataBookSchema.parse({ userId, ...body });
+
+      await this.createBookUseCase.execute({ userId: parsedUserId, data });
 
       return {
         statusCode: 201,

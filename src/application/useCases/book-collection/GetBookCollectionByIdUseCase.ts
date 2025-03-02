@@ -35,7 +35,7 @@ export class GetBookCollectionByIdUseCase
 
     await this.getCollectionByIdUseCase.execute({ collectionId, userId });
 
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     const bookCollection = await this.bookCollectionRepository.findById({
       bookCollectionId,

@@ -18,7 +18,7 @@ export class CreateCollectionUseCase implements IUseCase<IInput, void> {
   ) {}
 
   async execute({ userId, name }: IInput): Promise<void> {
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     await this.getCollectionByNameUseCase.execute({
       name,

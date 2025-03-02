@@ -23,6 +23,13 @@ export function verifyBookCollectionErrors(error: Errors): IResponse {
     };
   }
 
+  if (error instanceof UserNotFound) {
+    return {
+      statusCode: 404,
+      body: { error: error.message },
+    };
+  }
+
   if (error instanceof BookNotFound) {
     return {
       statusCode: 404,
@@ -31,13 +38,6 @@ export function verifyBookCollectionErrors(error: Errors): IResponse {
   }
 
   if (error instanceof CollectionNotFound) {
-    return {
-      statusCode: 404,
-      body: { error: error.message },
-    };
-  }
-
-  if (error instanceof UserNotFound) {
     return {
       statusCode: 404,
       body: { error: error.message },

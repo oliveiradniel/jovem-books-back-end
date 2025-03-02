@@ -8,18 +8,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid()) @db.Uuid
-  username  String   @unique
-  firstName String   @map("first_name")
-  lastName  String   @map("last_name")
-  email     String   @unique
+  id        String    @id @default(uuid()) @db.Uuid
+  username  String    @unique
+  firstName String    @map("first_name")
+  lastName  String    @map("last_name")
+  email     String    @unique
   password  String
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @map("updated_at")
 
-  books       Book[]
-  collections Collection[]
-  reads       Read[]
+  books           Book[]
+  collections     Collection[]
+  reads           Read[]
   bookCollections BookCollection[]
 
   @@index([username, email])
@@ -36,9 +36,9 @@ model Book {
   type              TypeBook
   dateOfPublication DateTime? @map("date_of_publication")
   createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime?  @map("updated_at")
+  updatedAt         DateTime? @map("updated_at")
 
-  reads       Read[]
+  reads           Read[]
   bookCollections BookCollection[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -48,10 +48,10 @@ model Book {
 }
 
 model Collection {
-  id        String   @id @default(uuid()) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
   name      String
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @map("updated_at")
 
   bookCollections BookCollection[]
@@ -63,29 +63,29 @@ model Collection {
 }
 
 model BookCollection {
-  bookId       String @map("book_id") @db.Uuid
-  collectionId String @map("collection_id") @db.Uuid
-  userId String @map("user_id") @db.Uuid
+  bookId       String   @map("book_id") @db.Uuid
+  collectionId String   @map("collection_id") @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
   createdAt    DateTime @default(now()) @map("created_at")
 
-  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  book       Book       @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([bookId, collectionId])
   @@map("book_collections")
 }
 
 model Read {
-  id          String        @unique @db.Uuid
-  userId    String        @map("user_id") @db.Uuid
+  bookId      String         @unique @db.Uuid
+  userId      String         @map("user_id") @db.Uuid
   currentPage Int?           @map("current_page")
   status      ReadingStatus?
   notes       String?
-  createdAt   DateTime      @default(now()) @map("created_at")
+  createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime?      @map("updated_at")
 
-  book Book @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@index([userId, status])

@@ -2,16 +2,20 @@ import { prismaClient } from '../lib/prismaClient';
 
 import { Book, BookCollection, Collection } from '@prisma/client';
 
-import { IBookCollectionRepository } from './interfaces/IBookCollectionRepository';
+import {
+  IBookCollectionRepository,
+  ICreate,
+  IDelete,
+  IFindBookCollectionById,
+  IListBooksByCollectionId,
+  IListCollectionsByBookId,
+} from './interfaces/IBookCollectionRepository';
 
 export class BookCollectionRepository implements IBookCollectionRepository {
   async listBooksByCollectionId({
     collectionId,
     userId,
-  }: {
-    collectionId: string;
-    userId: string;
-  }): Promise<Book[]> {
+  }: IListBooksByCollectionId): Promise<Book[]> {
     const bookCollections = await prismaClient.bookCollection.findMany({
       where: {
         collectionId,
@@ -30,10 +34,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
   async listCollectionsByBookId({
     bookId,
     userId,
-  }: {
-    bookId: string;
-    userId: string;
-  }): Promise<Collection[]> {
+  }: IListCollectionsByBookId): Promise<Collection[]> {
     const bookCollections = await prismaClient.bookCollection.findMany({
       where: {
         bookId,
@@ -54,13 +55,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
   async findById({
     bookCollectionId,
     userId,
-  }: {
-    bookCollectionId: {
-      bookId: string;
-      collectionId: string;
-    };
-    userId: string;
-  }): Promise<BookCollection | null> {
+  }: IFindBookCollectionById): Promise<BookCollection | null> {
     const bookCollection = await prismaClient.bookCollection.findUnique({
       where: { bookId_collectionId: bookCollectionId, userId },
     });
@@ -68,34 +63,13 @@ export class BookCollectionRepository implements IBookCollectionRepository {
     return bookCollection;
   }
 
-  async create({
-    bookId,
-    collectionId,
-    userId,
-  }: {
-    bookId: string;
-    collectionId: string;
-    userId: string;
-  }): Promise<void> {
+  async create(data: ICreate): Promise<void> {
     await prismaClient.bookCollection.create({
-      data: {
-        bookId,
-        collectionId,
-        userId,
-      },
+      data,
     });
   }
 
-  async delete({
-    bookCollectionId,
-    userId,
-  }: {
-    bookCollectionId: {
-      bookId: string;
-      collectionId: string;
-    };
-    userId: string;
-  }): Promise<void> {
+  async delete({ bookCollectionId, userId }: IDelete): Promise<void> {
     await prismaClient.bookCollection.delete({
       where: { bookId_collectionId: bookCollectionId, userId },
     });

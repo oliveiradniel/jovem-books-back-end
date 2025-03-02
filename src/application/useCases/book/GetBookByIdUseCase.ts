@@ -20,10 +20,10 @@ export class GetBookByIdUseCase implements IUseCase<IInput, Book> {
   ) {}
 
   async execute({ bookId, userId }: IInput): Promise<Book> {
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     const book = await this.bookRepository.findById({
-      id: bookId,
+      bookId,
       userId,
     });
 

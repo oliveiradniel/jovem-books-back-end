@@ -2,28 +2,17 @@ import { prismaClient } from '../lib/prismaClient';
 
 import { Book } from '@prisma/client';
 
-import { IBookRepository } from './interfaces/IBookRepository';
-
-import { TOrderBy } from '../../@types/TOrderBy';
-
-type BookDataCreate = Omit<Omit<Omit<Book, 'id'>, 'createdAt'>, 'updatedAt'>;
-
-type BookDataUpdate = Omit<Partial<Omit<Book, 'id'>>, 'createdAt'>;
-
-interface IUpdate {
-  id: string;
-  data: BookDataUpdate;
-  userId: string;
-}
+import {
+  IBookRepository,
+  ICreate,
+  IDelete,
+  IList,
+  IFindBookById,
+  IUpdate,
+} from './interfaces/IBookRepository';
 
 export class BookRepository implements IBookRepository {
-  async list({
-    userId,
-    orderBy,
-  }: {
-    userId: string;
-    orderBy: TOrderBy;
-  }): Promise<Book[] | null> {
+  async list({ userId, orderBy }: IList): Promise<Book[]> {
     const books = await prismaClient.book.findMany({
       where: { userId },
       orderBy: {
@@ -34,15 +23,9 @@ export class BookRepository implements IBookRepository {
     return books;
   }
 
-  async findById({
-    id,
-    userId,
-  }: {
-    id: string;
-    userId: string;
-  }): Promise<Book | null> {
+  async findById({ bookId, userId }: IFindBookById): Promise<Book | null> {
     const book = await prismaClient.book.findUnique({
-      where: { id, userId },
+      where: { id: bookId, userId },
     });
 
     return book;
@@ -59,7 +42,7 @@ export class BookRepository implements IBookRepository {
       where: { title, userId },
     });
 
-    return book ? book : null;
+    return book;
   }
 
   async findByAuthor({
@@ -76,22 +59,25 @@ export class BookRepository implements IBookRepository {
     return book;
   }
 
-  async create(data: BookDataCreate): Promise<any> {
+  async create({ userId, data }: ICreate): Promise<any> {
     await prismaClient.book.create({
-      data,
+      data: {
+        userId,
+        ...data,
+      },
     });
   }
 
-  async update({ id, data }: IUpdate): Promise<void> {
+  async update({ bookId, userId, data }: IUpdate): Promise<void> {
     await prismaClient.book.update({
-      where: { id, userId: data.userId },
+      where: { id: bookId, userId },
       data,
     });
   }
 
-  async delete({ id, userId }: { id: string; userId: string }): Promise<void> {
+  async delete({ bookId, userId }: IDelete): Promise<void> {
     await prismaClient.book.delete({
-      where: { id, userId },
+      where: { id: bookId, userId },
     });
   }
 }

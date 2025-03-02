@@ -14,7 +14,7 @@ interface IInput {
 }
 
 export class ListCollectionsUseCase
-  implements IUseCase<IInput, Collection[] | null>
+  implements IUseCase<IInput, Collection[] | null | void>
 {
   constructor(
     private readonly collectionRepository: ICollectionRepository,
@@ -24,8 +24,12 @@ export class ListCollectionsUseCase
   async execute({
     userId,
     orderBy = 'asc',
-  }: IInput): Promise<Collection[] | null> {
-    await this.getUserByIdUseCase.execute(userId);
+  }: IInput): Promise<Collection[] | null | void> {
+    await this.getUserByIdUseCase.execute({ userId });
+
+    if (!this.collectionRepository?.list) {
+      return;
+    }
 
     const collections = await this.collectionRepository.list({
       userId,

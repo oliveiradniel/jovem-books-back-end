@@ -2,10 +2,19 @@ import { prismaClient } from '../lib/prismaClient';
 
 import { Read } from '@prisma/client';
 
-import { IReadRepository } from './interfaces/IReadRepository';
+import {
+  ICreate,
+  IDelete,
+  IList,
+  IFindReadById,
+  IUpdate,
+} from './interfaces/IReadRepository';
+import { IRepository } from '../interfaces/IRepository';
 
-export class ReadRepository implements IReadRepository {
-  async list({ userId }: { userId: string }): Promise<Read[] | null> {
+export class ReadRepository
+  implements IRepository<Read, IFindReadById, ICreate, IDelete, IList, IUpdate>
+{
+  async list({ userId }: IList): Promise<Read[]> {
     const reads = await prismaClient.read.findMany({
       where: { userId },
     });
@@ -13,16 +22,10 @@ export class ReadRepository implements IReadRepository {
     return reads;
   }
 
-  async findById({
-    id,
-    userId,
-  }: {
-    id: string;
-    userId: string;
-  }): Promise<Read | null> {
+  async findById({ bookId, userId }: IFindReadById): Promise<Read | null> {
     const read = await prismaClient.read.findUnique({
       where: {
-        id,
+        bookId,
         userId,
       },
     });
@@ -30,33 +33,23 @@ export class ReadRepository implements IReadRepository {
     return read;
   }
 
-  async create(
-    data: Partial<Omit<Read, 'id' | 'createdAt' | 'updatedAt' | 'userId'>> & {
-      id: string;
-      userId: string;
-    },
-  ): Promise<void> {
+  async create(data: ICreate): Promise<void> {
     await prismaClient.read.create({
       data,
     });
   }
 
-  async update(
-    data: Partial<Omit<Read, 'id' | 'createdAt' | 'userId'>> & {
-      id: string;
-      userId: string;
-    },
-  ): Promise<void> {
+  async update({ bookId, userId, data }: IUpdate): Promise<void> {
     await prismaClient.read.update({
-      where: { id: data.id, userId: data.userId },
+      where: { bookId, userId },
       data,
     });
   }
 
-  async delete({ id, userId }: { id: string; userId: string }): Promise<void> {
+  async delete({ bookId, userId }: IDelete): Promise<void> {
     await prismaClient.read.delete({
       where: {
-        id,
+        bookId,
         userId,
       },
     });

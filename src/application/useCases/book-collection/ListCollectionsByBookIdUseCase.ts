@@ -13,7 +13,7 @@ interface IInput {
 }
 
 export class ListCollectionsByBookIdUseCase
-  implements IUseCase<IInput, Collection[]>
+  implements IUseCase<IInput, Collection[] | null>
 {
   constructor(
     private readonly bookCollectionRepository: IBookCollectionRepository,
@@ -21,10 +21,10 @@ export class ListCollectionsByBookIdUseCase
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, userId }: IInput): Promise<Collection[]> {
+  async execute({ bookId, userId }: IInput): Promise<Collection[] | null> {
     await this.getBookByIdUseCase.execute({ bookId, userId });
 
-    await this.getUserByIdUseCase.execute(userId);
+    await this.getUserByIdUseCase.execute({ userId });
 
     const collections =
       await this.bookCollectionRepository.listCollectionsByBookId({

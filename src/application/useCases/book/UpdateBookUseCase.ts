@@ -12,6 +12,7 @@ import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 
 interface IInput {
   bookId: string;
+  userId: string;
   data: Omit<
     Book,
     | 'author'
@@ -22,6 +23,7 @@ interface IInput {
     | 'createdAt'
     | 'updatedAt'
     | 'id'
+    | 'userId'
   > &
     Partial<
       Pick<
@@ -39,10 +41,8 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, data }: IInput): Promise<void> {
-    const { userId } = data;
-
-    await this.getUserByIdUseCase.execute(userId);
+  async execute({ bookId, userId, data }: IInput): Promise<void> {
+    await this.getUserByIdUseCase.execute({ userId });
 
     await this.getBookByIdUseCase.execute({
       bookId,
@@ -59,8 +59,13 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
       throw new TitleAlreadyInUse();
     }
 
+    if (!this.bookRepository?.update) {
+      return;
+    }
+
     await this.bookRepository.update({
-      id: bookId,
+      bookId,
+      userId,
       data,
     });
   }

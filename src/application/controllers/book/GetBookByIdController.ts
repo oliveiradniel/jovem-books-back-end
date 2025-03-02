@@ -11,7 +11,9 @@ export class GetBookByIdController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const data = GetBookByIdSchema.parse({ bookId: params?.id, userId });
+      const bookId = params?.id;
+
+      const data = GetBookByIdSchema.parse({ bookId, userId });
 
       const book = await this.getBookByIdUseCase.execute(data);
 

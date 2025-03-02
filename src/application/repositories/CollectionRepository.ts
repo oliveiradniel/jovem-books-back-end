@@ -2,31 +2,18 @@ import { prismaClient } from '../lib/prismaClient';
 
 import { Collection } from '@prisma/client';
 
-import { ICollectionRepository } from './interfaces/ICollectionRepository';
-
-import { TOrderBy } from '../../@types/TOrderBy';
-
-type CollectionDataCreate = Omit<
-  Omit<Omit<Collection, 'id'>, 'createdAt'>,
-  'updatedAt'
->;
-
-type CollectionDataUpdate = Omit<Partial<Omit<Collection, 'id'>>, 'createdAt'>;
-
-interface IUpdate {
-  id: string;
-  data: CollectionDataUpdate;
-  userId: string;
-}
+import {
+  ICollectionRepository,
+  ICreate,
+  IDelete,
+  IList,
+  IFindCollectionById,
+  IUpdate,
+  IFindCollectionByName,
+} from './interfaces/ICollectionRepository';
 
 export class CollectionRepository implements ICollectionRepository {
-  async list({
-    userId,
-    orderBy,
-  }: {
-    userId: string;
-    orderBy: TOrderBy;
-  }): Promise<Collection[] | null> {
+  async list({ userId, orderBy }: IList): Promise<Collection[]> {
     const collections = await prismaClient.collection.findMany({
       where: { userId },
       orderBy: {
@@ -38,14 +25,11 @@ export class CollectionRepository implements ICollectionRepository {
   }
 
   async findById({
-    id,
+    collectionId,
     userId,
-  }: {
-    id: string;
-    userId: string;
-  }): Promise<Collection | null> {
+  }: IFindCollectionById): Promise<Collection | null> {
     const collection = await prismaClient.collection.findUnique({
-      where: { id, userId },
+      where: { id: collectionId, userId },
     });
 
     return collection;
@@ -54,33 +38,30 @@ export class CollectionRepository implements ICollectionRepository {
   async findByName({
     name,
     userId,
-  }: {
-    name: string;
-    userId: string;
-  }): Promise<Collection | null> {
+  }: IFindCollectionByName): Promise<Collection | null> {
     const collection = await prismaClient.collection.findFirst({
       where: { name, userId },
     });
 
-    return collection ? collection : null;
+    return collection;
   }
 
-  async create(data: CollectionDataCreate): Promise<any> {
+  async create(data: ICreate): Promise<any> {
     await prismaClient.collection.create({
       data,
     });
   }
 
-  async update({ id, data }: IUpdate): Promise<void> {
+  async update({ collectionId, userId, data }: IUpdate): Promise<void> {
     await prismaClient.collection.update({
-      where: { id, userId: data.userId },
+      where: { id: collectionId, userId },
       data,
     });
   }
 
-  async delete({ id, userId }: { id: string; userId: string }): Promise<void> {
+  async delete({ collectionId, userId }: IDelete): Promise<void> {
     await prismaClient.collection.delete({
-      where: { id, userId },
+      where: { id: collectionId, userId },
     });
   }
 }
