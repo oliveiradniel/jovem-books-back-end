@@ -8,15 +8,13 @@ import {
   IList,
   IFindReadById,
   IUpdate,
+  IReadRepository,
 } from './interfaces/IReadRepository';
-import { IRepository } from '../interfaces/IRepository';
 
-export class ReadRepository
-  implements IRepository<Read, IFindReadById, ICreate, IDelete, IList, IUpdate>
-{
-  async list({ userId }: IList): Promise<Read[]> {
+export class ReadRepository implements IReadRepository {
+  async list({ bookId, userId }: IList): Promise<Read[]> {
     const reads = await prismaClient.read.findMany({
-      where: { userId },
+      where: { bookId, userId },
     });
 
     return reads;

@@ -7,7 +7,7 @@ import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 
-type BookDataCreate = Omit<
+type DataToCreateBook = Omit<
   Book,
   | 'id'
   | 'userId'
@@ -26,7 +26,7 @@ type BookDataCreate = Omit<
 
 interface IInput {
   userId: string;
-  data: BookDataCreate;
+  data: DataToCreateBook;
 }
 
 export class CreateBookUseCase implements IUseCase<IInput, void> {
