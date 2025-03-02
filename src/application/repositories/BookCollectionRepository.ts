@@ -1,6 +1,8 @@
-import { Book, BookCollection, Collection } from '@prisma/client';
-import { IBookCollectionRepository } from './interfaces/IBookCollectionRepository';
 import { prismaClient } from '../lib/prismaClient';
+
+import { Book, BookCollection, Collection } from '@prisma/client';
+
+import { IBookCollectionRepository } from './interfaces/IBookCollectionRepository';
 
 export class BookCollectionRepository implements IBookCollectionRepository {
   async listBooksByCollectionId({
@@ -31,7 +33,7 @@ export class BookCollectionRepository implements IBookCollectionRepository {
   }: {
     bookId: string;
     userId: string;
-  }): Promise<Collection[] | null> {
+  }): Promise<Collection[]> {
     const bookCollections = await prismaClient.bookCollection.findMany({
       where: {
         bookId,

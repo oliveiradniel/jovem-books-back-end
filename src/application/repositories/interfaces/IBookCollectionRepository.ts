@@ -14,7 +14,7 @@ export interface IBookCollectionRepository {
   }: {
     bookId: string;
     userId: string;
-  }): Promise<Collection[] | null>;
+  }): Promise<Collection[]>;
   findById({
     bookId,
     collectionId,
