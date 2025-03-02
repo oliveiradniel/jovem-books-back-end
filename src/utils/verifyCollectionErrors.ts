@@ -4,6 +4,8 @@ import { CollectionNotFound } from '../application/errors/collection/CollectionN
 import { NameAlreadyInUse } from '../application/errors/collection/NameAlreadyInUse';
 import { UserNotFound } from '../application/errors/user/UserNotFound';
 
+import { IResponse } from '../server/interfaces/IMiddleware';
+
 export type Errors =
   | ZodError
   | CollectionNotFound
@@ -11,7 +13,7 @@ export type Errors =
   | UserNotFound
   | unknown;
 
-export function verifyCollectionErrors(error: Errors) {
+export function verifyCollectionErrors(error: Errors): IResponse {
   if (error instanceof ZodError) {
     return {
       statusCode: 400,
