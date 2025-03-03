@@ -21,7 +21,7 @@ export interface IGoogleBooksResponse {
   items: GoogleBooks;
 }
 
-export interface IGoogleBooksAPI {
+export interface IGoogleBooksAPIRepository {
   findByTitle({
     title,
     startIndex,

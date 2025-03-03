@@ -6,11 +6,11 @@ import {
   IFindByAuthor,
   IFindByTitle,
   IGetURL,
-  IGoogleBooksAPI,
+  IGoogleBooksAPIRepository,
   IGoogleBooksResponse,
-} from './interfaces/IGoogleBooksAPI';
+} from './interfaces/IGoogleBooksAPIRepository';
 
-export class GoogleBooksAPIRepository implements IGoogleBooksAPI {
+export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
   private getURL({
     queryParam,
     startIndex = 0,
