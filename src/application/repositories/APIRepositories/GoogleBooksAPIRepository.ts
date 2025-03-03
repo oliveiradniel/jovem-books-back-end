@@ -1,0 +1,53 @@
+import axios, { AxiosResponse } from 'axios';
+
+import { env } from '../../../config/env';
+
+import {
+  IFindByAuthor,
+  IFindByTitle,
+  IGetURL,
+  IGoogleBooksAPI,
+  IGoogleBooksResponse,
+} from './interfaces/IGoogleBooksAPI';
+
+export class GoogleBooksAPIRepository implements IGoogleBooksAPI {
+  private getURL({
+    queryParam,
+    startIndex = 0,
+    maxResults = 40,
+  }: IGetURL): string {
+    return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&projection=lite&startIndex=${startIndex}&maxResults=${maxResults}&key=${env.GOOGLE_API_KEY}`;
+  }
+
+  async findByTitle({
+    title,
+    startIndex,
+    maxResults,
+  }: IFindByTitle): Promise<AxiosResponse<IGoogleBooksResponse>> {
+    const url = this.getURL({
+      queryParam: `intitle:${title}`,
+      startIndex,
+      maxResults,
+    });
+
+    const response = await axios.get(url);
+
+    return response;
+  }
+
+  async findByAuthor({
+    author,
+    startIndex,
+    maxResults,
+  }: IFindByAuthor): Promise<AxiosResponse<IGoogleBooksResponse>> {
+    const url = this.getURL({
+      queryParam: `inauthor:${author}`,
+      startIndex,
+      maxResults,
+    });
+
+    const response = await axios.get(url);
+
+    return response;
+  }
+}
