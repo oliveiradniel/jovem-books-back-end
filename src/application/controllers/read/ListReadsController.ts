@@ -1,6 +1,6 @@
-import { Read } from '@prisma/client';
+import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
-import { ZodError } from 'zod';
+import { Read } from '@prisma/client';
 
 import { ListReadsUseCase } from '../../useCases/read/ListReadsUseCase';
 
@@ -24,17 +24,7 @@ export class ListReadsController implements IController {
         body: reads as Read[],
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      return {
-        statusCode: 500,
-        body: { error: 'Internal Server Error' },
-      };
+      return verifyReadErrors(error);
     }
   }
 }

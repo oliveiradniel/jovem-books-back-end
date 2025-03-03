@@ -1,4 +1,4 @@
-import { ZodError } from 'zod';
+import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
 import { UpdateReadUseCase } from '../../useCases/read/UpdateReadUseCase';
 
@@ -6,7 +6,6 @@ import { IdsSchema } from '../../schemas/read/IdsSchema';
 import { UpdateDataReadSchema } from '../../schemas/read/UpdateDataReadSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
-import { ReadingNotFound } from '../../errors/read/ReadingNotFound';
 
 export class UpdateReadController implements IController {
   constructor(private readonly updateReadUseCase: UpdateReadUseCase) {}
@@ -43,24 +42,7 @@ export class UpdateReadController implements IController {
         body: null,
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      if (error instanceof ReadingNotFound) {
-        return {
-          statusCode: 404,
-          body: { error: error.message },
-        };
-      }
-      console.log(error);
-      return {
-        statusCode: 500,
-        body: { error: 'Internal Server Error' },
-      };
+      return verifyReadErrors(error);
     }
   }
 }

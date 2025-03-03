@@ -1,11 +1,10 @@
-import { ZodError } from 'zod';
+import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
 import { DeleteReadUseCase } from '../../useCases/read/DeleteReadUseCase';
 
 import { IdsSchema } from '../../schemas/read/IdsSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
-import { ReadingNotFound } from '../../errors/read/ReadingNotFound';
 
 export class DeleteReadController implements IController {
   constructor(private readonly deleteReadUseCase: DeleteReadUseCase) {}
@@ -27,24 +26,7 @@ export class DeleteReadController implements IController {
         body: null,
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-
-      if (error instanceof ReadingNotFound) {
-        return {
-          statusCode: 404,
-          body: { error: error.message },
-        };
-      }
-
-      return {
-        statusCode: 500,
-        body: { error: 'Internal Server Error' },
-      };
+      return verifyReadErrors(error);
     }
   }
 }
