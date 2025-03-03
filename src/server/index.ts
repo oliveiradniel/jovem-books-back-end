@@ -6,6 +6,7 @@ import userRoutes from './routes/userRoutes';
 import bookRoutes from './routes/bookRoutes';
 import collectionRoutes from './routes/collectionRoutes';
 import bookCollectionRoutes from './routes/bookCollectionRoutes';
+import readRoutes from './routes/readRoutes';
 
 import { middlewareAdapater } from './adapters/middlewareAdapter';
 import { routeAdapter } from './adapters/routeAdapater';
@@ -14,11 +15,6 @@ import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMid
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
-import { makeListReadsController } from '../factories/read/makeListReadsController';
-import { makeGetReadByIdController } from '../factories/read/makeGetReadByIdController';
-import { makeCreateReadController } from '../factories/read/makeCreateReadController';
-import { makeUpdateReadController } from '../factories/read/makeUpdateReadController';
-import { makeDeleteReadController } from '../factories/read/makeDeleteReadController';
 
 const app = express();
 
@@ -68,35 +64,7 @@ app.use('/book-collection', bookCollectionRoutes);
 
 // Handle with read books
 
-app.get(
-  '/reads',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeListReadsController()),
-);
-
-app.get(
-  '/reads/:bookId',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetReadByIdController()),
-);
-
-app.post(
-  '/reads/:bookId',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeCreateReadController()),
-);
-
-app.put(
-  '/reads/:bookId',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeUpdateReadController()),
-);
-
-app.delete(
-  '/reads/:bookId',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeDeleteReadController()),
-);
+app.use('/reads', readRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server started at http://localhost:${PORT}`);
