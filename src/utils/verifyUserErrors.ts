@@ -50,7 +50,7 @@ export function verifyUserErrors(error: Errors): IResponse {
       body: { error: error.message },
     };
   }
-  console.log(error);
+  //console.log(error);
   return {
     statusCode: 500,
     body: { error: 'Internal server error' },

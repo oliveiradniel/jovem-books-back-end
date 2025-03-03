@@ -1,5 +1,6 @@
 import { Read } from '@prisma/client';
 
+import { GetReadByIdUseCase } from './GetReadByBookIdUseCase';
 import { GetBookByIdUseCase } from '../book/GetBookByIdUseCase';
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -9,18 +10,20 @@ import { IReadRepository } from '../../repositories/interfaces/IReadRepository';
 
 type DataToCreateRead = Omit<
   Partial<Read>,
-  'bookId' | 'userId' | 'createdAt' | 'updatedAt'
->;
+  'bookId' | 'userId' | 'createdAt' | 'updatedAt' | 'status'
+> &
+  Pick<Read, 'status'>;
 
 interface IInput {
   bookId: string;
   userId: string;
-  data: DataToCreateRead;
+  data?: DataToCreateRead;
 }
 
 export class CreateReadUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly readRepository: IReadRepository,
+    private readonly getReadByIdUseCase: GetReadByIdUseCase,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
@@ -29,6 +32,12 @@ export class CreateReadUseCase implements IUseCase<IInput, void> {
     await this.getUserByIdUseCase.execute({ userId });
 
     await this.getBookByIdUseCase.execute({ bookId, userId });
+
+    await this.getReadByIdUseCase.execute({
+      bookId,
+      userId,
+      shouldReturn: true,
+    });
 
     await this.readRepository.create({ bookId, userId, data });
   }

@@ -12,7 +12,6 @@ type ReadDataCreate = Omit<
 type ReadDataUpdate = Omit<Partial<Read>, 'bookId' | 'createdAt'>;
 
 export interface IList {
-  bookId: string;
   userId: string;
 }
 
@@ -24,7 +23,7 @@ export interface IFindReadById {
 export interface ICreate {
   bookId: string;
   userId: string;
-  data: ReadDataCreate;
+  data?: ReadDataCreate;
 }
 
 export interface IUpdate {

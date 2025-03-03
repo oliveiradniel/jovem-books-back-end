@@ -50,7 +50,7 @@ export function verifyBookCollectionErrors(error: Errors): IResponse {
       body: { error: error.message },
     };
   }
-
+  // console.log(error);
   return {
     statusCode: 500,
     body: { error: 'Server Internal Error' },

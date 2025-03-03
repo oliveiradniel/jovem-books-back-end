@@ -12,9 +12,9 @@ import {
 } from './interfaces/IReadRepository';
 
 export class ReadRepository implements IReadRepository {
-  async list({ bookId, userId }: IList): Promise<Read[]> {
+  async list({ userId }: IList): Promise<Read[]> {
     const reads = await prismaClient.read.findMany({
-      where: { bookId, userId },
+      where: { userId },
     });
 
     return reads;
@@ -31,9 +31,13 @@ export class ReadRepository implements IReadRepository {
     return read;
   }
 
-  async create(data: ICreate): Promise<void> {
+  async create({ bookId, userId, data }: ICreate): Promise<void> {
     await prismaClient.read.create({
-      data,
+      data: {
+        bookId,
+        userId,
+        ...data,
+      },
     });
   }
 

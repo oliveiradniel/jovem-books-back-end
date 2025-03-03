@@ -11,13 +11,13 @@ export class DeleteBookCollectionController implements IController {
     private readonly deleteBookCollectionUseCase: DeleteBookCollectionUseCase,
   ) {}
 
-  async handle({ userId, body }: IRequest): Promise<IResponse> {
+  async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
       const data = DeleteBookCollectionSchema.parse({
         userId,
         bookCollectionId: {
           bookId: body.bookId,
-          collectionId: body.collectionId,
+          collectionId: params?.collectionId,
         },
       });
 
@@ -28,6 +28,7 @@ export class DeleteBookCollectionController implements IController {
         body: null,
       };
     } catch (error) {
+      // console.log(error);
       return verifyBookCollectionErrors(error);
     }
   }

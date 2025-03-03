@@ -14,6 +14,11 @@ import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMid
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
+import { makeListReadsController } from '../factories/read/makeListReadsController';
+import { makeGetReadByIdController } from '../factories/read/makeGetReadByIdController';
+import { makeCreateReadController } from '../factories/read/makeCreateReadController';
+import { makeUpdateReadController } from '../factories/read/makeUpdateReadController';
+import { makeDeleteReadController } from '../factories/read/makeDeleteReadController';
 
 const app = express();
 
@@ -66,41 +71,31 @@ app.use('/book-collection', bookCollectionRoutes);
 app.get(
   '/reads',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('List all reads');
-  },
+  routeAdapter(makeListReadsController()),
 );
 
 app.get(
-  '/reads/:id',
+  '/reads/:bookId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Get read by id');
-  },
+  routeAdapter(makeGetReadByIdController()),
 );
 
 app.post(
-  '/reads',
+  '/reads/:bookId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Add read');
-  },
+  routeAdapter(makeCreateReadController()),
 );
 
 app.put(
-  '/reads/:id',
+  '/reads/:bookId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Edit read');
-  },
+  routeAdapter(makeUpdateReadController()),
 );
 
 app.delete(
-  '/reads/:id',
+  '/reads/:bookId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Delete read');
-  },
+  routeAdapter(makeDeleteReadController()),
 );
 
 app.listen(PORT, () => {

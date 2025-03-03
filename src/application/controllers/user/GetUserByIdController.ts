@@ -11,9 +11,11 @@ export class GetUserByIdController implements IController {
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const data = GetUserByIdSchema.parse(userId);
+      const parsedUserId = GetUserByIdSchema.parse(userId);
 
-      const user = await this.getUserByIdUseCase.execute(data);
+      const user = await this.getUserByIdUseCase.execute({
+        userId: parsedUserId,
+      });
 
       return {
         statusCode: 201,

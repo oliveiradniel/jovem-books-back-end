@@ -38,7 +38,7 @@ router.post(
 );
 
 router.delete(
-  '/bookCollectionId',
+  '/:collectionId',
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteBookCollectionController()),
 );
