@@ -1,4 +1,4 @@
-import { ZodError } from 'zod';
+import { verifyGoogleBooksErrors } from '../../../utils/verifyGoogleBooksErrors';
 
 import { GetGoogleBookByAuthorUseCase } from '../../useCases/google-books/GetGoogleBookByAuthorUseCase';
 import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
@@ -33,17 +33,7 @@ export class GetGoogleBookByAuthorController implements IController {
         body: googleBook,
       };
     } catch (error) {
-      if (error instanceof ZodError) {
-        return {
-          statusCode: 400,
-          body: { error: error.errors[0].message },
-        };
-      }
-      console.log(error);
-      return {
-        statusCode: 500,
-        body: { error: 'Internal Server Error - Google Books' },
-      };
+      return verifyGoogleBooksErrors(error);
     }
   }
 }
