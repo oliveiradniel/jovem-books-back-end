@@ -28,7 +28,7 @@ export interface IGoogleBooksAPIRepository {
     maxResults,
   }: IFindByTitle): Promise<AxiosResponse<IGoogleBooksResponse>>;
   findByAuthor({
-    author,
+    authorName,
     startIndex,
     maxResults,
   }: IFindByAuthor): Promise<AxiosResponse<IGoogleBooksResponse>>;
@@ -42,4 +42,6 @@ export interface IGetURL {
 
 export type IFindByTitle = Omit<IGetURL, 'queryParam'> & { title: string };
 
-export type IFindByAuthor = Omit<IGetURL, 'queryParam'> & { author: string };
+export type IFindByAuthor = Omit<IGetURL, 'queryParam'> & {
+  authorName: string;
+};

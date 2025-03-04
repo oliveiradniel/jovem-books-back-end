@@ -15,6 +15,8 @@ import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMid
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
+import { makeGetGoogleBookByTitleController } from '../factories/google-books/makeGetGoogleBookByTitleController';
+import { makeGetGoogleBookByAuthorController } from '../factories/google-books/makeGetGoogleBookByAuthorController';
 
 const app = express();
 
@@ -35,19 +37,15 @@ app.use('/users', userRoutes);
 // Handle with Google API Books
 
 app.get(
-  '/books/google',
+  '/google-books/title',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('List books from Google API');
-  },
+  routeAdapter(makeGetGoogleBookByTitleController()),
 );
 
 app.get(
-  '/books/google/:id',
+  '/google-books/author',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.send('Get book from Google API by id');
-  },
+  routeAdapter(makeGetGoogleBookByAuthorController()),
 );
 
 // Handle with books added by me

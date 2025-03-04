@@ -14,7 +14,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
   private getURL({
     queryParam,
     startIndex = 0,
-    maxResults = 40,
+    maxResults = 20,
   }: IGetURL): string {
     return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&projection=lite&startIndex=${startIndex}&maxResults=${maxResults}&key=${env.GOOGLE_API_KEY}`;
   }
@@ -29,25 +29,25 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
       startIndex,
       maxResults,
     });
-
     const response = await axios.get(url);
+    console.log(response.data);
 
-    return response;
+    return response.data;
   }
 
   async findByAuthor({
-    author,
+    authorName,
     startIndex,
     maxResults,
   }: IFindByAuthor): Promise<AxiosResponse<IGoogleBooksResponse>> {
     const url = this.getURL({
-      queryParam: `inauthor:${author}`,
+      queryParam: `inauthor:${authorName}`,
       startIndex,
       maxResults,
     });
 
     const response = await axios.get(url);
 
-    return response;
+    return response.data;
   }
 }

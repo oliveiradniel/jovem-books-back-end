@@ -7,7 +7,7 @@ import {
 } from '../../repositories/APIRepositories/interfaces/IGoogleBooksAPIRepository';
 
 interface IInput {
-  author: string;
+  authorName: string;
   startIndex: number;
   maxResults: number;
 }
