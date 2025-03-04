@@ -29,7 +29,6 @@ export function verifyReadErrors(error: Errors): IResponse {
     };
   }
 
-  console.log(error);
   return {
     statusCode: 500,
     body: { error: 'Internal Server Error' },

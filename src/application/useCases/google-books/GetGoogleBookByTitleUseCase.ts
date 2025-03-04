@@ -20,7 +20,6 @@ export class GetGoogleBookByTitleUseCase
   ) {}
 
   async execute(data: IInput): Promise<AxiosResponse<IGoogleBooksResponse>> {
-    console.log('antes');
     const googleBooks = await this.googleBooksRepository.findByTitle(data);
 
     return googleBooks;

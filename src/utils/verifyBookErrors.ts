@@ -41,7 +41,6 @@ export function verifyBookErrors(error: Errors): IResponse {
       body: { error: error.message },
     };
   }
-  // console.log(error);
   return {
     statusCode: 500,
     body: { error: 'Internal server error' },

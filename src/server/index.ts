@@ -7,16 +7,12 @@ import bookRoutes from './routes/bookRoutes';
 import collectionRoutes from './routes/collectionRoutes';
 import bookCollectionRoutes from './routes/bookCollectionRoutes';
 import readRoutes from './routes/readRoutes';
+import googleBooksRoutes from './routes/googleBooksRoutes';
 
-import { middlewareAdapater } from './adapters/middlewareAdapter';
 import { routeAdapter } from './adapters/routeAdapater';
-
-import { makeAuthenticationMiddleware } from '../factories/makeAuthenticationMiddlware';
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
-import { makeGetGoogleBookByTitleController } from '../factories/google-books/makeGetGoogleBookByTitleController';
-import { makeGetGoogleBookByAuthorController } from '../factories/google-books/makeGetGoogleBookByAuthorController';
 
 const app = express();
 
@@ -30,37 +26,15 @@ app.post('/sign-in', routeAdapter(makeSignInController()));
 
 app.post('/sign-up', routeAdapter(makeCreateUserController()));
 
-// Handle with users
-
 app.use('/users', userRoutes);
 
-// Handle with Google API Books
-
-app.get(
-  '/google-books/title',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetGoogleBookByTitleController()),
-);
-
-app.get(
-  '/google-books/author',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetGoogleBookByAuthorController()),
-);
-
-// Handle with books added by me
+app.use('/google-books', googleBooksRoutes);
 
 app.use('/books', bookRoutes);
 
-// Handle with my collections
-
 app.use('/collections', collectionRoutes);
 
-// Handle with books in my collection
-
 app.use('/book-collection', bookCollectionRoutes);
-
-// Handle with read books
 
 app.use('/reads', readRoutes);
 

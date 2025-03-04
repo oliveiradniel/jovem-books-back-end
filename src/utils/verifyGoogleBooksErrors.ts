@@ -20,7 +20,7 @@ export function verifyGoogleBooksErrors(error: Errors): IResponse {
       body: { error: error.message },
     };
   }
-  // console.log(error);
+
   return {
     statusCode: 500,
     body: { error: 'Internal Server Error' },
