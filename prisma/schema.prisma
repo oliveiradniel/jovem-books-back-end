@@ -30,10 +30,10 @@ model Book {
   id                String    @id @default(uuid()) @db.Uuid
   userId            String    @map("user_id") @db.Uuid
   title             String
-  author            String?
+  author            String[]
   sinopse           String?
   numberOfPages     Int?      @map("number_of_pages")
-  type              TypeBook
+  type              TypeBook[]
   dateOfPublication DateTime? @map("date_of_publication")
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime? @map("updated_at")

@@ -1,14 +1,17 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 import { env } from '../../../config/env';
 
 import {
+  IBookResponse,
   IFindByAuthor,
   IFindByTitle,
   IGetURL,
+  IGoogleBooks,
   IGoogleBooksAPIRepository,
-  IGoogleBooksResponse,
 } from './interfaces/IGoogleBooksAPIRepository';
+
+import GoogleBooksMapper from './mappers/GoogleBooksMapper';
 
 export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
   private getURL({
@@ -23,30 +26,35 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     title,
     startIndex,
     maxResults,
-  }: IFindByTitle): Promise<AxiosResponse<IGoogleBooksResponse>> {
+  }: IFindByTitle): Promise<IBookResponse[]> {
     const url = this.getURL({
       queryParam: `intitle:${title}`,
       startIndex,
       maxResults,
     });
-    const response = await axios.get(url);
 
-    return response.data;
+    const { data }: IGoogleBooks = await axios.get(url);
+
+    const googleBooks = data.items;
+
+    return GoogleBooksMapper.toDomain(googleBooks);
   }
 
   async findByAuthor({
     authorName,
     startIndex,
     maxResults,
-  }: IFindByAuthor): Promise<AxiosResponse<IGoogleBooksResponse>> {
+  }: IFindByAuthor): Promise<IBookResponse[]> {
     const url = this.getURL({
       queryParam: `inauthor:${authorName}`,
       startIndex,
       maxResults,
     });
 
-    const response = await axios.get(url);
+    const { data }: IGoogleBooks = await axios.get(url);
 
-    return response.data;
+    const googleBooks = data.items;
+
+    return GoogleBooksMapper.toDomain(googleBooks);
   }
 }
