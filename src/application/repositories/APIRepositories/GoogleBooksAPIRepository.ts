@@ -35,9 +35,9 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
 
     const { data }: IGoogleBooks = await axios.get(url);
 
-    const googleBooks = data.items;
+    const books = GoogleBooksMapper.toDomain(data.items);
 
-    return GoogleBooksMapper.toDomain(googleBooks);
+    return books;
   }
 
   async findByAuthor({
@@ -53,8 +53,8 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
 
     const { data }: IGoogleBooks = await axios.get(url);
 
-    const googleBooks = data.items;
+    const books = GoogleBooksMapper.toDomain(data.items);
 
-    return GoogleBooksMapper.toDomain(googleBooks);
+    return books;
   }
 }

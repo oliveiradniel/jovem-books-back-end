@@ -10,6 +10,7 @@ datasource db {
 model User {
   id        String    @id @default(uuid()) @db.Uuid
   username  String    @unique
+  imagePath String?    @map("image_path")
   firstName String    @map("first_name")
   lastName  String    @map("last_name")
   email     String    @unique
@@ -27,16 +28,17 @@ model User {
 }
 
 model Book {
-  id                String    @id @default(uuid()) @db.Uuid
-  userId            String    @map("user_id") @db.Uuid
+  id                String     @id @default(uuid()) @db.Uuid
+  userId            String     @map("user_id") @db.Uuid
   title             String
   author            String[]
   sinopse           String?
-  numberOfPages     Int?      @map("number_of_pages")
+  imagePath         String?     @map("image_path")
+  numberOfPages     Int?       @map("number_of_pages")
   type              TypeBook[]
-  dateOfPublication DateTime? @map("date_of_publication")
-  createdAt         DateTime  @default(now()) @map("created_at")
-  updatedAt         DateTime? @map("updated_at")
+  dateOfPublication DateTime?  @map("date_of_publication")
+  createdAt         DateTime   @default(now()) @map("created_at")
+  updatedAt         DateTime?  @map("updated_at")
 
   reads           Read[]
   bookCollections BookCollection[]

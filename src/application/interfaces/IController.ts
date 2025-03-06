@@ -5,6 +5,7 @@ export interface IRequest {
   body: Record<string, any>;
   params?: Record<string, any>;
   queryParams?: ParsedQs;
+  file?: Express.Multer.File;
 }
 
 export interface IResponse {

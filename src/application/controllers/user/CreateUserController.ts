@@ -9,11 +9,14 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 export class CreateUserController implements IController {
   constructor(private readonly createUserUpUseCase: CreateUserUseCase) {}
 
-  async handle({ body }: IRequest): Promise<IResponse> {
+  async handle({ body, file }: IRequest): Promise<IResponse> {
     try {
       const data = CreateUserSchema.parse(body);
 
-      await this.createUserUpUseCase.execute(data);
+      await this.createUserUpUseCase.execute({
+        ...data,
+        imagePath: file?.filename ?? null,
+      });
 
       return {
         statusCode: 201,
