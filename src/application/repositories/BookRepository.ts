@@ -53,7 +53,12 @@ export class BookRepository implements IBookRepository {
     userId: string;
   }): Promise<Book[] | null> {
     const book = await prismaClient.book.findMany({
-      where: { author: authorName, userId },
+      where: {
+        author: {
+          has: authorName,
+        },
+        userId,
+      },
     });
 
     return book;
