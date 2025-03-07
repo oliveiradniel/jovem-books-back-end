@@ -9,7 +9,7 @@ export function routeAdapter(controller: IController) {
       body: request.body,
       params: request.params,
       queryParams: request.query,
-      file: request.file,
+      file: request.file!,
     });
 
     response.status(statusCode).json(body);
