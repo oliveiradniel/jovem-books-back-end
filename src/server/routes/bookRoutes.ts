@@ -1,7 +1,3 @@
-import path from 'node:path';
-
-import multer from 'multer';
-
 import { Router } from 'express';
 
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
@@ -14,6 +10,7 @@ import { makeGetBookByIdController } from '../../factories/book/makeGetBookByIdC
 import { makeCreateBookController } from '../../factories/book/makeCreateBookController';
 import { makeUpdateBookController } from '../../factories/book/makeUpdateBookController';
 import { makeDeleteBookController } from '../../factories/book/makeDeleteBookController';
+import { multerConfig } from '../../application/lib/multerConfig';
 
 const router = Router();
 
@@ -29,18 +26,7 @@ router.get(
   routeAdapter(makeGetBookByIdController()),
 );
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, '..', '..', '..', 'uploads', 'books'));
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-});
+const upload = multerConfig({ directory: 'books' });
 
 router.post(
   '/',

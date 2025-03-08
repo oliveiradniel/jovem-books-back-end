@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.post('/sign-in', routeAdapter(makeSignInController()));
 
-const upload = multerConfig();
+const upload = multerConfig({ directory: 'users' });
 
 app.post(
   '/sign-up',
