@@ -24,7 +24,9 @@ export class CreateUserController implements IController {
         body: null,
       };
     } catch (error) {
-      await removeFile({ filename: file?.filename, directory: 'users' });
+      if (file?.filename) {
+        await removeFile({ filename: file.filename, directory: 'users' });
+      }
 
       return verifyUserErrors(error);
     }

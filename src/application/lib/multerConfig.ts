@@ -17,7 +17,22 @@ export function multerConfig({ directory }: { directory: 'users' | 'books' }) {
     },
   });
 
+  function fileFilter(
+    req: any,
+    file: Express.Multer.File,
+    cb: multer.FileFilterCallback,
+  ) {
+    const allowedMimes = ['image/jpeg', 'image/png'];
+    if (!allowedMimes.includes(file.mimetype)) {
+      return cb(null, false);
+    }
+
+    cb(null, true);
+  }
+
   return multer({
     storage: storage,
+    fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 },
   });
 }
