@@ -1,7 +1,3 @@
-import path from 'node:path';
-
-import multer from 'multer';
-
 import express from 'express';
 
 import { env } from '../config/env';
@@ -17,6 +13,7 @@ import { routeAdapter } from './adapters/routeAdapater';
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
+import { multerConfig } from '../application/lib/multerConfig';
 
 const app = express();
 
@@ -26,18 +23,7 @@ app.use(express.json());
 
 app.post('/sign-in', routeAdapter(makeSignInController()));
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, '..', '..', 'uploads', 'users'));
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-});
+const upload = multerConfig();
 
 app.post(
   '/sign-up',

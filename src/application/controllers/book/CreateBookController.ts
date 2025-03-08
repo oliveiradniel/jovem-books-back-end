@@ -26,7 +26,7 @@ export class CreateBookController implements IController {
         body: null,
       };
     } catch (error) {
-      await removeFile({ filename: file?.filename });
+      await removeFile({ filename: file?.filename, directory: 'books' });
 
       return verifyBookErrors(error);
     }
