@@ -1,3 +1,7 @@
+import path from 'node:path';
+
+import multer from 'multer';
+
 import { Router } from 'express';
 
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
@@ -25,8 +29,22 @@ router.get(
   routeAdapter(makeGetBookByIdController()),
 );
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.resolve(__dirname, '..', '..', '..', 'uploads', 'books'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
+
 router.post(
   '/',
+  upload.single('image'),
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateBookController()),
 );

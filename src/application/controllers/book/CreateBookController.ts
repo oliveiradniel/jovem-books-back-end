@@ -10,13 +10,15 @@ import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 export class CreateBookController implements IController {
   constructor(private readonly createBookUseCase: CreateBookUseCase) {}
 
-  async handle({ userId, body }: IRequest): Promise<IResponse> {
+  async handle({ userId, body, file }: IRequest): Promise<IResponse> {
     try {
       const parsedUserId = UserIdSchema.parse(userId);
 
       const data = CreateDataBookSchema.parse({ userId, ...body });
-
-      await this.createBookUseCase.execute({ userId: parsedUserId, data });
+      await this.createBookUseCase.execute({
+        userId: parsedUserId,
+        data: { ...data, imagePath: file?.filename },
+      });
 
       return {
         statusCode: 201,

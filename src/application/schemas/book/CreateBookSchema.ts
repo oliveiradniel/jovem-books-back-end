@@ -7,7 +7,7 @@ export const CreateDataBookSchema = z.object({
     .string({ message: 'Title must be a string' })
     .min(5, 'Title must be at least 5 characters'),
   author: z
-    .string({ message: 'Author must be a string' })
+    .array(z.string({ message: 'Author must be a string' }))
     .min(4, 'Author must be at least 4 characters')
     .optional(),
   sinopse: z
@@ -17,6 +17,6 @@ export const CreateDataBookSchema = z.object({
   numberOfPages: z
     .number({ message: 'Number of pages must be a number' })
     .optional(),
-  type: z.nativeEnum(TypeBook, { message: 'Enter a valid type' }),
+  type: z.array(z.nativeEnum(TypeBook, { message: 'Enter a valid type' })),
   dateOfPublication: z.date({ message: 'Enter a valid date' }).optional(),
 });

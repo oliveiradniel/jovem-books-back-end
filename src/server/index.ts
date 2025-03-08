@@ -1,3 +1,7 @@
+import path from 'node:path';
+
+import multer from 'multer';
+
 import express from 'express';
 
 import { env } from '../config/env';
@@ -14,9 +18,6 @@ import { routeAdapter } from './adapters/routeAdapater';
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
 
-import multer from 'multer';
-import path from 'node:path';
-
 const app = express();
 
 const { PORT } = env;
@@ -27,7 +28,7 @@ app.post('/sign-in', routeAdapter(makeSignInController()));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, '..', '..', 'uploads'));
+    cb(null, path.resolve(__dirname, '..', '..', 'uploads', 'users'));
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
