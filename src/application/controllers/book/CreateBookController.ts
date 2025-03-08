@@ -1,3 +1,4 @@
+import { removeFile } from '../../../utils/removeFile';
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { CreateBookUseCase } from '../../useCases/book/CreateBookUseCase';
@@ -25,6 +26,8 @@ export class CreateBookController implements IController {
         body: null,
       };
     } catch (error) {
+      await removeFile({ filename: file?.filename });
+
       return verifyBookErrors(error);
     }
   }
