@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import express from 'express';
 
 import { env } from '../config/env';
@@ -20,6 +22,16 @@ const app = express();
 const { PORT } = env;
 
 app.use(express.json());
+
+app.use(
+  '/uploads/users',
+  express.static(path.resolve(__dirname, '..', '..', 'uploads', 'users')),
+);
+
+app.use(
+  '/uploads/books',
+  express.static(path.resolve(__dirname, '..', '..', 'uploads', 'books')),
+);
 
 app.post('/sign-in', routeAdapter(makeSignInController()));
 
