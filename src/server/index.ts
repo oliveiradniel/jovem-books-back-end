@@ -13,7 +13,9 @@ import { routeAdapter } from './adapters/routeAdapater';
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
-import { makeUploadImageMiddleware } from '../factories/makeUploadImageMiddleware';
+
+import multer from 'multer';
+import path from 'node:path';
 
 const app = express();
 
@@ -21,13 +23,24 @@ const { PORT } = env;
 
 app.use(express.json());
 
-// Handle authentication user and sign-up
-
 app.post('/sign-in', routeAdapter(makeSignInController()));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.resolve(__dirname, '..', '..', 'uploads'));
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
 
 app.post(
   '/sign-up',
-  makeUploadImageMiddleware().handle().single('image'),
+  upload.single('image'),
   routeAdapter(makeCreateUserController()),
 );
 

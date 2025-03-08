@@ -15,11 +15,13 @@ export function middlewareAdapater(middleware: IMiddleware) {
       return;
     }
 
-    request.metadata = {
-      ...request.metadata,
-      ...result.data,
-    };
+    if ('data' in result) {
+      request.metadata = {
+        ...request.metadata,
+        ...result.data,
+      };
 
-    next();
+      next();
+    }
   };
 }

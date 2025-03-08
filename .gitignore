@@ -11,4 +11,4 @@ yarn.lock
 dist/
 
 # Uploads
-uploads
+/uploads/

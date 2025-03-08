@@ -11,7 +11,6 @@ export function routeAdapter(controller: IController) {
       queryParams: request.query,
       file: request.file!,
     });
-
     response.status(statusCode).json(body);
   };
 }
