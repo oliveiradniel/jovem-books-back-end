@@ -6,10 +6,10 @@ export const CreateUserSchema = z.object({
     .min(5, 'Username must be at least 5 characters long'),
   firstName: z
     .string({ message: 'First name must be a string' })
-    .min(5, 'First name must be at least 5 characters long'),
+    .min(3, 'First name must be at least 3 characters long'),
   lastName: z
     .string({ message: 'Last name must be a string' })
-    .min(5, 'Last name must be at least 5 characters long'),
+    .min(3, 'Last name must be at least 3 characters long'),
   email: z
     .string({ message: 'E-mail must be a string' })
     .email('Enter a valid email'),
