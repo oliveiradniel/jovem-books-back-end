@@ -19,40 +19,40 @@ export function verifyBookCollectionErrors(error: Errors): IResponse {
   if (error instanceof ZodError) {
     return {
       statusCode: 400,
-      body: { error: error.errors[0].message },
+      body: { message: error.errors[0].message },
     };
   }
 
   if (error instanceof UserNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof BookNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof CollectionNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof BookCollectionNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   return {
     statusCode: 500,
-    body: { error: 'Server Internal Error' },
+    body: { message: 'Server Internal Error' },
   };
 }

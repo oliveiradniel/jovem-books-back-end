@@ -19,40 +19,40 @@ export function verifyUserErrors(error: Errors): IResponse {
   if (error instanceof ZodError) {
     return {
       statusCode: 400,
-      body: { error: error.errors[0].message },
+      body: { message: error.errors[0].message },
     };
   }
 
   if (error instanceof EmailAlreadyInUse) {
     return {
       statusCode: 409,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof InvalidCredentials) {
     return {
       statusCode: 409,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof UsernameAlreadyInUse) {
     return {
       statusCode: 409,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof UserNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   return {
     statusCode: 500,
-    body: { error: 'Internal server error' },
+    body: { message: 'Internal server error' },
   };
 }

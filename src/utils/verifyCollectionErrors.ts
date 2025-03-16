@@ -17,33 +17,33 @@ export function verifyCollectionErrors(error: Errors): IResponse {
   if (error instanceof ZodError) {
     return {
       statusCode: 400,
-      body: { error: error.errors[0].message },
+      body: { message: error.errors[0].message },
     };
   }
 
   if (error instanceof CollectionNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof NameAlreadyInUse) {
     return {
       statusCode: 409,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   if (error instanceof UserNotFound) {
     return {
       statusCode: 404,
-      body: { error: error.message },
+      body: { message: error.message },
     };
   }
 
   return {
     statusCode: 500,
-    body: { error: 'Internal Server Error' },
+    body: { message: 'Internal Server Error' },
   };
 }
