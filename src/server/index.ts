@@ -2,6 +2,8 @@ import path from 'node:path';
 
 import express from 'express';
 
+import { cors } from './middlewares/cors';
+
 import { env } from '../config/env';
 
 import userRoutes from './routes/userRoutes';
@@ -21,6 +23,7 @@ const app = express();
 
 const { PORT } = env;
 
+app.use(cors);
 app.use(express.json());
 
 app.use(
