@@ -20,7 +20,6 @@ model User {
 
   books           Book[]
   collections     Collection[]
-  reads           Read[]
   bookCollections BookCollection[]
 
   @@index([username, email])
@@ -40,7 +39,7 @@ model Book {
   createdAt         DateTime   @default(now()) @map("created_at")
   updatedAt         DateTime?  @map("updated_at")
 
-  reads           Read[]
+  read           Read?
   bookCollections BookCollection[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -80,17 +79,14 @@ model BookCollection {
 
 model Read {
   bookId      String         @unique @db.Uuid
-  userId      String         @map("user_id") @db.Uuid
-  currentPage Int?           @map("current_page")
-  status      ReadingStatus?
+  currentPage Int           @map("current_page") @default(1)
+  status      ReadingStatus @default(READING)
   notes       String?
   createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime?      @map("updated_at")
+  finishedAt   DateTime?      @map("finished_at")
 
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@index([userId, status])
   @@map("reads")
 }
 
@@ -130,7 +126,6 @@ enum GenreLiterary {
 }
 
 enum ReadingStatus {
-  NOT_READING
   READING
   ON_HOLD
   FINISHED
