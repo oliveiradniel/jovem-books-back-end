@@ -10,7 +10,7 @@ import { IReadRepository } from '../../repositories/interfaces/IReadRepository';
 
 type DataToCreateRead = Omit<
   Partial<Read>,
-  'bookId' | 'userId' | 'createdAt' | 'updatedAt' | 'status'
+  'bookId' | 'createdAt' | 'finishedAt' | 'status'
 > &
   Pick<Read, 'status'>;
 

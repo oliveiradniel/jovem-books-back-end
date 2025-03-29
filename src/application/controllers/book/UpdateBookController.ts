@@ -12,7 +12,7 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 export class UpdateBookController implements IController {
   constructor(private readonly updateBookUseCase: UpdateBookUseCase) {}
 
-  async handle({ userId, body, params }: IRequest): Promise<IResponse> {
+  async handle({ userId, body, file, params }: IRequest): Promise<IResponse> {
     try {
       const { bookId: parsedBookId, userId: parsedUserId } = IdsSchema.parse({
         bookId: params?.id,
@@ -21,13 +21,12 @@ export class UpdateBookController implements IController {
 
       const data = UpdateDataBookSchema.parse({
         ...body,
-        updatedAt: new Date(),
       });
 
       await this.updateBookUseCase.execute({
         bookId: parsedBookId,
         userId: parsedUserId,
-        data,
+        data: { ...data, imagePath: file.filename ?? null },
       });
 
       return {

@@ -12,5 +12,5 @@ export const UpdateDataReadSchema = z.object({
     })
     .optional(),
   note: z.string({ message: 'Note must be a string' }).optional(),
-  updatedAt: z.date({ message: 'Enter a valid date' }),
+  finishedAt: z.date({ message: 'Enter a valid date' }).optional(),
 });

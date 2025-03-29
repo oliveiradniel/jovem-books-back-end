@@ -27,19 +27,18 @@ model User {
 }
 
 model Book {
-  id                String     @id @default(uuid()) @db.Uuid
-  userId            String     @map("user_id") @db.Uuid
+  id                String          @id @default(uuid()) @db.Uuid
+  userId            String          @map("user_id") @db.Uuid
   title             String
   authors           String[]
   sinopse           String?
-  imagePath         String?    @map("image_path")
-  numberOfPages     Int?       @map("number_of_pages")
+  imagePath         String?         @map("image_path")
+  numberOfPages     Int?            @map("number_of_pages")
   genreLiterary     GenreLiterary[] @map("genre_literary")
-  dateOfPublication DateTime?  @map("date_of_publication")
-  createdAt         DateTime   @default(now()) @map("created_at")
-  updatedAt         DateTime?  @map("updated_at")
+  dateOfPublication DateTime?       @map("date_of_publication")
+  createdAt         DateTime        @default(now()) @map("created_at")
 
-  read           Read?
+  read            Read?
   bookCollections BookCollection[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -78,12 +77,12 @@ model BookCollection {
 }
 
 model Read {
-  bookId      String         @unique @db.Uuid
-  currentPage Int           @map("current_page") @default(1)
+  bookId      String        @unique @db.Uuid
+  currentPage Int           @default(1) @map("current_page")
   status      ReadingStatus @default(READING)
   notes       String?
-  createdAt   DateTime       @default(now()) @map("created_at")
-  finishedAt   DateTime?      @map("finished_at")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  finishedAt  DateTime?     @map("finished_at")
 
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 

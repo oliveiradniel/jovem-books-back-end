@@ -10,7 +10,7 @@ import { IReadRepository } from '../../repositories/interfaces/IReadRepository';
 
 type DataToUpdateRead = Omit<
   Partial<Read>,
-  'bookId' | 'userId' | 'createdAt' | 'updatedAt'
+  'bookId' | 'createdAt' | 'finishedAt'
 >;
 
 interface IInput {

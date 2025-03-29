@@ -15,20 +15,23 @@ interface IInput {
   userId: string;
   data: Omit<
     Book,
-    | 'author'
+    | 'authors'
     | 'sinopse'
     | 'numberOfPages'
-    | 'type'
+    | 'genreLiterary'
     | 'dateOfPublication'
     | 'createdAt'
-    | 'updatedAt'
     | 'id'
     | 'userId'
   > &
     Partial<
       Pick<
         Book,
-        'author' | 'sinopse' | 'numberOfPages' | 'type' | 'dateOfPublication'
+        | 'authors'
+        | 'sinopse'
+        | 'numberOfPages'
+        | 'genreLiterary'
+        | 'dateOfPublication'
       >
     >;
 }
