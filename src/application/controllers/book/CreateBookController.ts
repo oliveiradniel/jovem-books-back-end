@@ -16,6 +16,7 @@ export class CreateBookController implements IController {
       const parsedUserId = UserIdSchema.parse(userId);
 
       const data = CreateDataBookSchema.parse({ userId, ...body });
+
       await this.createBookUseCase.execute({
         userId: parsedUserId,
         data: { ...data, imagePath: file?.filename },
@@ -27,7 +28,6 @@ export class CreateBookController implements IController {
       };
     } catch (error) {
       await removeFile({ filename: file?.filename, directory: 'books' });
-
       return verifyBookErrors(error);
     }
   }

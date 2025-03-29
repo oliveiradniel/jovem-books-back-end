@@ -6,9 +6,9 @@ import { IRepository } from '../../interfaces/IRepository';
 
 type BookDataCreate = Omit<
   Partial<Book>,
-  'id' | 'userId' | 'title' | 'type' | 'createdAt' | 'updatedAt'
+  'id' | 'userId' | 'title' | 'genreLiterary' | 'createdAt' | 'updatedAt'
 > &
-  Pick<Book, 'title' | 'type'>;
+  Pick<Book, 'title' | 'genreLiterary'>;
 
 type BookDataUpdate = Omit<Partial<Book>, 'id' | 'createdAt'>;
 

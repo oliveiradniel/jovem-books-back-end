@@ -6,7 +6,7 @@ export function routeAdapter(controller: IController) {
   return async (request: Request, response: Response) => {
     const { statusCode, body } = await controller.handle({
       userId: request.metadata?.userId,
-      body: request.body.data,
+      body: request.body,
       params: request.params,
       queryParams: request.query,
       file: request.file!,

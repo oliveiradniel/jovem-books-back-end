@@ -20,9 +20,9 @@ type DataToCreateBook = Omit<
   | 'updatedAt'
 > &
   Partial<
-    Pick<Book, 'author' | 'sinopse' | 'numberOfPages' | 'dateOfPublication'>
+    Pick<Book, 'authors' | 'sinopse' | 'numberOfPages' | 'dateOfPublication'>
   > &
-  Pick<Book, 'type'>;
+  Pick<Book, 'genreLiterary'>;
 
 interface IInput {
   userId: string;

@@ -1,15 +1,18 @@
 import { z } from 'zod';
 
-import { TypeBook } from '@prisma/client';
+import { GenreLiterary } from '@prisma/client';
 
 export const CreateDataBookSchema = z.object({
   title: z
     .string({ message: 'Title must be a string' })
     .min(5, 'Title must be at least 5 characters'),
-  author: z
-    .array(z.string({ message: 'Author must be a string' }))
-    .min(4, 'Author must be at least 4 characters')
-    .optional(),
+  authors: z
+    .array(
+      z
+        .string({ message: 'Author must be a string' })
+        .min(4, 'Author must be at least 4 characters'),
+    )
+    .default([]),
   sinopse: z
     .string({ message: 'Sinopse must be a string' })
     .min(10, 'Sinopse must be at least 10 characters')
@@ -17,6 +20,8 @@ export const CreateDataBookSchema = z.object({
   numberOfPages: z
     .number({ message: 'Number of pages must be a number' })
     .optional(),
-  type: z.array(z.nativeEnum(TypeBook, { message: 'Enter a valid type' })),
+  genreLiterary: z.array(
+    z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
+  ),
   dateOfPublication: z.date({ message: 'Enter a valid date' }).optional(),
 });
