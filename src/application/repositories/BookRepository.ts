@@ -1,6 +1,6 @@
 import { prismaClient } from '../lib/prismaClient';
 
-import { Book } from '@prisma/client';
+import { IBook } from '../../@types/IBook';
 
 import {
   IBookRepository,
@@ -12,20 +12,54 @@ import {
 } from './interfaces/IBookRepository';
 
 export class BookRepository implements IBookRepository {
-  async list({ userId, orderBy }: IList): Promise<Book[]> {
+  async list({ userId, orderBy }: IList): Promise<IBook[]> {
     const books = await prismaClient.book.findMany({
       where: { userId },
       orderBy: {
         title: orderBy,
+      },
+      select: {
+        id: true,
+        title: true,
+        authors: true,
+        sinopse: true,
+        imagePath: true,
+        genreLiterary: true,
+        numberOfPages: true,
+        read: {
+          select: {
+            status: true,
+            currentPage: true,
+            createdAt: true,
+            finishedAt: true,
+          },
+        },
       },
     });
 
     return books;
   }
 
-  async findById({ bookId, userId }: IFindBookById): Promise<Book | null> {
+  async findById({ bookId, userId }: IFindBookById): Promise<IBook | null> {
     const book = await prismaClient.book.findUnique({
       where: { id: bookId, userId },
+      select: {
+        id: true,
+        title: true,
+        authors: true,
+        sinopse: true,
+        imagePath: true,
+        genreLiterary: true,
+        numberOfPages: true,
+        read: {
+          select: {
+            status: true,
+            currentPage: true,
+            createdAt: true,
+            finishedAt: true,
+          },
+        },
+      },
     });
 
     return book;
@@ -37,9 +71,26 @@ export class BookRepository implements IBookRepository {
   }: {
     title: string;
     userId: string;
-  }): Promise<Book | null> {
+  }): Promise<IBook | null> {
     const book = await prismaClient.book.findFirst({
       where: { title, userId },
+      select: {
+        id: true,
+        title: true,
+        authors: true,
+        sinopse: true,
+        imagePath: true,
+        genreLiterary: true,
+        numberOfPages: true,
+        read: {
+          select: {
+            status: true,
+            currentPage: true,
+            createdAt: true,
+            finishedAt: true,
+          },
+        },
+      },
     });
 
     return book;
@@ -51,13 +102,30 @@ export class BookRepository implements IBookRepository {
   }: {
     authorName: string;
     userId: string;
-  }): Promise<Book[] | null> {
+  }): Promise<IBook[] | null> {
     const book = await prismaClient.book.findMany({
       where: {
         authors: {
           has: authorName,
         },
         userId,
+      },
+      select: {
+        id: true,
+        title: true,
+        authors: true,
+        sinopse: true,
+        imagePath: true,
+        genreLiterary: true,
+        numberOfPages: true,
+        read: {
+          select: {
+            status: true,
+            currentPage: true,
+            createdAt: true,
+            finishedAt: true,
+          },
+        },
       },
     });
 
