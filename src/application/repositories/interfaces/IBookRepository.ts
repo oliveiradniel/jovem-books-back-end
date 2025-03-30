@@ -3,6 +3,7 @@ import { Book } from '@prisma/client';
 import { TOrderBy } from '../../../@types/TOrderBy';
 
 import { IRepository } from '../../interfaces/IRepository';
+import { IBook } from '../../../@types/IBook';
 
 type BookDataCreate = Omit<
   Partial<Book>,
@@ -49,10 +50,10 @@ export interface IFindBookByAuthor {
 }
 
 export interface IBookRepository
-  extends IRepository<Book, IFindBookById, ICreate, IDelete, IList, IUpdate> {
-  findByTitle({ title, userId }: IFindBookByTitle): Promise<Book | null>;
+  extends IRepository<IBook, IFindBookById, ICreate, IDelete, IList, IUpdate> {
+  findByTitle({ title, userId }: IFindBookByTitle): Promise<IBook | null>;
   findByAuthor({
     authorName,
     userId,
-  }: IFindBookByAuthor): Promise<Book[] | null>;
+  }: IFindBookByAuthor): Promise<IBook[] | null>;
 }
