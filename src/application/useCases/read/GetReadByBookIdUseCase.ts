@@ -32,7 +32,7 @@ export class GetReadByIdUseCase implements IUseCase<IInput, Read | null> {
 
     await this.getBookByIdUseCase.execute({ bookId, userId });
 
-    const read = await this.readRepository.findById({ bookId, userId });
+    const read = await this.readRepository.findById({ bookId });
 
     if (shouldReturn && read) {
       throw new ReadingAlreadyStarted();

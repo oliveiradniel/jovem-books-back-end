@@ -3,7 +3,7 @@ import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 import { UpdateReadUseCase } from '../../useCases/read/UpdateReadUseCase';
 
 import { IdsSchema } from '../../schemas/read/IdsSchema';
-import { UpdateDataReadSchema } from '../../schemas/read/UpdateDataReadSchema';
+import { UpdateReadSchema } from '../../schemas/read/UpdateReadSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -17,7 +17,7 @@ export class UpdateReadController implements IController {
         bookId: params?.bookId,
       });
 
-      const data = UpdateDataReadSchema.parse({
+      const data = UpdateReadSchema.parse({
         ...body,
         updatedAt: new Date(),
       });

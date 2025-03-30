@@ -10,9 +10,8 @@ import { IReadRepository } from '../../repositories/interfaces/IReadRepository';
 
 type DataToCreateRead = Omit<
   Partial<Read>,
-  'bookId' | 'createdAt' | 'finishedAt' | 'status'
-> &
-  Pick<Read, 'status'>;
+  'bookId' | 'createdAt' | 'finishedAt'
+>;
 
 interface IInput {
   bookId: string;
@@ -39,6 +38,6 @@ export class CreateReadUseCase implements IUseCase<IInput, void> {
       shouldReturn: true,
     });
 
-    await this.readRepository.create({ bookId, userId, data });
+    await this.readRepository.create({ bookId, data });
   }
 }

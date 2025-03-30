@@ -5,19 +5,12 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeListReadsController } from '../../factories/read/makeListReadsController';
 import { makeGetReadByIdController } from '../../factories/read/makeGetReadByIdController';
 import { makeCreateReadController } from '../../factories/read/makeCreateReadController';
 import { makeUpdateReadController } from '../../factories/read/makeUpdateReadController';
 import { makeDeleteReadController } from '../../factories/read/makeDeleteReadController';
 
 const router = Router();
-
-router.get(
-  '/',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeListReadsController()),
-);
 
 router.get(
   '/:bookId',

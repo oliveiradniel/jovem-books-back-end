@@ -22,6 +22,6 @@ export class DeleteReadUseCase implements IUseCase<IInput, void> {
 
     await this.getBookByIdUseCase.execute({ bookId, userId });
 
-    await this.readRepository.delete({ bookId, userId });
+    await this.readRepository.delete({ bookId });
   }
 }

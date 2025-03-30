@@ -3,7 +3,7 @@ import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 import { CreateReadUseCase } from '../../useCases/read/CreateReadUseCase';
 
 import { IdsSchema } from '../../schemas/read/IdsSchema';
-import { CreateDataReadSchema } from '../../schemas/read/CreateDataReadSchema';
+import { CreateReadSchema } from '../../schemas/read/CreateReadSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -17,9 +17,8 @@ export class CreateReadController implements IController {
         bookId: params?.bookId,
       });
 
-      const data = CreateDataReadSchema.parse({
+      const data = CreateReadSchema.parse({
         ...body,
-        status: 'NOT_READING',
       });
 
       await this.createReadUseCase.execute({
@@ -33,6 +32,7 @@ export class CreateReadController implements IController {
         body: null,
       };
     } catch (error) {
+      console.log(error);
       return verifyReadErrors(error);
     }
   }
