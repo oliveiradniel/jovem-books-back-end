@@ -7,15 +7,37 @@ import { CreateDataBookSchema } from '../../schemas/book/CreateBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 import { UserIdSchema } from '../../schemas/user/UserIdSchema';
+import { GenreLiterary } from '@prisma/client';
 
 export class CreateBookController implements IController {
   constructor(private readonly createBookUseCase: CreateBookUseCase) {}
 
   async handle({ userId, body, file }: IRequest): Promise<IResponse> {
     try {
+      const authors: string[] =
+        typeof body.authors === 'string' ? [body.authors] : body.authors;
+
+      const genreLiterary: GenreLiterary[] =
+        typeof body.genreLiterary === 'string'
+          ? [body.genreLiterary]
+          : body.genreLiterary;
+
+      const bookData = {
+        userId,
+        title: body.title,
+        sinopse: body.sinopse,
+        imagePath: body.imagePath,
+        numberOfPages: Number(body.numberOfPages),
+        dateOfPublication: body.dateOfPublication,
+      };
+
       const parsedUserId = UserIdSchema.parse(userId);
 
-      const data = CreateDataBookSchema.parse({ userId, ...body });
+      const data = CreateDataBookSchema.parse({
+        ...bookData,
+        authors,
+        genreLiterary,
+      });
 
       await this.createBookUseCase.execute({
         userId: parsedUserId,

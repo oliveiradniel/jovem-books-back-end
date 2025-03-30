@@ -33,7 +33,7 @@ model Book {
   authors           String[]
   sinopse           String?
   imagePath         String?         @map("image_path")
-  numberOfPages     Int?            @map("number_of_pages")
+  numberOfPages     Int            @map("number_of_pages")
   genreLiterary     GenreLiterary[] @map("genre_literary")
   dateOfPublication DateTime?       @map("date_of_publication")
   createdAt         DateTime        @default(now()) @map("created_at")

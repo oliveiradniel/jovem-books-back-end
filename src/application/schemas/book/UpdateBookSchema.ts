@@ -20,8 +20,9 @@ export const UpdateDataBookSchema = z.object({
       z
         .string({ message: 'Author must be a string' })
         .min(4, 'Author must be at least 4 characters'),
+      { message: 'Authors is required' },
     )
-    .default([]),
+    .min(1, 'The authors array needs at least one author'),
   sinopse: z
     .string({ message: 'Sinopse must be a string' })
     .min(30, 'Sinopse must be at least 30 characters')
@@ -29,8 +30,10 @@ export const UpdateDataBookSchema = z.object({
   numberOfPages: z
     .number({ message: 'Number of pages must be a number' })
     .optional(),
-  genreLiterary: z.array(
-    z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
-  ),
+  genreLiterary: z
+    .array(
+      z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
+    )
+    .min(1, 'The genre literary array needs at least one genre literary'),
   dateOfPublication: z.date({ message: 'Enter a valid date' }).optional(),
 });
