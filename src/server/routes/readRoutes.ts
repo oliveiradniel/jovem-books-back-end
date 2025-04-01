@@ -5,7 +5,8 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeGetReadByIdController } from '../../factories/read/makeGetReadByIdController';
+import { makeListReadsController } from '../../factories/read/makeListReadsController';
+import { makeGetReadByBookIdController } from '../../factories/read/makeGetReadByBookdController';
 import { makeCreateReadController } from '../../factories/read/makeCreateReadController';
 import { makeUpdateReadController } from '../../factories/read/makeUpdateReadController';
 import { makeDeleteReadController } from '../../factories/read/makeDeleteReadController';
@@ -13,9 +14,15 @@ import { makeDeleteReadController } from '../../factories/read/makeDeleteReadCon
 const router = Router();
 
 router.get(
+  '/',
+  middlewareAdapater(makeAuthenticationMiddleware()),
+  routeAdapter(makeListReadsController()),
+);
+
+router.get(
   '/:bookId',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetReadByIdController()),
+  routeAdapter(makeGetReadByBookIdController()),
 );
 
 router.post(

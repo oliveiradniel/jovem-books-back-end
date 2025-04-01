@@ -1,4 +1,4 @@
-import { Book } from '@prisma/client';
+import { IBook } from '../../../@types/IBook';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -13,13 +13,13 @@ interface IInput {
   userId: string;
 }
 
-export class GetBookByIdUseCase implements IUseCase<IInput, Book> {
+export class GetBookByIdUseCase implements IUseCase<IInput, IBook> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, userId }: IInput): Promise<Book> {
+  async execute({ bookId, userId }: IInput): Promise<IBook> {
     await this.getUserByIdUseCase.execute({ userId });
 
     const book = await this.bookRepository.findById({

@@ -1,6 +1,6 @@
 import { Read } from '@prisma/client';
 
-import { GetReadByIdUseCase } from './GetReadByBookIdUseCase';
+import { GetReadByBookIdUseCase } from './GetReadByBookIdUseCase';
 import { GetBookByIdUseCase } from '../book/GetBookByIdUseCase';
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -22,15 +22,15 @@ interface IInput {
 export class CreateReadUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly readRepository: IReadRepository,
-    private readonly getReadByIdUseCase: GetReadByIdUseCase,
-    private readonly getBookByIdUseCase: GetBookByIdUseCase,
+    private readonly getReadByIdUseCase: GetReadByBookIdUseCase,
+    private readonly getBookByBookIdUseCase: GetBookByIdUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({ bookId, userId, data }: IInput): Promise<void> {
     await this.getUserByIdUseCase.execute({ userId });
 
-    await this.getBookByIdUseCase.execute({ bookId, userId });
+    await this.getBookByBookIdUseCase.execute({ bookId, userId });
 
     await this.getReadByIdUseCase.execute({
       bookId,

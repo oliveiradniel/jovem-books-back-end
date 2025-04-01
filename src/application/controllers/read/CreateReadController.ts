@@ -2,8 +2,9 @@ import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
 import { CreateReadUseCase } from '../../useCases/read/CreateReadUseCase';
 
-import { IdsSchema } from '../../schemas/read/IdsSchema';
 import { CreateReadSchema } from '../../schemas/read/CreateReadSchema';
+import { UserIdSchema } from '../../schemas/user/UserIdSchema';
+import { BookIdSchema } from '../../schemas/book/BookIdSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -12,18 +13,16 @@ export class CreateReadController implements IController {
 
   async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
-      const { bookId: parsedBookId, userId: parsedUserId } = IdsSchema.parse({
-        userId,
-        bookId: params?.bookId,
-      });
+      const id = UserIdSchema.parse(userId);
+      const bookId = BookIdSchema.parse(params?.bookId);
 
       const data = CreateReadSchema.parse({
         ...body,
       });
 
       await this.createReadUseCase.execute({
-        bookId: parsedBookId,
-        userId: parsedUserId,
+        bookId,
+        userId: id,
         data,
       });
 

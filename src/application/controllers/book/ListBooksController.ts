@@ -1,4 +1,4 @@
-import { Book } from '@prisma/client';
+import { IBook } from '../../../@types/IBook';
 
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
@@ -24,7 +24,7 @@ export class ListBooksController implements IController {
 
       return {
         statusCode: 200,
-        body: books as Book[],
+        body: books as IBook[],
       };
     } catch (error) {
       return verifyBookErrors(error);

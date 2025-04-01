@@ -1,4 +1,4 @@
-import { Book } from '@prisma/client';
+import { IBook } from '../../../@types/IBook';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -13,17 +13,17 @@ interface IInput {
   orderBy?: TOrderBy;
 }
 
-export class ListBooksUseCase implements IUseCase<IInput, Book[] | void> {
+export class ListBooksUseCase implements IUseCase<IInput, IBook[]> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ userId, orderBy = 'asc' }: IInput): Promise<Book[] | void> {
+  async execute({ userId, orderBy = 'asc' }: IInput): Promise<IBook[]> {
     await this.getUserByIdUseCase.execute({ userId });
 
     if (!this.bookRepository?.list) {
-      return;
+      return [];
     }
 
     const books = await this.bookRepository.list({

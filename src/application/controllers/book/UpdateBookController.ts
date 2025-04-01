@@ -2,30 +2,27 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { UpdateBookUseCase } from '../../useCases/book/UpdateBookUseCase';
 
-import {
-  IdsSchema,
-  UpdateDataBookSchema,
-} from '../../schemas/book/UpdateBookSchema';
+import { UpdateDataBookSchema } from '../../schemas/book/UpdateBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
+import { UserIdSchema } from '../../schemas/user/UserIdSchema';
+import { BookIdSchema } from '../../schemas/book/BookIdSchema';
 
 export class UpdateBookController implements IController {
   constructor(private readonly updateBookUseCase: UpdateBookUseCase) {}
 
   async handle({ userId, body, file, params }: IRequest): Promise<IResponse> {
     try {
-      const { bookId: parsedBookId, userId: parsedUserId } = IdsSchema.parse({
-        bookId: params?.id,
-        userId,
-      });
+      const id = UserIdSchema.parse(userId);
+      const bookId = BookIdSchema.parse(params?.id);
 
       const data = UpdateDataBookSchema.parse({
         ...body,
       });
 
       await this.updateBookUseCase.execute({
-        bookId: parsedBookId,
-        userId: parsedUserId,
+        bookId,
+        userId: id,
         data: { ...data, imagePath: file.filename ?? null },
       });
 

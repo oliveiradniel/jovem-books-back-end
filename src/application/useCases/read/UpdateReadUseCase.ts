@@ -1,6 +1,6 @@
 import { Read } from '@prisma/client';
 
-import { GetReadByIdUseCase } from './GetReadByBookIdUseCase';
+import { GetReadByBookIdUseCase } from './GetReadByBookIdUseCase';
 import { GetBookByIdUseCase } from '../book/GetBookByIdUseCase';
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -22,7 +22,7 @@ interface IInput {
 export class UpdateReadUseCase implements IUseCase<IInput, void> {
   constructor(
     private readonly readRepository: IReadRepository,
-    private readonly getReadByIdUseCase: GetReadByIdUseCase,
+    private readonly getReadByBookIdUseCase: GetReadByBookIdUseCase,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
@@ -32,12 +32,12 @@ export class UpdateReadUseCase implements IUseCase<IInput, void> {
 
     await this.getBookByIdUseCase.execute({ userId, bookId });
 
-    await this.getReadByIdUseCase.execute({ bookId, userId });
+    await this.getReadByBookIdUseCase.execute({ bookId, userId });
 
     if (!this.readRepository?.update) {
       return;
     }
 
-    await this.readRepository.update({ bookId, userId, data });
+    await this.readRepository.update({ bookId, data });
   }
 }

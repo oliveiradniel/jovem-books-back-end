@@ -1,4 +1,4 @@
-import { Book } from '@prisma/client';
+import { IBook } from '../../../@types/IBook';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -14,7 +14,7 @@ interface IInput {
   shouldReturn?: boolean;
 }
 
-export class GetBookByTitleUseCase implements IUseCase<IInput, Book | void> {
+export class GetBookByTitleUseCase implements IUseCase<IInput, IBook | void> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
@@ -24,7 +24,7 @@ export class GetBookByTitleUseCase implements IUseCase<IInput, Book | void> {
     title,
     userId,
     shouldReturn = false,
-  }: IInput): Promise<Book | void> {
+  }: IInput): Promise<IBook | void> {
     await this.getUserByIdUseCase.execute({ userId });
 
     const book = await this.bookRepository.findByTitle({ title, userId });

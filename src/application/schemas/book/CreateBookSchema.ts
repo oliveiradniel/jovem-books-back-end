@@ -5,12 +5,12 @@ import { GenreLiterary } from '@prisma/client';
 export const CreateDataBookSchema = z.object({
   title: z
     .string({ message: 'Title must be a string' })
-    .min(5, 'Title must be at least 5 characters'),
+    .min(3, 'Title must be at least 3 characters'),
   authors: z
     .array(
       z
         .string({ message: 'Author must be a string' })
-        .min(4, 'Author must be at least 4 characters'),
+        .min(3, 'Author must be at least 3 characters'),
       { message: 'Authors is required' },
     )
     .min(1, 'The authors array needs at least one author'),
@@ -24,5 +24,4 @@ export const CreateDataBookSchema = z.object({
       z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
     )
     .min(1, 'The genre literary array needs at least one genre literary'),
-  dateOfPublication: z.date({ message: 'Enter a valid date' }).optional(),
 });

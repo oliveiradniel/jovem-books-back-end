@@ -28,7 +28,6 @@ export class CreateBookController implements IController {
         sinopse: body.sinopse,
         imagePath: body.imagePath,
         numberOfPages: Number(body.numberOfPages),
-        dateOfPublication: body.dateOfPublication,
       };
 
       const parsedUserId = UserIdSchema.parse(userId);

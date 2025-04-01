@@ -1,4 +1,4 @@
-import { Book } from '@prisma/client';
+import { IBook } from '../../../@types/IBook';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 import { GetBookByIdUseCase } from './GetBookByIdUseCase';
@@ -14,24 +14,25 @@ interface IInput {
   bookId: string;
   userId: string;
   data: Omit<
-    Book,
+    IBook,
     | 'authors'
     | 'sinopse'
     | 'numberOfPages'
     | 'genreLiterary'
-    | 'dateOfPublication'
     | 'createdAt'
     | 'id'
     | 'userId'
+    | 'read'
   > &
     Partial<
       Pick<
-        Book,
+        IBook,
         | 'authors'
         | 'sinopse'
         | 'numberOfPages'
         | 'genreLiterary'
-        | 'dateOfPublication'
+        | 'imagePath'
+        | 'title'
       >
     >;
 }

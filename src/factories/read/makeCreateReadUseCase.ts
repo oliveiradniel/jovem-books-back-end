@@ -2,13 +2,13 @@ import { CreateReadUseCase } from '../../application/useCases/read/CreateReadUse
 
 import { makeGetBookByIdUseCase } from '../book/makeGetBookByIdUseCase';
 import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
-import { makeGetReadByIdUseCase } from './makeGetReadByIdUseCase';
+import { makeGetReadByBookIdUseCase } from './makeGetReadByBookIdUseCase';
 import { makeReadRepository } from './makeReadRepository';
 
 export function makeCreateReadUseCase() {
   return new CreateReadUseCase(
     makeReadRepository(),
-    makeGetReadByIdUseCase(),
+    makeGetReadByBookIdUseCase(),
     makeGetBookByIdUseCase(),
     makeGetUserByIdUseCase(),
   );

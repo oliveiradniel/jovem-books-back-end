@@ -1,14 +1,14 @@
-import { Read } from '@prisma/client';
+import { IRead } from '../../../@types/IRead';
 
 import { GetBookByIdUseCase } from '../book/GetBookByIdUseCase';
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
 import { ReadingAlreadyStarted } from '../../errors/read/ReadingAlreadyStarted';
+import { ReadingNotFound } from '../../errors/read/ReadingNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IReadRepository } from '../../repositories/interfaces/IReadRepository';
-import { ReadingNotFound } from '../../errors/read/ReadingNotFound';
 
 interface IInput {
   bookId: string;
@@ -16,7 +16,7 @@ interface IInput {
   shouldReturn?: boolean;
 }
 
-export class GetReadByIdUseCase implements IUseCase<IInput, Read | null> {
+export class GetReadByBookIdUseCase implements IUseCase<IInput, IRead | null> {
   constructor(
     private readonly readRepository: IReadRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
@@ -27,7 +27,7 @@ export class GetReadByIdUseCase implements IUseCase<IInput, Read | null> {
     bookId,
     userId,
     shouldReturn = false,
-  }: IInput): Promise<Read | null> {
+  }: IInput): Promise<IRead | null> {
     await this.getUserByIdUseCase.execute({ userId });
 
     await this.getBookByIdUseCase.execute({ bookId, userId });

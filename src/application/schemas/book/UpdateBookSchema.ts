@@ -35,5 +35,4 @@ export const UpdateDataBookSchema = z.object({
       z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
     )
     .min(1, 'The genre literary array needs at least one genre literary'),
-  dateOfPublication: z.date({ message: 'Enter a valid date' }).optional(),
 });

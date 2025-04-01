@@ -1,28 +1,31 @@
 import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
-import { DeleteReadUseCase } from '../../useCases/read/DeleteReadUseCase';
+import { GetReadByBookIdUseCase } from '../../useCases/read/GetReadByBookIdUseCase';
 
 import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 import { BookIdSchema } from '../../schemas/book/BookIdSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
-export class DeleteReadController implements IController {
-  constructor(private readonly deleteReadUseCase: DeleteReadUseCase) {}
+export class GetReadByBookIdController implements IController {
+  constructor(
+    private readonly getReadByBookIdUseCase: GetReadByBookIdUseCase,
+  ) {}
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
       const id = UserIdSchema.parse(userId);
+
       const bookId = BookIdSchema.parse(params?.bookId);
 
-      await this.deleteReadUseCase.execute({
+      const read = await this.getReadByBookIdUseCase.execute({
         bookId,
         userId: id,
       });
 
       return {
-        statusCode: 204,
-        body: null,
+        statusCode: 200,
+        body: read,
       };
     } catch (error) {
       return verifyReadErrors(error);

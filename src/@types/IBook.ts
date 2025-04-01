@@ -6,7 +6,7 @@ export interface IBook {
   authors: string[];
   sinopse: string | null;
   imagePath: string | null;
-  numberOfPages: number | null;
+  numberOfPages: number;
   genreLiterary: GenreLiterary[];
   read: {
     status: ReadingStatus;

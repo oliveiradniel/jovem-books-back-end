@@ -2,7 +2,8 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { GetBookByIdUseCase } from '../../useCases/book/GetBookByIdUseCase';
 
-import { GetBookByIdSchema } from '../../schemas/book/GetBookByIdSchema.ts';
+import { UserIdSchema } from '../../schemas/user/UserIdSchema';
+import { BookIdSchema } from '../../schemas/book/BookIdSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -11,11 +12,13 @@ export class GetBookByIdController implements IController {
 
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
-      const bookId = params?.id;
+      const id = UserIdSchema.parse(userId);
+      const bookId = BookIdSchema.parse(params?.id);
 
-      const data = GetBookByIdSchema.parse({ bookId, userId });
-
-      const book = await this.getBookByIdUseCase.execute(data);
+      const book = await this.getBookByIdUseCase.execute({
+        bookId,
+        userId: id,
+      });
 
       return {
         statusCode: 200,

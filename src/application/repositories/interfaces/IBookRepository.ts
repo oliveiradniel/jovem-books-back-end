@@ -1,17 +1,16 @@
-import { Book } from '@prisma/client';
+import { IBook } from '../../../@types/IBook';
 
 import { TOrderBy } from '../../../@types/TOrderBy';
 
 import { IRepository } from '../../interfaces/IRepository';
-import { IBook } from '../../../@types/IBook';
 
 type BookDataCreate = Omit<
-  Partial<Book>,
-  'id' | 'userId' | 'title' | 'genreLiterary' | 'createdAt' | 'updatedAt'
+  Partial<IBook>,
+  'id' | 'userId' | 'title' | 'genreLiterary' | 'createdAt' | 'read'
 > &
-  Pick<Book, 'title' | 'genreLiterary'>;
+  Pick<IBook, 'title' | 'genreLiterary' | 'numberOfPages'>;
 
-type BookDataUpdate = Omit<Partial<Book>, 'id' | 'createdAt'>;
+type BookDataUpdate = Omit<Partial<IBook>, 'id' | 'createdAt' | 'read'>;
 
 export interface IList {
   userId: string;
