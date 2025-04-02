@@ -1,3 +1,5 @@
+import { IRead } from '../../../@types/IRead';
+
 import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
 import { UpdateReadUseCase } from '../../useCases/read/UpdateReadUseCase';
@@ -29,15 +31,15 @@ export class UpdateReadController implements IController {
         finishedAt,
       });
 
-      await this.updateReadUseCase.execute({
+      const read = await this.updateReadUseCase.execute({
         bookId,
         userId: id,
         data,
       });
 
       return {
-        statusCode: 204,
-        body: null,
+        statusCode: 200,
+        body: read as IRead,
       };
     } catch (error) {
       return verifyReadErrors(error);

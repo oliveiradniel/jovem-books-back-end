@@ -50,11 +50,13 @@ export class ReadRepository implements IReadRepository {
     return read;
   }
 
-  async update({ bookId, data }: IUpdate): Promise<void> {
-    await prismaClient.read.update({
+  async update({ bookId, data }: IUpdate): Promise<IRead> {
+    const read = await prismaClient.read.update({
       where: { bookId },
       data,
     });
+
+    return read;
   }
 
   async delete({ bookId }: IDelete): Promise<void> {
