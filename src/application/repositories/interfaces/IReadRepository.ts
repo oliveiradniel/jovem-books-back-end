@@ -1,17 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
-import { IRead } from '../../../@types/IRead';
-
-import { Read } from '@prisma/client';
+import { IRead, IReadWithBook } from '../../../@types/IRead';
 
 import { IRepository } from '../../interfaces/IRepository';
 
 type ReadDataCreate = Omit<
-  Partial<Read>,
+  Partial<IRead>,
   'userId' | 'bookId' | 'createdAt' | 'updatedAt'
 >;
 
-type ReadDataUpdate = Omit<Partial<Read>, 'bookId' | 'createdAt'>;
+type ReadDataUpdate = Omit<Partial<IRead>, 'bookId' | 'createdAt'>;
 
 export interface IList {
   userId: string;
@@ -23,7 +21,6 @@ export interface IFindReadById {
 
 export interface ICreate {
   bookId: string;
-
   data?: ReadDataCreate;
 }
 
@@ -38,4 +35,11 @@ export interface IDelete {
 }
 
 export interface IReadRepository
-  extends IRepository<IRead, IFindReadById, ICreate, IDelete, IList, IUpdate> {}
+  extends IRepository<
+    IRead | IReadWithBook,
+    IFindReadById,
+    ICreate,
+    IDelete,
+    IList,
+    IUpdate
+  > {}

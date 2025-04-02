@@ -4,9 +4,10 @@ import { UpdateReadUseCase } from '../../useCases/read/UpdateReadUseCase';
 
 import { UpdateReadSchema } from '../../schemas/read/UpdateReadSchema';
 
-import { IController, IRequest, IResponse } from '../../interfaces/IController';
 import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 import { BookIdSchema } from '../../schemas/book/BookIdSchema';
+
+import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class UpdateReadController implements IController {
   constructor(private readonly updateReadUseCase: UpdateReadUseCase) {}

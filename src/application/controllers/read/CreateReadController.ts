@@ -20,7 +20,7 @@ export class CreateReadController implements IController {
         ...body,
       });
 
-      await this.createReadUseCase.execute({
+      const read = await this.createReadUseCase.execute({
         bookId,
         userId: id,
         data,
@@ -28,7 +28,7 @@ export class CreateReadController implements IController {
 
       return {
         statusCode: 201,
-        body: null,
+        body: read,
       };
     } catch (error) {
       console.log(error);

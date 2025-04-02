@@ -1,6 +1,6 @@
 import { prismaClient } from '../lib/prismaClient';
 
-import { IRead } from '../../@types/IRead';
+import { IRead, IReadWithBook } from '../../@types/IRead';
 
 import {
   ICreate,
@@ -12,7 +12,7 @@ import {
 } from './interfaces/IReadRepository';
 
 export class ReadRepository implements IReadRepository {
-  async list({ userId }: IList): Promise<IRead[]> {
+  async list({ userId }: IList): Promise<IReadWithBook[]> {
     const books = await prismaClient.book.findMany({
       where: { userId, read: { isNot: null } },
       select: {
@@ -24,7 +24,7 @@ export class ReadRepository implements IReadRepository {
     return books;
   }
 
-  async findById({ bookId }: IFindReadById): Promise<IRead | null> {
+  async findById({ bookId }: IFindReadById): Promise<IReadWithBook | null> {
     const read = await prismaClient.book.findUnique({
       where: {
         id: bookId,
@@ -39,13 +39,15 @@ export class ReadRepository implements IReadRepository {
     return read;
   }
 
-  async create({ bookId, data }: ICreate): Promise<void> {
-    await prismaClient.read.create({
+  async create({ bookId, data }: ICreate): Promise<IRead> {
+    const read = await prismaClient.read.create({
       data: {
         bookId,
         ...data,
       },
     });
+
+    return read;
   }
 
   async update({ bookId, data }: IUpdate): Promise<void> {

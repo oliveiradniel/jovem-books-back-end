@@ -8,7 +8,7 @@ export interface IRepository<
 > {
   list?(data: ListModel): Promise<Model[]>;
   findById(data: SearchModel): Promise<Model | null>;
-  create(data: CreateModel): Promise<void>;
+  create(data: CreateModel): Promise<Model | void>;
   update?(data: UpdateModel): Promise<void>;
   delete(data: DeleteModel): Promise<void>;
 }
