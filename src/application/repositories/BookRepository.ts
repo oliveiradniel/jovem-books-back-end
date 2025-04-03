@@ -99,11 +99,14 @@ export class BookRepository implements IBookRepository {
     });
   }
 
-  async update({ bookId, userId, data }: IUpdate): Promise<void> {
-    await prismaClient.book.update({
+  async update({ bookId, userId, data }: IUpdate): Promise<IBook> {
+    const book = await prismaClient.book.update({
       where: { id: bookId, userId },
       data,
+      include: { read: true },
     });
+
+    return book;
   }
 
   async delete({ bookId, userId }: IDelete): Promise<void> {

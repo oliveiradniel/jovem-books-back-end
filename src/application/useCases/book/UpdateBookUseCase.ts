@@ -13,31 +13,20 @@ import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
 interface IInput {
   bookId: string;
   userId: string;
-  data: Omit<
-    IBook,
-    | 'authors'
-    | 'sinopse'
-    | 'numberOfPages'
-    | 'genreLiterary'
-    | 'createdAt'
-    | 'id'
-    | 'userId'
-    | 'read'
-  > &
-    Partial<
-      Pick<
-        IBook,
-        | 'authors'
-        | 'sinopse'
-        | 'numberOfPages'
-        | 'genreLiterary'
-        | 'imagePath'
-        | 'title'
-      >
-    >;
+  data: Partial<
+    Pick<
+      IBook,
+      | 'authors'
+      | 'sinopse'
+      | 'numberOfPages'
+      | 'genreLiterary'
+      | 'imagePath'
+      | 'title'
+    >
+  >;
 }
 
-export class UpdateBookUseCase implements IUseCase<IInput, void> {
+export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
@@ -45,7 +34,7 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, userId, data }: IInput): Promise<void> {
+  async execute({ bookId, userId, data }: IInput): Promise<IBook | void> {
     await this.getUserByIdUseCase.execute({ userId });
 
     await this.getBookByIdUseCase.execute({
@@ -53,24 +42,26 @@ export class UpdateBookUseCase implements IUseCase<IInput, void> {
       userId,
     });
 
-    const bookDataWithTheTitleInUse = await this.getBookByTitleUseCase.execute({
-      userId,
-      title: data.title,
-      shouldReturn: true,
-    });
+    if (data?.title) {
+      const bookDataWithTheTitleInUse =
+        await this.getBookByTitleUseCase.execute({
+          userId,
+          title: data.title!,
+          shouldReturn: true,
+        });
 
-    if (bookDataWithTheTitleInUse && bookDataWithTheTitleInUse.id !== bookId) {
-      throw new TitleAlreadyInUse();
+      if (
+        bookDataWithTheTitleInUse &&
+        bookDataWithTheTitleInUse.id !== bookId
+      ) {
+        throw new TitleAlreadyInUse();
+      }
     }
 
     if (!this.bookRepository?.update) {
       return;
     }
 
-    await this.bookRepository.update({
-      bookId,
-      userId,
-      data,
-    });
+    return await this.bookRepository.update({ bookId, userId, data });
   }
 }

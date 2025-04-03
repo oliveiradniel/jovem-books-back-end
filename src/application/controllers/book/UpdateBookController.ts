@@ -20,15 +20,15 @@ export class UpdateBookController implements IController {
         ...body,
       });
 
-      await this.updateBookUseCase.execute({
+      const updatedBook = await this.updateBookUseCase.execute({
         bookId,
         userId: id,
-        data: { ...data, imagePath: file.filename ?? null },
+        data: { ...data, imagePath: file?.filename ?? null },
       });
 
       return {
-        statusCode: 204,
-        body: null,
+        statusCode: 200,
+        body: updatedBook!,
       };
     } catch (error) {
       return verifyBookErrors(error);

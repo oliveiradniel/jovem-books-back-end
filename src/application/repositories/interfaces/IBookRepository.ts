@@ -4,9 +4,9 @@ import { TOrderBy } from '../../../@types/TOrderBy';
 
 import { IRepository } from '../../interfaces/IRepository';
 
-type BookDataCreate = Omit<
+export type BookDataCreate = Omit<
   Partial<IBook>,
-  'id' | 'userId' | 'title' | 'genreLiterary' | 'createdAt' | 'read'
+  'id' | 'userId' | 'title' | 'genreLiterary' | 'numberOfPages' | 'read'
 > &
   Pick<IBook, 'title' | 'genreLiterary' | 'numberOfPages'>;
 
