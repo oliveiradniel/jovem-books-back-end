@@ -37,6 +37,7 @@ router.post(
 
 router.put(
   '/:id',
+  upload.single('image'),
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateBookController()),
 );

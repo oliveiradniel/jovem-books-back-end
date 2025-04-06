@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+
 import { IBook } from '../../../@types/IBook';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
@@ -9,6 +11,7 @@ import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
+import path from 'node:path';
 
 interface IInput {
   bookId: string;
@@ -23,7 +26,7 @@ interface IInput {
       | 'imagePath'
       | 'title'
     >
-  >;
+  > & { removeImage?: string };
 }
 
 export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
@@ -35,9 +38,11 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
   ) {}
 
   async execute({ bookId, userId, data }: IInput): Promise<IBook | void> {
+    const { removeImage } = data;
+
     await this.getUserByIdUseCase.execute({ userId });
 
-    await this.getBookByIdUseCase.execute({
+    const book = await this.getBookByIdUseCase.execute({
       bookId,
       userId,
     });
@@ -60,6 +65,34 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
 
     if (!this.bookRepository?.update) {
       return;
+    }
+
+    if (removeImage === 'true' && book.imagePath) {
+      const filePath = path.resolve(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        '..',
+        'uploads',
+        'books',
+        book.imagePath,
+      );
+
+      fs.access(filePath, fs.constants.F_OK, err => {
+        if (err) {
+          console.error('Arquivo não encontrado:', err);
+          return;
+        }
+
+        fs.unlink(filePath, err => {
+          if (err) {
+            console.error('Erro ao apagar o arquivo:', err);
+          } else {
+            console.log('Arquivo apagado com sucesso');
+          }
+        });
+      });
     }
 
     return await this.bookRepository.update({ bookId, userId, data });

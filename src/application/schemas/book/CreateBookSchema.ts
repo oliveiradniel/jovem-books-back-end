@@ -14,10 +14,7 @@ export const CreateDataBookSchema = z.object({
       { message: 'Authors is required' },
     )
     .min(1, 'The authors array needs at least one author'),
-  sinopse: z
-    .string({ message: 'Sinopse must be a string' })
-    .min(10, 'Sinopse must be at least 10 characters')
-    .optional(),
+  sinopse: z.string({ message: 'Sinopse must be a string' }).optional(),
   numberOfPages: z.number({ message: 'Number of pages must be a number' }),
   genreLiterary: z
     .array(

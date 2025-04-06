@@ -5,20 +5,17 @@ import { GenreLiterary } from '@prisma/client';
 export const UpdateDataBookSchema = z.object({
   title: z
     .string({ message: 'Title must be a string' })
-    .min(5, 'Title must be at least 5 characters')
+    .min(3, 'Title must be at least 3 characters')
     .optional(),
   authors: z
     .array(
       z
         .string({ message: 'Author must be a string' })
-        .min(4, 'Author must be at least 4 characters'),
+        .min(3, 'Author must be at least 3 characters'),
       { message: 'Authors is required' },
     )
     .optional(),
-  sinopse: z
-    .string({ message: 'Sinopse must be a string' })
-    .min(30, 'Sinopse must be at least 30 characters')
-    .optional(),
+  sinopse: z.string({ message: 'Sinopse must be a string' }).optional(),
   numberOfPages: z
     .number({ message: 'Number of pages must be a number' })
     .optional(),
@@ -27,4 +24,5 @@ export const UpdateDataBookSchema = z.object({
       z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
     )
     .optional(),
+  removeImage: z.string().optional(),
 });
