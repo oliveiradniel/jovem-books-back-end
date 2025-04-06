@@ -31,7 +31,6 @@ export class CreateReadController implements IController {
         body: createdRead,
       };
     } catch (error) {
-      console.log(error);
       return verifyReadErrors(error);
     }
   }

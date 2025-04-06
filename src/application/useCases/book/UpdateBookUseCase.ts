@@ -47,6 +47,8 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
       userId,
     });
 
+    data = removeImage === 'true' ? { imagePath: null } : data;
+
     if (data?.title) {
       const bookDataWithTheTitleInUse =
         await this.getBookByTitleUseCase.execute({
@@ -95,6 +97,10 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
       });
     }
 
-    return await this.bookRepository.update({ bookId, userId, data });
+    return await this.bookRepository.update({
+      bookId,
+      userId,
+      data,
+    });
   }
 }
