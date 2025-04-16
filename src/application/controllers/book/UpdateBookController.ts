@@ -1,3 +1,5 @@
+import { GenreLiterary } from '@prisma/client';
+
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { UpdateBookUseCase } from '../../useCases/book/UpdateBookUseCase';
@@ -21,8 +23,26 @@ export class UpdateBookController implements IController {
       const id = UserIdSchema.parse(userId);
       const bookId = BookIdSchema.parse(params?.id);
 
+      const authors: string[] =
+        typeof body.authors === 'string'
+          ? [
+              body.authors
+                .split(',')
+                .map(p => p.trim())
+                .filter(p => p.length > 0)
+                .join(', '),
+            ]
+          : body.authors;
+
+      const genreLiterary: GenreLiterary[] =
+        typeof body.genreLiterary === 'string'
+          ? [body.genreLiterary]
+          : body.genreLiterary;
+
       const data = UpdateDataBookSchema.parse({
         ...body,
+        authors,
+        genreLiterary,
       });
 
       const book = await this.getBookByIdUseCase.execute({
