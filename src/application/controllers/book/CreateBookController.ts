@@ -3,39 +3,30 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { CreateBookUseCase } from '../../useCases/book/CreateBookUseCase';
 
+import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 import { CreateDataBookSchema } from '../../schemas/book/CreateBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
-import { UserIdSchema } from '../../schemas/user/UserIdSchema';
-import { GenreLiterary } from '@prisma/client';
 
 export class CreateBookController implements IController {
   constructor(private readonly createBookUseCase: CreateBookUseCase) {}
 
   async handle({ userId, body, file }: IRequest): Promise<IResponse> {
     try {
-      const authors: string[] =
-        typeof body.authors === 'string' ? [body.authors] : body.authors;
-
-      const genreLiterary: GenreLiterary[] =
-        typeof body.genreLiterary === 'string'
-          ? [body.genreLiterary]
-          : body.genreLiterary;
-
       const bookData = {
         userId,
         title: body.title,
+        authors: body.authors,
         sinopse: body.sinopse,
-        imagePath: body.imagePath,
         numberOfPages: Number(body.numberOfPages),
+        genreLiterary: body.genreLiterary,
       };
 
       const parsedUserId = UserIdSchema.parse(userId);
-
+      console.log(bookData);
+      console.log(body.literaryGenre);
       const data = CreateDataBookSchema.parse({
         ...bookData,
-        authors,
-        genreLiterary,
       });
 
       await this.createBookUseCase.execute({
@@ -48,7 +39,9 @@ export class CreateBookController implements IController {
         body: null,
       };
     } catch (error) {
-      await removeFile({ filename: file?.filename, directory: 'books' });
+      if (file) {
+        await removeFile({ filename: file?.filename, directory: 'books' });
+      }
       return verifyBookErrors(error);
     }
   }

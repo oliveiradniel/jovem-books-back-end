@@ -19,6 +19,7 @@ export const CreateDataBookSchema = z.object({
   genreLiterary: z
     .array(
       z.nativeEnum(GenreLiterary, { message: 'Enter a valid genre literary' }),
+      { message: 'Literary genre must be a string' },
     )
     .min(1, 'The genre literary array needs at least one genre literary'),
 });
