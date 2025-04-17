@@ -23,8 +23,7 @@ export class CreateBookController implements IController {
       };
 
       const parsedUserId = UserIdSchema.parse(userId);
-      console.log(bookData);
-      console.log(body.literaryGenre);
+
       const data = CreateDataBookSchema.parse({
         ...bookData,
       });
