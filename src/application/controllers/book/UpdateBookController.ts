@@ -21,26 +21,28 @@ export class UpdateBookController implements IController {
       const id = UserIdSchema.parse(userId);
       const bookId = BookIdSchema.parse(params?.id);
 
-      const bookData = {
-        userId,
-        title: body.title,
-        authors: body.authors,
-        sinopse: body.sinopse,
-        numberOfPages: Number(body.numberOfPages),
-        genreLiterary: body.genreLiterary,
-      };
-
-      const data = UpdateDataBookSchema.parse(bookData);
-
       const book = await this.getBookByIdUseCase.execute({
         bookId,
         userId: id,
       });
 
+      const bookData = {
+        userId,
+        title: body.title ?? book.title,
+        authors: body.authors ?? book.authors,
+        sinopse: body.sinopse ?? book.sinopse,
+        genreLiterary: body.genreLiterary ?? book.genreLiterary,
+      };
+
+      const data = UpdateDataBookSchema.parse(bookData);
+
       const updatedBook = await this.updateBookUseCase.execute({
         bookId,
         userId: id,
-        data: { ...data, imagePath: file?.filename ?? book.imagePath },
+        data: {
+          ...data,
+          imagePath: body.removeImage ? null : file?.filename ?? book.imagePath,
+        },
       });
 
       return {
@@ -48,7 +50,6 @@ export class UpdateBookController implements IController {
         body: updatedBook!,
       };
     } catch (error) {
-      console.log(error);
       return verifyBookErrors(error);
     }
   }
