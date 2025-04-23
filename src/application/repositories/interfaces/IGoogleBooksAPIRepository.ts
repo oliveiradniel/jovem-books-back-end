@@ -8,7 +8,7 @@ export interface IGoogleBook {
     pageCount: number;
     categories: string[];
     imageLinks: {
-      thumbnail: string;
+      thumbnail?: string | null;
     };
   };
 }
@@ -19,7 +19,7 @@ export interface IGoogleBooks {
   };
 }
 
-export interface IBookResponse {
+export interface IBook {
   id: string;
   title: string;
   author: string[];
@@ -37,7 +37,7 @@ export interface IGetURL {
 export type IFindByTitle = Omit<IGetURL, 'queryParam'> & { title: string };
 
 export type IFindByAuthor = Omit<IGetURL, 'queryParam'> & {
-  authorName: string;
+  author: string;
 };
 
 export interface IGoogleBooksAPIRepository {
@@ -45,10 +45,10 @@ export interface IGoogleBooksAPIRepository {
     title,
     startIndex,
     maxResults,
-  }: IFindByTitle): Promise<IBookResponse[]>;
+  }: IFindByTitle): Promise<IBook[]>;
   findByAuthor({
-    authorName,
+    author,
     startIndex,
     maxResults,
-  }: IFindByAuthor): Promise<IBookResponse[]>;
+  }: IFindByAuthor): Promise<IBook[]>;
 }

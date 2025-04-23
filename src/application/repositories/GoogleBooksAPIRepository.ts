@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import { env } from '../../../config/env';
+import { env } from '../../config/env';
 
 import {
-  IBookResponse,
+  IBook,
   IFindByAuthor,
   IFindByTitle,
   IGetURL,
@@ -11,7 +11,7 @@ import {
   IGoogleBooksAPIRepository,
 } from './interfaces/IGoogleBooksAPIRepository';
 
-import GoogleBooksMapper from './mappers/GoogleBooksMapper';
+import GoogleBooksMapper from './APIRepositories/mappers/GoogleBooksMapper';
 
 export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
   private getURL({
@@ -26,7 +26,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     title,
     startIndex,
     maxResults,
-  }: IFindByTitle): Promise<IBookResponse[]> {
+  }: IFindByTitle): Promise<IBook[]> {
     const url = this.getURL({
       queryParam: `intitle:${title}`,
       startIndex,
@@ -41,12 +41,12 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
   }
 
   async findByAuthor({
-    authorName,
+    author,
     startIndex,
     maxResults,
-  }: IFindByAuthor): Promise<IBookResponse[]> {
+  }: IFindByAuthor): Promise<IBook[]> {
     const url = this.getURL({
-      queryParam: `inauthor:${authorName}`,
+      queryParam: `inauthor:${author}`,
       startIndex,
       maxResults,
     });

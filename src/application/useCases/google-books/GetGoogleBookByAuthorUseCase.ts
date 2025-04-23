@@ -1,25 +1,22 @@
-import { AxiosResponse } from 'axios';
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import {
   IGoogleBooksAPIRepository,
-  IGoogleBooksResponse,
-} from '../../repositories/APIRepositories/interfaces/IGoogleBooksAPIRepository';
+  IBook,
+} from '../../repositories/interfaces/IGoogleBooksAPIRepository';
 
 interface IInput {
-  authorName: string;
-  startIndex: number;
-  maxResults: number;
+  author: string;
+  startIndex?: number;
+  maxResults?: number;
 }
 
-export class GetGoogleBookByAuthorUseCase
-  implements IUseCase<IInput, AxiosResponse<IGoogleBooksResponse>>
-{
+export class GetGoogleBookByAuthorUseCase implements IUseCase<IInput, IBook[]> {
   constructor(
     private readonly googleBooksRepository: IGoogleBooksAPIRepository,
   ) {}
 
-  async execute(data: IInput): Promise<AxiosResponse<IGoogleBooksResponse>> {
+  async execute(data: IInput): Promise<IBook[]> {
     const googleBooks = await this.googleBooksRepository.findByAuthor(data);
 
     return googleBooks;

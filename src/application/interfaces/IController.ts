@@ -4,7 +4,7 @@ export interface IRequest {
   userId: string;
   body: Record<string, any>;
   params?: Record<string, any>;
-  queryParams?: ParsedQs;
+  queryParams?: ParsedQs & { title?: string };
   file: Express.Multer.File;
 }
 
