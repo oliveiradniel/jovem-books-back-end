@@ -19,14 +19,14 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     startIndex = 0,
     maxResults = 20,
   }: IGetURL): string {
-    return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&projection=lite&startIndex=${startIndex}&maxResults=${maxResults}&key=${env.GOOGLE_API_KEY}`;
+    return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&startIndex=${startIndex}&maxResults=${maxResults}&key=${env.GOOGLE_API_KEY}`;
   }
 
   async findByTitle({
     title,
     startIndex,
     maxResults,
-  }: IFindByTitle): Promise<IBook[]> {
+  }: IFindByTitle): Promise<IBook[] | null> {
     const url = this.getURL({
       queryParam: `intitle:${title}`,
       startIndex,
@@ -34,6 +34,10 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     });
 
     const { data }: IGoogleBooks = await axios.get(url);
+
+    if (!data.items) {
+      return null;
+    }
 
     const books = GoogleBooksMapper.toDomain(data.items);
 
@@ -44,7 +48,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     author,
     startIndex,
     maxResults,
-  }: IFindByAuthor): Promise<IBook[]> {
+  }: IFindByAuthor): Promise<IBook[] | null> {
     const url = this.getURL({
       queryParam: `inauthor:${author}`,
       startIndex,
@@ -52,6 +56,10 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     });
 
     const { data }: IGoogleBooks = await axios.get(url);
+
+    if (!data.items) {
+      return null;
+    }
 
     const books = GoogleBooksMapper.toDomain(data.items);
 

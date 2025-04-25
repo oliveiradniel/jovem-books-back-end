@@ -19,14 +19,12 @@ export class CreateBookController implements IController {
         authors: body.authors,
         sinopse: body.sinopse,
         numberOfPages: Number(body.numberOfPages),
-        genreLiterary: body.genreLiterary,
+        literaryGenre: body.literaryGenre,
       };
-
+      console.log(bookData);
       const parsedUserId = UserIdSchema.parse(userId);
 
-      const data = CreateDataBookSchema.parse({
-        ...bookData,
-      });
+      const data = CreateDataBookSchema.parse(bookData);
 
       await this.createBookUseCase.execute({
         userId: parsedUserId,
@@ -38,6 +36,7 @@ export class CreateBookController implements IController {
         body: null,
       };
     } catch (error) {
+      console.log(error);
       if (file) {
         await removeFile({ filename: file?.filename, directory: 'books' });
       }

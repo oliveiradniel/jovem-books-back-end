@@ -18,7 +18,7 @@ export class BookRepository implements IBookRepository {
     authors: true,
     sinopse: true,
     imagePath: true,
-    genreLiterary: true,
+    literaryGenre: true,
     numberOfPages: true,
     read: {
       select: {

@@ -34,7 +34,7 @@ model Book {
   sinopse           String?
   imagePath         String?         @map("image_path")
   numberOfPages     Int            @map("number_of_pages")
-  genreLiterary     GenreLiterary[] @map("genre_literary")
+  literaryGenre     String[] @map("literary_genre")
   dateOfPublication DateTime?       @map("date_of_publication")
   createdAt         DateTime        @default(now()) @map("created_at")
 
@@ -43,7 +43,7 @@ model Book {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
-  @@index([userId, title, authors, genreLiterary])
+  @@index([userId, title, authors, literaryGenre])
   @@map("books")
 }
 
@@ -87,41 +87,6 @@ model Read {
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("reads")
-}
-
-enum GenreLiterary {
-  ROMANCE
-  SCIENCE_FICTION
-  ADVENTURE
-  PHILOSOPHY
-  DRAMA
-  RELIGIOUS
-  MYSTERY
-  HORROR
-  BIOGRAPHY
-  HISTORICAL
-  FANTASY
-  THRILLER
-  HUMOR
-  CHILDRENS
-  YOUNG_ADULT
-  POETRY
-  ART_AND_DESIGN
-  POLITICS
-  ECONOMICS
-  SELF_HELP
-  CRIME
-  DYSTOPIAN
-  WESTERN
-  GOTHIC
-  EROTIC
-  CYBERPUNK
-  STEAMPUNK
-  COOKING
-  TRAVEL
-  SPORTS
-  FAIRYTALE
-  OTHER
 }
 
 enum ReadingStatus {

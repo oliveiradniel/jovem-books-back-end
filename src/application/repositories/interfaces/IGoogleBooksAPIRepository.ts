@@ -8,7 +8,12 @@ export interface IGoogleBook {
     pageCount: number;
     categories: string[];
     imageLinks: {
-      thumbnail?: string | null;
+      smallThumbnail: string | null;
+      thumbnail: string | null;
+      small: string | null;
+      medium: string | null;
+      large: string | null;
+      extraLarge: string | null;
     };
   };
 }
@@ -22,10 +27,11 @@ export interface IGoogleBooks {
 export interface IBook {
   id: string;
   title: string;
-  author: string[];
+  authors: string[];
   sinopse: string;
   numberOfPages: number | null;
   dateOfPublication: Date;
+  imagePath: string | null;
 }
 
 export interface IGetURL {
@@ -45,10 +51,10 @@ export interface IGoogleBooksAPIRepository {
     title,
     startIndex,
     maxResults,
-  }: IFindByTitle): Promise<IBook[]>;
+  }: IFindByTitle): Promise<IBook[] | null>;
   findByAuthor({
     author,
     startIndex,
     maxResults,
-  }: IFindByAuthor): Promise<IBook[]>;
+  }: IFindByAuthor): Promise<IBook[] | null>;
 }

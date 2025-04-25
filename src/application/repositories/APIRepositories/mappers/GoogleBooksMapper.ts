@@ -1,19 +1,23 @@
-import {
-  IBookResponse,
-  IGoogleBook,
-} from '../interfaces/IGoogleBooksAPIRepository';
+import { IBook, IGoogleBook } from '../../interfaces/IGoogleBooksAPIRepository';
 
 class GoogleBooksMapper {
   // toPersistence(domainGoogleBooks) {}
 
-  toDomain(persistenceGoogleBooks: IGoogleBook[]): IBookResponse[] {
+  toDomain(persistenceGoogleBooks: IGoogleBook[]): IBook[] {
     const books = persistenceGoogleBooks.map(googleBook => ({
       id: googleBook.id,
       title: googleBook.volumeInfo.title,
-      author: googleBook.volumeInfo.authors,
+      authors: googleBook.volumeInfo.authors,
       sinopse: googleBook.volumeInfo.description,
       numberOfPages: googleBook.volumeInfo.pageCount ?? null,
-      type: googleBook.volumeInfo.categories,
+      literaryGenre: googleBook.volumeInfo.categories,
+      imagePath:
+        googleBook.volumeInfo.imageLinks?.extraLarge ||
+        googleBook.volumeInfo.imageLinks?.large ||
+        googleBook.volumeInfo.imageLinks?.medium ||
+        googleBook.volumeInfo.imageLinks?.small ||
+        googleBook.volumeInfo.imageLinks?.smallThumbnail ||
+        googleBook.volumeInfo.imageLinks?.thumbnail,
       dateOfPublication: new Date(googleBook.volumeInfo.publishedDate),
     }));
 

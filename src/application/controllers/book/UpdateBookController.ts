@@ -31,7 +31,7 @@ export class UpdateBookController implements IController {
         title: body.title ?? book.title,
         authors: body.authors ?? book.authors,
         sinopse: body.sinopse ?? book.sinopse,
-        genreLiterary: body.genreLiterary ?? book.genreLiterary,
+        literaryGenre: body.literaryGenre ?? book.literaryGenre,
       };
 
       const data = UpdateDataBookSchema.parse(bookData);

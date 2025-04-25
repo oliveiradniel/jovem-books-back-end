@@ -33,6 +33,7 @@ export class GetGoogleBookByTitleController implements IController {
         body: googleBook,
       };
     } catch (error) {
+      console.log(error);
       return verifyGoogleBooksErrors(error);
     }
   }

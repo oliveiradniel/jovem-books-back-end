@@ -1,4 +1,4 @@
-import { GenreLiterary, ReadingStatus } from '@prisma/client';
+import { ReadingStatus } from '@prisma/client';
 
 export interface IBook {
   id: string;
@@ -7,7 +7,7 @@ export interface IBook {
   sinopse: string | null;
   imagePath: string | null;
   numberOfPages: number;
-  genreLiterary: GenreLiterary[];
+  literaryGenre: string[];
   read: {
     status: ReadingStatus;
     currentPage: number;

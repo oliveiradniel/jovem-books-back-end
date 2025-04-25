@@ -22,7 +22,7 @@ interface IInput {
       | 'authors'
       | 'sinopse'
       | 'numberOfPages'
-      | 'genreLiterary'
+      | 'literaryGenre'
       | 'imagePath'
       | 'title'
     >
