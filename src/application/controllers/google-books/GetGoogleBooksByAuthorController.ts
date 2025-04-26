@@ -1,32 +1,33 @@
 import { verifyGoogleBooksErrors } from '../../../utils/verifyGoogleBooksErrors';
 
-import { GetGoogleBookByAuthorUseCase } from '../../useCases/google-books/GetGoogleBookByAuthorUseCase';
 import { GetUserByIdUseCase } from '../../useCases/user/GetUserByIdUseCase';
+import { GetGoogleBooksByAuthorUseCase } from '../../useCases/google-books/GetGoogleBooksByAuthorUseCase';
 
-import { GetGoogleBookByAuthorSchema } from '../../schemas/google-books/GetGoogleBookByAuthorSchema';
+import { GetGoogleBooksByAuthorSchema } from '../../schemas/google-books/GetGoogleBooksByAuthorSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
-export class GetGoogleBookByAuthorController implements IController {
+export class GetGoogleBooksByAuthorController implements IController {
   constructor(
-    private readonly getGoogleBookByAuthorUseCase: GetGoogleBookByAuthorUseCase,
+    private readonly getGoogleBookByAuthorUseCase: GetGoogleBooksByAuthorUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
       // const { startIndex, maxResults } = queryParams!;
-      const author = queryParams?.author;
 
-      const data = GetGoogleBookByAuthorSchema.parse({
-        author,
+      await this.getUserByIdUseCase.execute({ userId });
+
+      const { author } = GetGoogleBooksByAuthorSchema.parse({
+        author: queryParams?.author,
         // startIndex: Number(startIndex),
         // maxResults: Number(maxResults),
       });
 
-      await this.getUserByIdUseCase.execute({ userId });
-
-      const googleBook = await this.getGoogleBookByAuthorUseCase.execute(data);
+      const googleBook = await this.getGoogleBookByAuthorUseCase.execute({
+        author,
+      });
 
       return {
         statusCode: 200,

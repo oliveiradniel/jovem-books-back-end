@@ -1,60 +1,35 @@
-export interface IGoogleBook {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors: string[];
-    publishedDate: string;
-    description: string;
-    pageCount: number;
-    categories: string[];
-    imageLinks: {
-      smallThumbnail: string | null;
-      thumbnail: string | null;
-      small: string | null;
-      medium: string | null;
-      large: string | null;
-      extraLarge: string | null;
-    };
-  };
-}
+import { z } from 'zod';
 
-export interface IGoogleBooks {
-  data: {
-    items: IGoogleBook[];
-  };
-}
+import { IBook } from '../../../@types/IBook';
 
-export interface IBook {
-  id: string;
-  title: string;
-  authors: string[];
-  sinopse: string;
-  numberOfPages: number | null;
-  dateOfPublication: Date;
-  imagePath: string | null;
-}
+import {
+  GetGoogleBooksByAuthorSchema,
+  GetGoogleBooksByTitleSchema,
+} from '../../schemas/google-books';
 
-export interface IGetURL {
+export interface IGetGoogleBookURL {
   queryParam: string;
   startIndex?: number;
   maxResults?: number;
 }
 
-export type IFindByTitle = Omit<IGetURL, 'queryParam'> & { title: string };
+export type TGetGoogleBooksByTitle = z.infer<
+  typeof GetGoogleBooksByTitleSchema
+>;
 
-export type IFindByAuthor = Omit<IGetURL, 'queryParam'> & {
-  author: string;
-};
+export type TGetGoogleBooksByAuthor = z.infer<
+  typeof GetGoogleBooksByAuthorSchema
+>;
 
 export interface IGoogleBooksAPIRepository {
   findByTitle({
     title,
-    startIndex,
-    maxResults,
-  }: IFindByTitle): Promise<IBook[] | null>;
+  }: // startIndex,
+  // maxResults,
+  TGetGoogleBooksByTitle): Promise<IBook[] | null>;
   findByAuthor({
     author,
-    startIndex,
-    maxResults,
-  }: IFindByAuthor): Promise<IBook[] | null>;
+  }: // startIndex,
+  // maxResults,
+  TGetGoogleBooksByAuthor): Promise<IBook[] | null>;
 }

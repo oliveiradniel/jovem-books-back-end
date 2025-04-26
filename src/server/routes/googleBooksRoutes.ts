@@ -5,21 +5,21 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeGetGoogleBookByTitleController } from '../../factories/google-books/makeGetGoogleBookByTitleController';
-import { makeGetGoogleBookByAuthorController } from '../../factories/google-books/makeGetGoogleBookByAuthorController';
+import { makeGetGoogleBooksByTitleController } from '../../factories/google-books/makeGetGoogleBooksByTitleController';
+import { makeGetGoogleBooksByAuthorController } from '../../factories/google-books/makeGetGoogleBooksByAuthorController';
 
 const router = Router();
 
 router.get(
   '/title',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetGoogleBookByTitleController()),
+  routeAdapter(makeGetGoogleBooksByTitleController()),
 );
 
 router.get(
   '/author',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeGetGoogleBookByAuthorController()),
+  routeAdapter(makeGetGoogleBooksByAuthorController()),
 );
 
 export default router;
