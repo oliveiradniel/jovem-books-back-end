@@ -4,9 +4,6 @@ import { UpdateReadUseCase } from '../../useCases/read/UpdateReadUseCase';
 
 import { UpdateReadSchema } from '../../schemas/read/UpdateReadSchema';
 
-import { UserIdSchema } from '../../schemas/user/UserIdSchema';
-import { IdBookSchema } from '../../schemas/book/IdBookSchema';
-
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class UpdateReadController implements IController {
@@ -14,9 +11,6 @@ export class UpdateReadController implements IController {
 
   async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
-      const id = UserIdSchema.parse(userId);
-      const { bookId } = IdBookSchema.parse({ bookId: params?.bookId });
-
       let finishedAt: Date | null;
       if (body.status === 'FINISHED') {
         finishedAt = new Date();
@@ -25,15 +19,13 @@ export class UpdateReadController implements IController {
       }
 
       const data = UpdateReadSchema.parse({
+        userId,
+        bookId: params?.bookId,
         ...body,
         finishedAt,
       });
 
-      const updatedRead = await this.updateReadUseCase.execute({
-        bookId,
-        userId: id,
-        data,
-      });
+      const updatedRead = await this.updateReadUseCase.execute(data);
 
       return {
         statusCode: 200,

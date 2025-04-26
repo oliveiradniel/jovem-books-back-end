@@ -1,13 +1,9 @@
 import { DeleteReadUseCase } from '../../application/useCases/read/DeleteReadUseCase';
 
-import { makeGetBookByIdUseCase } from '../book/makeGetBookByIdUseCase';
-import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
 import { makeReadRepository } from './makeReadRepository';
 
+import { makeGetBookByIdUseCase } from '../book/makeGetBookByIdUseCase';
+
 export function makeDeleteReadUseCase() {
-  return new DeleteReadUseCase(
-    makeReadRepository(),
-    makeGetBookByIdUseCase(),
-    makeGetUserByIdUseCase(),
-  );
+  return new DeleteReadUseCase(makeReadRepository(), makeGetBookByIdUseCase());
 }

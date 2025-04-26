@@ -3,7 +3,6 @@ import path from 'node:path';
 
 import { IBook } from '../../../@types/IBook';
 
-import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 import { GetBookByIdUseCase } from './GetBookByIdUseCase';
 import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
 
@@ -21,7 +20,6 @@ export class UpdateBookUseCase implements IUseCase<TUpdateBook, IBook | null> {
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
     private readonly getBookByTitleUseCase: GetBookByTitleUseCase,
-    private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async execute({
@@ -30,8 +28,6 @@ export class UpdateBookUseCase implements IUseCase<TUpdateBook, IBook | null> {
     removeImage,
     ...data
   }: TUpdateBook): Promise<IBook | null> {
-    await this.getUserByIdUseCase.execute({ userId });
-
     const book = await this.getBookByIdUseCase.execute({
       bookId,
       userId,

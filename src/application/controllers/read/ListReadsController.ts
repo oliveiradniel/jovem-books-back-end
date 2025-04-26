@@ -2,7 +2,7 @@ import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 
 import { ListReadsUseCase } from '../../useCases/read/ListReadsUseCase';
 
-import { UserIdSchema } from '../../schemas/user/UserIdSchema';
+import { ListReadsSchema } from '../../schemas/read';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -11,7 +11,7 @@ export class ListReadsController implements IController {
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const id = UserIdSchema.parse(userId);
+      const { userId: id } = ListReadsSchema.parse({ userId });
 
       const reads = await this.listReadsUseCase.execute({ userId: id });
 

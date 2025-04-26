@@ -4,6 +4,6 @@ import { IdBookSchema } from './IdBookSchema';
 import { IdUserSchema } from '../UserSchemas';
 
 export const DeleteBookSchema = z.object({
-  ...IdUserSchema.shape,
-  ...IdBookSchema.shape,
+  userId: IdUserSchema,
+  bookId: IdBookSchema,
 });

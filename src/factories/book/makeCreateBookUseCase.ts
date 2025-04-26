@@ -1,7 +1,8 @@
 import { CreateBookUseCase } from '../../application/useCases/book/CreateBookUseCase';
 
-import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
 import { makeBookRepository } from './makeBookRepository';
+
+import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
 import { makeGetBookByTitleUseCase } from './makeGetBookByTitleUseCase';
 
 export function makeCreateBookUseCase() {

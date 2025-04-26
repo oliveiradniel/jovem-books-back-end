@@ -11,11 +11,9 @@ export class ListBooksController implements IController {
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
-      const orderBy = queryParams?.orderBy;
-
       const data = ListBooksSchema.parse({
         userId,
-        orderBy,
+        orderBy: queryParams?.orderBy,
       });
 
       const books = await this.listBooksUseCase.execute(data);

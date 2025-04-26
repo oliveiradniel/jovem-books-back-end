@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { IdBookSchema } from './IdBookSchema';
+import { IdBookSchema } from '../book';
 import { IdUserSchema } from '../UserSchemas';
 
-export const GetBookByIdSchema = z.object({
+export const DeleteReadSchema = z.object({
   userId: IdUserSchema,
   bookId: IdBookSchema,
 });

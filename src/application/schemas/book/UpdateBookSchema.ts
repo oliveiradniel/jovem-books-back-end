@@ -6,7 +6,7 @@ import { IdBookSchema } from './IdBookSchema';
 export const UpdateBookSchema = BaseBookSchema.omit({
   numberOfPages: true,
 }).extend({
-  ...IdBookSchema.shape,
+  bookId: IdBookSchema,
   imagePath: z
     .string({ message: 'Image path must be a string' })
     .nullable()

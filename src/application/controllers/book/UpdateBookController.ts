@@ -19,8 +19,8 @@ export class UpdateBookController implements IController {
 
   async handle({ userId, body, file, params }: IRequest): Promise<IResponse> {
     try {
-      const { userId: id } = IdUserSchema.parse({ userId });
-      const { bookId } = IdBookSchema.parse({ bookId: params?.id });
+      const id = IdUserSchema.parse(userId);
+      const bookId = IdBookSchema.parse(params?.id);
 
       const book = await this.getBookByIdUseCase.execute({
         bookId,
@@ -28,8 +28,8 @@ export class UpdateBookController implements IController {
       });
 
       const bookData = {
-        userId,
-        bookId,
+        userId: id,
+        bookId: book.id,
         title: body.title ?? book.title,
         authors: body.authors ?? book.authors,
         sinopse: body.sinopse ?? book.sinopse,
@@ -39,9 +39,13 @@ export class UpdateBookController implements IController {
 
       const data = UpdateBookSchema.parse(bookData);
 
+      const imagePath = bookData.removeImage
+        ? null
+        : file?.filename ?? book.imagePath;
+
       const updatedBook = await this.updateBookUseCase.execute({
         ...data,
-        imagePath: body.removeImage ? null : file?.filename ?? book.imagePath,
+        imagePath,
       });
 
       return {
@@ -49,7 +53,6 @@ export class UpdateBookController implements IController {
         body: updatedBook as IBook,
       };
     } catch (error) {
-      console.log(error);
       return verifyBookErrors(error);
     }
   }

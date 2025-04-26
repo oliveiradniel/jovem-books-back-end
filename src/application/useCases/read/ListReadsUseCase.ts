@@ -1,17 +1,20 @@
 import { IRead } from '../../../@types/IRead';
 
 import { IUseCase } from '../../interfaces/IUseCase';
+import { TListReads } from '../../repositories/interfaces/IReadRepository';
 
 import { ReadRepository } from '../../repositories/ReadRepository';
+import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
-interface IInput {
-  userId: string;
-}
+export class ListReadsUseCase implements IUseCase<TListReads, IRead[]> {
+  constructor(
+    private readonly readRepository: ReadRepository,
+    private readonly getUserByIdUseCase: GetUserByIdUseCase,
+  ) {}
 
-export class ListReadsUseCase implements IUseCase<IInput, IRead[]> {
-  constructor(private readonly readRepository: ReadRepository) {}
+  async execute({ userId }: TListReads): Promise<IRead[]> {
+    await this.getUserByIdUseCase.execute({ userId });
 
-  async execute({ userId }: IInput): Promise<IRead[]> {
     const reads = await this.readRepository.list({ userId });
 
     return reads;

@@ -9,10 +9,10 @@ import { DeleteBookSchema } from './DeleteBookSchema';
 
 export {
   IdBookSchema,
+  ListBooksSchema,
   GetBookByIdSchema,
   GetBookByTitleSchema,
   GetBookByAuthorSchema,
-  ListBooksSchema,
   CreateBookSchema,
   UpdateBookSchema,
   DeleteBookSchema,

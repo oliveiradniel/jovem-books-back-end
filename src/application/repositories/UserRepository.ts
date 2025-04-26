@@ -1,6 +1,6 @@
 import { prismaClient } from '../lib/prismaClient';
 
-import { User } from '@prisma/client';
+import { IUser } from '../../@types/IUser';
 
 import {
   IDelete,
@@ -13,7 +13,7 @@ import {
 } from './interfaces/IUserRepository';
 
 export class UserRepository implements IUserRepository {
-  async findById({ userId }: IFindUserById): Promise<User | null> {
+  async findById({ userId }: IFindUserById): Promise<IUser | null> {
     const user = await prismaClient.user.findUnique({ where: { id: userId } });
 
     return user;
@@ -21,24 +21,24 @@ export class UserRepository implements IUserRepository {
 
   async findByUsername({
     username,
-  }: IFindUserByUsername): Promise<User | null> {
+  }: IFindUserByUsername): Promise<IUser | null> {
     return await prismaClient.user.findUnique({ where: { username } });
   }
 
-  async findByEmail({ email }: IFindUserByEmail): Promise<User | null> {
+  async findByEmail({ email }: IFindUserByEmail): Promise<IUser | null> {
     return await prismaClient.user.findUnique({
       where: { email },
     });
   }
 
-  async create(data: UserDataCreate): Promise<void> {
-    await prismaClient.user.create({
+  async create(data: UserDataCreate): Promise<IUser> {
+    return await prismaClient.user.create({
       data,
     });
   }
 
-  async update({ userId, data }: IUpdate): Promise<void> {
-    await prismaClient.user.update({
+  async update({ userId, data }: IUpdate): Promise<IUser> {
+    return await prismaClient.user.update({
       where: { id: userId },
       data,
     });
