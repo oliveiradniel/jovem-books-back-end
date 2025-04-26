@@ -3,7 +3,7 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 import { GetBookByIdUseCase } from '../../useCases/book/GetBookByIdUseCase';
 
 import { UserIdSchema } from '../../schemas/user/UserIdSchema';
-import { BookIdSchema } from '../../schemas/book/BookIdSchema';
+import { IdBookSchema } from '../../schemas/book/IdBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -13,7 +13,7 @@ export class GetBookByIdController implements IController {
   async handle({ userId, params }: IRequest): Promise<IResponse> {
     try {
       const id = UserIdSchema.parse(userId);
-      const bookId = BookIdSchema.parse(params?.id);
+      const { bookId } = IdBookSchema.parse({ bookId: params?.id });
 
       const book = await this.getBookByIdUseCase.execute({
         bookId,

@@ -1,5 +1,3 @@
-import { IBook } from '../../../@types/IBook';
-
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { ListBooksUseCase } from '../../useCases/book/ListBooksUseCase';
@@ -24,7 +22,7 @@ export class ListBooksController implements IController {
 
       return {
         statusCode: 200,
-        body: books as IBook[],
+        body: books,
       };
     } catch (error) {
       return verifyBookErrors(error);

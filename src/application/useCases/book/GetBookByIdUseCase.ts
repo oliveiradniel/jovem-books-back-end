@@ -6,20 +6,18 @@ import { BookNotFound } from '../../errors/book/BookNotFound';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
+import {
+  IBookRepository,
+  TGetBookById,
+} from '../../repositories/interfaces/IBookRepository';
 
-interface IInput {
-  bookId: string;
-  userId: string;
-}
-
-export class GetBookByIdUseCase implements IUseCase<IInput, IBook> {
+export class GetBookByIdUseCase implements IUseCase<TGetBookById, IBook> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, userId }: IInput): Promise<IBook> {
+  async execute({ userId, bookId }: TGetBookById): Promise<IBook> {
     await this.getUserByIdUseCase.execute({ userId });
 
     const book = await this.bookRepository.findById({

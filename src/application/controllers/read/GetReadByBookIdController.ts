@@ -3,7 +3,7 @@ import { verifyReadErrors } from '../../../utils/verfiyReadErrors';
 import { GetReadByBookIdUseCase } from '../../useCases/read/GetReadByBookIdUseCase';
 
 import { UserIdSchema } from '../../schemas/user/UserIdSchema';
-import { BookIdSchema } from '../../schemas/book/BookIdSchema';
+import { IdBookSchema } from '../../schemas/book/IdBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -16,7 +16,7 @@ export class GetReadByBookIdController implements IController {
     try {
       const id = UserIdSchema.parse(userId);
 
-      const bookId = BookIdSchema.parse(params?.bookId);
+      const { bookId } = IdBookSchema.parse({ bookId: params?.bookId });
 
       const read = await this.getReadByBookIdUseCase.execute({
         bookId,

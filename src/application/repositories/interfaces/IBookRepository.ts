@@ -1,58 +1,42 @@
-import { IBook } from '../../../@types/IBook';
-
-import { TOrderBy } from '../../../@types/TOrderBy';
+import { z } from 'zod';
 
 import { IRepository } from '../../interfaces/IRepository';
 
-export type BookDataCreate = Omit<
-  Partial<IBook>,
-  'id' | 'userId' | 'title' | 'literaryGenre' | 'numberOfPages' | 'read'
-> &
-  Pick<IBook, 'title' | 'literaryGenre' | 'numberOfPages'>;
+import { IBook } from '../../../@types/IBook';
 
-type BookDataUpdate = Omit<Partial<IBook>, 'id' | 'createdAt' | 'read'>;
+import {
+  CreateBookSchema,
+  DeleteBookSchema,
+  GetBookByAuthorSchema,
+  GetBookByIdSchema,
+  GetBookByTitleSchema,
+  ListBooksSchema,
+  UpdateBookSchema,
+} from '../../schemas/book';
 
-export interface IList {
-  userId: string;
-  orderBy: TOrderBy;
-}
+export type TListBooks = z.infer<typeof ListBooksSchema>;
 
-export interface IFindBookById {
-  bookId: string;
-  userId: string;
-}
+export type TGetBookById = z.infer<typeof GetBookByIdSchema>;
 
-export interface ICreate {
-  userId: string;
-  data: BookDataCreate;
-}
+export type TGetBookByTitle = z.infer<typeof GetBookByTitleSchema>;
 
-export interface IUpdate {
-  bookId: string;
-  data: BookDataUpdate;
-  userId: string;
-}
+export type TGetBookByAuthor = z.infer<typeof GetBookByAuthorSchema>;
 
-export interface IDelete {
-  bookId: string;
-  userId: string;
-}
+export type TCreateBook = z.infer<typeof CreateBookSchema>;
 
-export interface IFindBookByTitle {
-  title: string;
-  userId: string;
-}
+export type TUpdateBook = z.infer<typeof UpdateBookSchema>;
 
-export interface IFindBookByAuthor {
-  authorName: string;
-  userId: string;
-}
+export type TDeleteBook = z.infer<typeof DeleteBookSchema>;
 
 export interface IBookRepository
-  extends IRepository<IBook, IFindBookById, ICreate, IDelete, IList, IUpdate> {
-  findByTitle({ title, userId }: IFindBookByTitle): Promise<IBook | null>;
-  findByAuthor({
-    authorName,
-    userId,
-  }: IFindBookByAuthor): Promise<IBook[] | null>;
+  extends IRepository<
+    IBook,
+    TGetBookById,
+    TCreateBook,
+    TDeleteBook,
+    TListBooks,
+    Omit<TUpdateBook, 'removeImage'>
+  > {
+  findByTitle({ title, userId }: TGetBookByTitle): Promise<IBook | null>;
+  findByAuthor({ author, userId }: TGetBookByAuthor): Promise<IBook[] | null>;
 }

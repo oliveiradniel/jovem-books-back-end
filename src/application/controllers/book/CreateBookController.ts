@@ -1,17 +1,15 @@
-import { removeFile } from '../../../utils/removeFile';
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
 import { CreateBookUseCase } from '../../useCases/book/CreateBookUseCase';
 
-import { UserIdSchema } from '../../schemas/user/UserIdSchema';
-import { CreateDataBookSchema } from '../../schemas/book/CreateBookSchema';
+import { CreateBookSchema } from '../../schemas/book';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class CreateBookController implements IController {
   constructor(private readonly createBookUseCase: CreateBookUseCase) {}
 
-  async handle({ userId, body, file }: IRequest): Promise<IResponse> {
+  async handle({ userId, body }: IRequest): Promise<IResponse> {
     try {
       const bookData = {
         userId,
@@ -21,25 +19,16 @@ export class CreateBookController implements IController {
         numberOfPages: Number(body.numberOfPages),
         literaryGenre: body.literaryGenre,
       };
-      console.log(bookData);
-      const parsedUserId = UserIdSchema.parse(userId);
 
-      const data = CreateDataBookSchema.parse(bookData);
+      const data = CreateBookSchema.parse(bookData);
 
-      await this.createBookUseCase.execute({
-        userId: parsedUserId,
-        data: { ...data, imagePath: file?.filename },
-      });
+      await this.createBookUseCase.execute(data);
 
       return {
         statusCode: 201,
         body: null,
       };
     } catch (error) {
-      console.log(error);
-      if (file) {
-        await removeFile({ filename: file?.filename, directory: 'books' });
-      }
       return verifyBookErrors(error);
     }
   }

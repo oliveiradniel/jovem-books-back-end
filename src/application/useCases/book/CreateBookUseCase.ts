@@ -4,23 +4,20 @@ import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import {
-  BookDataCreate,
+  TCreateBook,
   IBookRepository,
 } from '../../repositories/interfaces/IBookRepository';
 
-interface IInput {
-  userId: string;
-  data: BookDataCreate;
-}
-
-export class CreateBookUseCase implements IUseCase<IInput, void> {
+export class CreateBookUseCase implements IUseCase<TCreateBook, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getBookByTitleUseCase: GetBookByTitleUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ userId, data }: IInput): Promise<void> {
+  async execute(data: TCreateBook): Promise<void> {
+    const userId = data.userId;
+
     await this.getUserByIdUseCase.execute({ userId });
 
     await this.getBookByTitleUseCase.execute({
@@ -28,6 +25,6 @@ export class CreateBookUseCase implements IUseCase<IInput, void> {
       title: data.title,
     });
 
-    await this.bookRepository.create({ userId, data });
+    await this.bookRepository.create(data);
   }
 }

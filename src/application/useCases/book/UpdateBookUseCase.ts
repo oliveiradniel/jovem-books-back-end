@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import path from 'node:path';
 
 import { IBook } from '../../../@types/IBook';
 
@@ -6,30 +7,16 @@ import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 import { GetBookByIdUseCase } from './GetBookByIdUseCase';
 import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
 
-import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
-
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
-import path from 'node:path';
+import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
 
-interface IInput {
-  bookId: string;
-  userId: string;
-  data: Partial<
-    Pick<
-      IBook,
-      | 'authors'
-      | 'sinopse'
-      | 'numberOfPages'
-      | 'literaryGenre'
-      | 'imagePath'
-      | 'title'
-    >
-  > & { removeImage?: string };
-}
+import {
+  IBookRepository,
+  TUpdateBook,
+} from '../../repositories/interfaces/IBookRepository';
 
-export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
+export class UpdateBookUseCase implements IUseCase<TUpdateBook, IBook | null> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
@@ -37,9 +24,12 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
-  async execute({ bookId, userId, data }: IInput): Promise<IBook | void> {
-    const { removeImage } = data;
-
+  async execute({
+    bookId,
+    userId,
+    removeImage,
+    ...data
+  }: TUpdateBook): Promise<IBook | null> {
     await this.getUserByIdUseCase.execute({ userId });
 
     const book = await this.getBookByIdUseCase.execute({
@@ -47,9 +37,7 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
       userId,
     });
 
-    data = removeImage === 'true' ? { imagePath: null } : data;
-
-    if (data?.title) {
+    if (data.title) {
       const bookDataWithTheTitleInUse =
         await this.getBookByTitleUseCase.execute({
           userId,
@@ -66,10 +54,10 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
     }
 
     if (!this.bookRepository?.update) {
-      return;
+      return null;
     }
 
-    if (removeImage === 'true' && book.imagePath) {
+    if (removeImage && book.imagePath) {
       const filePath = path.resolve(
         __dirname,
         '..',
@@ -97,10 +85,6 @@ export class UpdateBookUseCase implements IUseCase<IInput, IBook | void> {
       });
     }
 
-    return await this.bookRepository.update({
-      bookId,
-      userId,
-      data,
-    });
+    return await this.bookRepository.update({ userId, bookId, ...data });
   }
 }

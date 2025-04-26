@@ -4,11 +4,13 @@ import { IBook } from '../../@types/IBook';
 
 import {
   IBookRepository,
-  ICreate,
-  IDelete,
-  IList,
-  IFindBookById,
-  IUpdate,
+  TCreateBook,
+  TListBooks,
+  TGetBookById,
+  TGetBookByTitle,
+  TGetBookByAuthor,
+  TUpdateBook,
+  TDeleteBook,
 } from './interfaces/IBookRepository';
 
 export class BookRepository implements IBookRepository {
@@ -34,7 +36,7 @@ export class BookRepository implements IBookRepository {
     return this.bookSelect;
   }
 
-  async list({ userId, orderBy }: IList): Promise<IBook[]> {
+  async list({ userId, orderBy }: TListBooks): Promise<IBook[]> {
     const books = await prismaClient.book.findMany({
       where: { userId },
       orderBy: {
@@ -46,7 +48,7 @@ export class BookRepository implements IBookRepository {
     return books;
   }
 
-  async findById({ bookId, userId }: IFindBookById): Promise<IBook | null> {
+  async findById({ bookId, userId }: TGetBookById): Promise<IBook | null> {
     const book = await prismaClient.book.findUnique({
       where: { id: bookId, userId },
       select: BookRepository.getBookSelect(),
@@ -55,13 +57,7 @@ export class BookRepository implements IBookRepository {
     return book;
   }
 
-  async findByTitle({
-    title,
-    userId,
-  }: {
-    title: string;
-    userId: string;
-  }): Promise<IBook | null> {
+  async findByTitle({ title, userId }: TGetBookByTitle): Promise<IBook | null> {
     const book = await prismaClient.book.findFirst({
       where: { title, userId },
       select: BookRepository.getBookSelect(),
@@ -71,16 +67,13 @@ export class BookRepository implements IBookRepository {
   }
 
   async findByAuthor({
-    authorName,
+    author,
     userId,
-  }: {
-    authorName: string;
-    userId: string;
-  }): Promise<IBook[] | null> {
+  }: TGetBookByAuthor): Promise<IBook[] | null> {
     const book = await prismaClient.book.findMany({
       where: {
         authors: {
-          has: authorName,
+          has: author,
         },
         userId,
       },
@@ -90,16 +83,17 @@ export class BookRepository implements IBookRepository {
     return book;
   }
 
-  async create({ userId, data }: ICreate): Promise<any> {
+  async create(data: TCreateBook): Promise<any> {
     await prismaClient.book.create({
-      data: {
-        userId,
-        ...data,
-      },
+      data,
     });
   }
 
-  async update({ bookId, userId, data }: IUpdate): Promise<IBook> {
+  async update({
+    userId,
+    bookId,
+    ...data
+  }: Omit<TUpdateBook, 'removeImage'>): Promise<IBook> {
     const book = await prismaClient.book.update({
       where: { id: bookId, userId },
       data,
@@ -109,7 +103,7 @@ export class BookRepository implements IBookRepository {
     return book;
   }
 
-  async delete({ bookId, userId }: IDelete): Promise<void> {
+  async delete({ bookId, userId }: TDeleteBook): Promise<void> {
     await prismaClient.book.delete({
       where: { id: bookId, userId },
     });

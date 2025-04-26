@@ -6,15 +6,14 @@ import { TitleAlreadyInUse } from '../../errors/book/TitleAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookRepository } from '../../repositories/interfaces/IBookRepository';
+import {
+  IBookRepository,
+  TGetBookByTitle,
+} from '../../repositories/interfaces/IBookRepository';
 
-interface IInput {
-  title: string;
-  userId: string;
-  shouldReturn?: boolean;
-}
-
-export class GetBookByTitleUseCase implements IUseCase<IInput, IBook | void> {
+export class GetBookByTitleUseCase
+  implements IUseCase<TGetBookByTitle, IBook | null>
+{
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
@@ -24,10 +23,14 @@ export class GetBookByTitleUseCase implements IUseCase<IInput, IBook | void> {
     title,
     userId,
     shouldReturn = false,
-  }: IInput): Promise<IBook | void> {
+  }: TGetBookByTitle): Promise<IBook | null> {
     await this.getUserByIdUseCase.execute({ userId });
 
-    const book = await this.bookRepository.findByTitle({ title, userId });
+    const book = await this.bookRepository.findByTitle({
+      title,
+      userId,
+      shouldReturn,
+    });
 
     if (shouldReturn && book) {
       return book;
@@ -36,5 +39,7 @@ export class GetBookByTitleUseCase implements IUseCase<IInput, IBook | void> {
     if (book) {
       throw new TitleAlreadyInUse();
     }
+
+    return null;
   }
 }

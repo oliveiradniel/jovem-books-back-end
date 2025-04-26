@@ -4,7 +4,7 @@ import { CreateReadUseCase } from '../../useCases/read/CreateReadUseCase';
 
 import { CreateReadSchema } from '../../schemas/read/CreateReadSchema';
 import { UserIdSchema } from '../../schemas/user/UserIdSchema';
-import { BookIdSchema } from '../../schemas/book/BookIdSchema';
+import { IdBookSchema } from '../../schemas/book/IdBookSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -14,7 +14,7 @@ export class CreateReadController implements IController {
   async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
       const id = UserIdSchema.parse(userId);
-      const bookId = BookIdSchema.parse(params?.bookId);
+      const { bookId } = IdBookSchema.parse({ bookId: params?.bookId });
 
       const data = CreateReadSchema.parse({
         ...body,
