@@ -15,3 +15,8 @@ export interface IBook {
     finishedAt: Date | null;
   } | null;
 }
+
+export interface IBookWithTotalItems {
+  totalItems: number;
+  data: Omit<IBook, 'read'>[];
+}

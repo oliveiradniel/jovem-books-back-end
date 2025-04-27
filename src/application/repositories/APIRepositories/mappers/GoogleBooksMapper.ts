@@ -1,10 +1,11 @@
-import { IBook, IGoogleBook } from '../../interfaces/IGoogleBooksAPIRepository';
+import { IGoogleBooks } from '../../../../@types/GoogleBook';
+import { IBookWithTotalItems } from '../../../../@types/IBook';
 
 class GoogleBooksMapper {
   // toPersistence(domainGoogleBooks) {}
 
-  toDomain(persistenceGoogleBooks: IGoogleBook[]): IBook[] {
-    const books = persistenceGoogleBooks.map(googleBook => ({
+  toDomain({ data }: IGoogleBooks): IBookWithTotalItems {
+    const books = data.items.map(googleBook => ({
       id: googleBook.id,
       title: googleBook.volumeInfo.title,
       authors: googleBook.volumeInfo.authors,
@@ -21,7 +22,10 @@ class GoogleBooksMapper {
       dateOfPublication: new Date(googleBook.volumeInfo.publishedDate),
     }));
 
-    return books;
+    return {
+      totalItems: data.totalItems,
+      data: books,
+    };
   }
 }
 

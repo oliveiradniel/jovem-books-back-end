@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { IBook } from '../../../@types/IBook';
+import { IBookWithTotalItems } from '../../../@types/IBook';
 
 import {
   GetGoogleBooksByAuthorSchema,
@@ -26,10 +26,10 @@ export interface IGoogleBooksAPIRepository {
     title,
   }: // startIndex,
   // maxResults,
-  TGetGoogleBooksByTitle): Promise<IBook[] | null>;
+  TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null>;
   findByAuthor({
     author,
   }: // startIndex,
   // maxResults,
-  TGetGoogleBooksByAuthor): Promise<IBook[] | null>;
+  TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null>;
 }

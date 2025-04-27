@@ -4,7 +4,7 @@ import { env } from '../../config/env';
 
 import GoogleBooksMapper from './APIRepositories/mappers/GoogleBooksMapper';
 
-import { IBook } from '../../@types/IBook';
+import { IBookWithTotalItems } from '../../@types/IBook';
 import { IGoogleBooks } from '../../@types/GoogleBook';
 
 import {
@@ -27,7 +27,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     title,
   }: // startIndex,
   // maxResults,
-  TGetGoogleBooksByTitle): Promise<IBook[] | null> {
+  TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null> {
     const url = this.getURL({
       queryParam: `intitle:${title}`,
       // startIndex,
@@ -40,7 +40,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
       return null;
     }
 
-    const books = GoogleBooksMapper.toDomain(data.items);
+    const books = GoogleBooksMapper.toDomain({ data });
 
     return books;
   }
@@ -49,7 +49,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
     author,
   }: // startIndex,
   // maxResults,
-  TGetGoogleBooksByAuthor): Promise<IBook[] | null> {
+  TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null> {
     const url = this.getURL({
       queryParam: `inauthor:${author}`,
       // startIndex,
@@ -62,7 +62,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
       return null;
     }
 
-    const books = GoogleBooksMapper.toDomain(data.items);
+    const books = GoogleBooksMapper.toDomain({ data });
 
     return books;
   }

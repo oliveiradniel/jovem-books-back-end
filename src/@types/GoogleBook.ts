@@ -20,6 +20,7 @@ export interface IGoogleBook {
 
 export interface IGoogleBooks {
   data: {
+    totalItems: number;
     items: IGoogleBook[];
   };
 }
