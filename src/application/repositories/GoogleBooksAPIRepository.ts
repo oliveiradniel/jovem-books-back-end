@@ -15,25 +15,18 @@ import {
 } from './interfaces/IGoogleBooksAPIRepository';
 
 export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
-  private getURL({
-    queryParam,
-    startIndex = 0,
-    maxResults = 20,
-  }: IGetGoogleBookURL): string {
-    return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&startIndex=${startIndex}&maxResults=${maxResults}&key=${env.GOOGLE_API_KEY}`;
+  private getURL({ queryParam, startIndex = 0 }: IGetGoogleBookURL): string {
+    return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&startIndex=${startIndex}&maxResults=20&key=${env.GOOGLE_API_KEY}`;
   }
 
   async findByTitle({
+    startIndex,
     title,
-  }: // startIndex,
-  // maxResults,
-  TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null> {
+  }: TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null> {
     const url = this.getURL({
       queryParam: `intitle:${title}`,
-      // startIndex,
-      // maxResults,
+      startIndex,
     });
-
     const { data }: IGoogleBooks = await axios.get(url);
 
     if (!data.items) {
@@ -46,14 +39,12 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
   }
 
   async findByAuthor({
+    startIndex,
     author,
-  }: // startIndex,
-  // maxResults,
-  TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null> {
+  }: TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null> {
     const url = this.getURL({
       queryParam: `inauthor:${author}`,
-      // startIndex,
-      // maxResults,
+      startIndex,
     });
 
     const { data }: IGoogleBooks = await axios.get(url);

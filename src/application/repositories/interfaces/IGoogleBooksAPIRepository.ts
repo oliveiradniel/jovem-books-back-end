@@ -23,13 +23,11 @@ export type TGetGoogleBooksByAuthor = z.infer<
 
 export interface IGoogleBooksAPIRepository {
   findByTitle({
+    startIndex,
     title,
-  }: // startIndex,
-  // maxResults,
-  TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null>;
+  }: TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null>;
   findByAuthor({
+    startIndex,
     author,
-  }: // startIndex,
-  // maxResults,
-  TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null>;
+  }: TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null>;
 }

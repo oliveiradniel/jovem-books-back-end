@@ -14,10 +14,14 @@ export class GetGoogleBooksByTitleUseCase
     private readonly googleBooksRepository: IGoogleBooksAPIRepository,
   ) {}
 
-  async execute(
-    data: TGetGoogleBooksByTitle,
-  ): Promise<IBookWithTotalItems | null> {
-    const googleBooks = await this.googleBooksRepository.findByTitle(data);
+  async execute({
+    startIndex,
+    title,
+  }: TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null> {
+    const googleBooks = await this.googleBooksRepository.findByTitle({
+      startIndex,
+      title,
+    });
 
     return googleBooks;
   }

@@ -15,9 +15,11 @@ export class GetGoogleBooksByAuthorUseCase
   ) {}
 
   async execute({
+    startIndex,
     author,
   }: TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null> {
     const googleBooks = await this.googleBooksRepository.findByAuthor({
+      startIndex,
       author,
     });
 

@@ -15,17 +15,15 @@ export class GetGoogleBooksByAuthorController implements IController {
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
-      // const { startIndex, maxResults } = queryParams!;
-
       await this.getUserByIdUseCase.execute({ userId });
 
-      const { author } = GetGoogleBooksByAuthorSchema.parse({
+      const { author, startIndex } = GetGoogleBooksByAuthorSchema.parse({
         author: queryParams?.author,
-        // startIndex: Number(startIndex),
-        // maxResults: Number(maxResults),
+        startIndex: Number(queryParams?.startIndex),
       });
 
       const googleBook = await this.getGoogleBookByAuthorUseCase.execute({
+        startIndex,
         author,
       });
 
