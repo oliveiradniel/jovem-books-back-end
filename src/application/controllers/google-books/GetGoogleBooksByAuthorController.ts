@@ -17,15 +17,11 @@ export class GetGoogleBooksByAuthorController implements IController {
     try {
       await this.getUserByIdUseCase.execute({ userId });
 
-      const { author, startIndex } = GetGoogleBooksByAuthorSchema.parse({
-        author: queryParams?.author,
-        startIndex: Number(queryParams?.startIndex),
-      });
+      const author = GetGoogleBooksByAuthorSchema.parse(queryParams?.author);
 
-      const googleBook = await this.getGoogleBookByAuthorUseCase.execute({
-        startIndex,
+      const googleBook = await this.getGoogleBookByAuthorUseCase.execute(
         author,
-      });
+      );
 
       return {
         statusCode: 200,

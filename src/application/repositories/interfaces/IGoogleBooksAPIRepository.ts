@@ -9,8 +9,6 @@ import {
 
 export interface IGetGoogleBookURL {
   queryParam: string;
-  startIndex?: number;
-  maxResults?: number;
 }
 
 export type TGetGoogleBooksByTitle = z.infer<
@@ -22,12 +20,10 @@ export type TGetGoogleBooksByAuthor = z.infer<
 >;
 
 export interface IGoogleBooksAPIRepository {
-  findByTitle({
-    startIndex,
-    title,
-  }: TGetGoogleBooksByTitle): Promise<IBookWithTotalItems | null>;
-  findByAuthor({
-    startIndex,
-    author,
-  }: TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null>;
+  findByTitle(
+    title: TGetGoogleBooksByTitle,
+  ): Promise<IBookWithTotalItems | null>;
+  findByAuthor(
+    author: TGetGoogleBooksByAuthor,
+  ): Promise<IBookWithTotalItems | null>;
 }

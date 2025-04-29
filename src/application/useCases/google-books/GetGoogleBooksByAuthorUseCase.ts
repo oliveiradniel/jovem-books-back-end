@@ -14,14 +14,10 @@ export class GetGoogleBooksByAuthorUseCase
     private readonly googleBooksRepository: IGoogleBooksAPIRepository,
   ) {}
 
-  async execute({
-    startIndex,
-    author,
-  }: TGetGoogleBooksByAuthor): Promise<IBookWithTotalItems | null> {
-    const googleBooks = await this.googleBooksRepository.findByAuthor({
-      startIndex,
-      author,
-    });
+  async execute(
+    author: TGetGoogleBooksByAuthor,
+  ): Promise<IBookWithTotalItems | null> {
+    const googleBooks = await this.googleBooksRepository.findByAuthor(author);
 
     return googleBooks;
   }

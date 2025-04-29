@@ -1,5 +1,5 @@
-import { SearchParamsGoogleBookSchema } from './SearchParamsGoogleBookSchema';
+import { z } from 'zod';
 
-export const GetGoogleBooksByTitleSchema = SearchParamsGoogleBookSchema.omit({
-  author: true,
+export const GetGoogleBooksByTitleSchema = z.string({
+  message: 'Title must be a string',
 });

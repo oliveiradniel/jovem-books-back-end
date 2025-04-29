@@ -17,15 +17,9 @@ export class GetGoogleBooksByTitleController implements IController {
     try {
       await this.getUserByIdUseCase.execute({ userId });
 
-      const { startIndex, title } = GetGoogleBooksByTitleSchema.parse({
-        startIndex: Number(queryParams?.startIndex),
-        title: queryParams?.title,
-      });
+      const title = GetGoogleBooksByTitleSchema.parse(queryParams?.title);
 
-      const googleBook = await this.getGoogleBookByTitleUseCase.execute({
-        startIndex,
-        title,
-      });
+      const googleBook = await this.getGoogleBookByTitleUseCase.execute(title);
 
       return {
         statusCode: 200,

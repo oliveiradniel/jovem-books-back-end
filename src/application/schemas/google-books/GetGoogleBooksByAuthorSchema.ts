@@ -1,8 +1,5 @@
-import { SearchParamsGoogleBookSchema } from './SearchParamsGoogleBookSchema';
+import { z } from 'zod';
 
-export const GetGoogleBooksByAuthorSchema = SearchParamsGoogleBookSchema.omit({
-  title: true,
+export const GetGoogleBooksByAuthorSchema = z.string({
+  message: 'Author name must be a string',
 });
-
-// startIndex: z.number({ message: 'Start index must be a number' }),
-// maxResults: z.number({ message: 'Max results must be a number' }),
