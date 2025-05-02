@@ -4,7 +4,6 @@ import { hash } from 'bcrypt';
 
 import { UpdateUserUseCase } from '../../useCases/user/UpdateUserUseCase';
 
-import { UserIdSchema } from '../../schemas/user/UserIdSchema';
 import { UpdateUserSchema } from '../../schemas/user/UpdateUserSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
@@ -12,11 +11,10 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 export class UpdateUserController implements IController {
   constructor(private readonly updateUserUseCase: UpdateUserUseCase) {}
 
-  async handle({ body, userId: id }: IRequest): Promise<IResponse> {
+  async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
-      const parsedUserId = UserIdSchema.parse(id);
-
       const data = UpdateUserSchema.parse({
+        userId,
         ...body,
         updatedAt: new Date(),
       });
@@ -32,8 +30,7 @@ export class UpdateUserController implements IController {
       };
 
       await this.updateUserUseCase.execute({
-        userId: parsedUserId,
-        data: userData,
+        ...userData,
       });
 
       return {

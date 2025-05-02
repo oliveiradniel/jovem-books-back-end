@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
+import { IdUserSchema } from '../user';
+
 export const BaseBookSchema = z.object({
-  userId: z
-    .string({ message: 'User id must be a string' })
-    .uuid('Enter a valid user id'),
+  userId: IdUserSchema,
   title: z
     .string({ message: 'Title must be a string' })
     .min(3, 'Title must be at least 3 characters'),

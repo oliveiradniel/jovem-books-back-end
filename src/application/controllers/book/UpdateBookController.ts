@@ -5,7 +5,7 @@ import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 import { GetBookByIdUseCase } from '../../useCases/book/GetBookByIdUseCase';
 import { UpdateBookUseCase } from '../../useCases/book/UpdateBookUseCase';
 
-import { IdUserSchema } from '../../schemas/UserSchemas';
+import { IdUserSchema } from '../../schemas/user/IdUserSchema';
 import { IdBookSchema } from '../../schemas/book/IdBookSchema';
 import { UpdateBookSchema } from '../../schemas/book';
 

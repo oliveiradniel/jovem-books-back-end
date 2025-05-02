@@ -16,7 +16,7 @@ export class ListBooksUseCase implements IUseCase<TListBooks, IBook[]> {
   ) {}
 
   async execute({ userId, orderBy }: TListBooks): Promise<IBook[]> {
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     if (!this.bookRepository?.list) {
       return [];

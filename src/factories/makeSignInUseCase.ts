@@ -1,4 +1,4 @@
-import { SignInUseCase } from '../application/useCases/SignInUseCase';
+import { SignInUseCase } from '../application/useCases/user/SignInUseCase';
 
 import { makeUserRepository } from './user/makeUserRepository';
 

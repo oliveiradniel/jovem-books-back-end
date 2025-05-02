@@ -1,5 +1,3 @@
-import { User } from '@prisma/client';
-
 import { GetUserByIdUseCase } from './GetUserByIdUseCase';
 import { GetUserByEmailUseCase } from './GetUserByEmailUseCase';
 import { GetUserByUsernameUseCase } from './GetUserByUsernameUseCase';
@@ -9,14 +7,12 @@ import { UsernameAlreadyInUse } from '../../errors/user/UsernameAlreadyInUse';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
+import {
+  IUserRepository,
+  TUpdateUser,
+} from '../../repositories/interfaces/IUserRepository';
 
-interface IInput {
-  userId: string;
-  data: Partial<Omit<User, 'id' | 'createdAt'>>;
-}
-
-export class UpdateUserUseCase implements IUseCase<IInput, void> {
+export class UpdateUserUseCase implements IUseCase<TUpdateUser, void> {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
@@ -24,13 +20,13 @@ export class UpdateUserUseCase implements IUseCase<IInput, void> {
     private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
   ) {}
 
-  async execute({ userId, data }: IInput) {
+  async execute({ userId, ...data }: TUpdateUser) {
     if (
       !Object.values(data).some(value => value !== null && value !== undefined)
     ) {
       return;
     }
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     if (data.email) {
       const userDataWithTheEmailInUse =

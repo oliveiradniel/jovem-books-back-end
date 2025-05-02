@@ -1,8 +1,9 @@
 import { z } from 'zod';
 
-import { ReadingStatus } from '@prisma/client';
+import { IdUserSchema } from '../user/IdUserSchema';
 import { IdBookSchema } from '../book';
-import { IdUserSchema } from '../UserSchemas';
+
+import { ReadingStatus } from '@prisma/client';
 
 export const BaseReadSchema = z.object({
   bookId: IdBookSchema,

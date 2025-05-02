@@ -2,7 +2,7 @@ import { verifyUserErrors } from '../../../utils/verifyUserErrors';
 
 import { DeleteUserUseCase } from '../../useCases/user/DeleteUserUseCase';
 
-import { UserIdSchema } from '../../schemas/user/UserIdSchema';
+import { IdUserSchema } from '../../schemas/user/IdUserSchema';
 
 import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
@@ -11,9 +11,9 @@ export class DeleteUserController implements IController {
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const parsedUserId = UserIdSchema.parse(userId);
+      const parsedUserId = IdUserSchema.parse(userId);
 
-      await this.deleteUserUseCase.execute({ userId: parsedUserId });
+      await this.deleteUserUseCase.execute(parsedUserId);
 
       return {
         statusCode: 204,

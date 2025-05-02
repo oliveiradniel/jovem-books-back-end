@@ -24,7 +24,7 @@ export class GetBookByTitleUseCase
     userId,
     shouldReturn = false,
   }: TGetBookByTitle): Promise<IBook | null> {
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     const book = await this.bookRepository.findByTitle({
       title,

@@ -18,7 +18,7 @@ export class GetBookByIdUseCase implements IUseCase<TGetBookById, IBook> {
   ) {}
 
   async execute({ userId, bookId }: TGetBookById): Promise<IBook> {
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     const book = await this.bookRepository.findById({
       bookId,

@@ -18,7 +18,7 @@ export class GetUserByUsernameUseCase implements IUseCase<IInput, User | void> {
     username,
     shouldReturn = false,
   }: IInput): Promise<User | void> {
-    const user = await this.userRepository.findByUsername({ username });
+    const user = await this.userRepository.findByUsername(username);
 
     if (shouldReturn && user) {
       return user;

@@ -1,5 +1,3 @@
-import { User } from '@prisma/client';
-
 import { hash } from 'bcrypt';
 
 import { GetUserByUsernameUseCase } from './GetUserByUsernameUseCase';
@@ -7,18 +5,19 @@ import { GetUserByEmailUseCase } from './GetUserByEmailUseCase';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IUserRepository } from '../../repositories/interfaces/IUserRepository';
+import {
+  IUserRepository,
+  TCreateUser,
+} from '../../repositories/interfaces/IUserRepository';
 
-type IInput = Omit<User, 'id' | 'createdAt' | 'updatedAt'>;
-
-export class CreateUserUseCase implements IUseCase<IInput, void> {
+export class CreateUserUseCase implements IUseCase<TCreateUser, void> {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
   ) {}
 
-  async execute(data: IInput) {
+  async execute(data: TCreateUser) {
     await this.getUserByUsernameUseCase.execute({
       username: data.username,
     });

@@ -18,7 +18,7 @@ export class CreateBookUseCase implements IUseCase<TCreateBook, void> {
   async execute(data: TCreateBook): Promise<void> {
     const userId = data.userId;
 
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     await this.getBookByTitleUseCase.execute({
       userId,

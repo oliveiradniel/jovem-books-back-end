@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
+import { IdUserSchema } from '../user/IdUserSchema';
 import { IdBookSchema } from './IdBookSchema';
-import { IdUserSchema } from '../UserSchemas';
 
 export const DeleteBookSchema = z.object({
   userId: IdUserSchema,

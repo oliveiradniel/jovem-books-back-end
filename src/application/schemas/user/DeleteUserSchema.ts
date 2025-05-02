@@ -1,3 +1,3 @@
 import { IdUserSchema } from './IdUserSchema';
 
-export const GetUserByIdSchema = IdUserSchema;
+export const DeleteUserSchema = IdUserSchema;
