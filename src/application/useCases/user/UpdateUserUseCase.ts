@@ -20,12 +20,7 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, void> {
     private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
   ) {}
 
-  async execute({ userId, ...data }: TUpdateUser) {
-    if (
-      !Object.values(data).some(value => value !== null && value !== undefined)
-    ) {
-      return;
-    }
+  async execute({ userId, removeImage, ...data }: TUpdateUser) {
     await this.getUserByIdUseCase.execute(userId);
 
     if (data.email) {
@@ -61,6 +56,6 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, void> {
       return;
     }
 
-    await this.userRepository.update({ userId, data });
+    await this.userRepository.update({ userId, ...data });
   }
 }

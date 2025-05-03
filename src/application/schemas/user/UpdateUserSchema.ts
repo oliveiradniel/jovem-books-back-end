@@ -6,9 +6,10 @@ import { BaseUserSchema } from './BaseUserSchema';
 
 export const UpdateUserSchema = BaseUserSchema.extend({
   userId: IdUserSchema,
-  imagePath: z
-    .string({ message: 'Image path must be a string' })
-    .nullable()
-    .default(null),
+  // imagePath: z
+  //   .string({ message: 'Image path must be a string' })
+  //   .nullable()
+  //   .default(null),
   removeImage: z.boolean().optional().default(false),
+  password: z.string().optional().nullable().default(null),
 });
