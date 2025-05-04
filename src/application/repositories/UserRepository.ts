@@ -1,6 +1,6 @@
 import { prismaClient } from '../lib/prismaClient';
 
-import { TUser } from '../../@types/IUser';
+import { TUser } from '../../@types/User';
 
 import {
   TDeleteUser,

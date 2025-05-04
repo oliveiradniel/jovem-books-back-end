@@ -17,31 +17,30 @@ export class UpdateUserController implements IController {
 
   async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
+      let hashedPassword;
+      if (body.password) {
+        hashedPassword = await hash(body.password!, 10);
+      }
+
+      const user = await this.getUserById.execute(userId);
+
+      const userData = {
+        userId: body.userId ?? user.id,
+        username: body.username ?? user.username,
+        firstName: body.firstName ?? user.firstName,
+        lastName: body.lastName ?? user.lastName,
+        email: body.email ?? user.email,
+        password: hashedPassword ?? user.password,
+        removeImage: body.removeImage,
+      };
+
       const data = UpdateUserSchema.parse({
-        userId,
-        ...body,
+        ...userData,
         updatedAt: new Date(),
       });
 
-      let hashedPassword;
-      if (data.password) {
-        hashedPassword = await hash(data.password!, 10);
-      }
-
-      const user = await this.getUserById.execute(data.userId);
-
-      const userData = {
-        userId: data.userId ?? user.id,
-        username: data.username ?? user.username,
-        firstName: data.firstName ?? user.firstName,
-        lastName: data.lastName ?? user.lastName,
-        email: data.email ?? user.email,
-        password: hashedPassword ?? user.password,
-        removeImage: data.removeImage,
-      };
-
       await this.updateUserUseCase.execute({
-        ...userData,
+        ...data,
       });
 
       return {

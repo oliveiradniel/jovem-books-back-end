@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 
-import { IRead } from '../../../@types/IRead';
+import { TRead } from '../../../@types/Read';
 
 import { IRepository } from '../../interfaces/IRepository';
 
@@ -26,7 +26,7 @@ export type TDeleteRead = z.infer<typeof DeleteReadSchema>;
 
 export interface IReadRepository
   extends IRepository<
-    IRead,
+    TRead,
     Omit<TGetReadByBookId, 'userId'>,
     Omit<TCreateRead, 'userId'>,
     Omit<TDeleteRead, 'userId'>,

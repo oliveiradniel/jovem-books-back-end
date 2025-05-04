@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { IRepository } from '../../interfaces/IRepository';
 
-import { IBook } from '../../../@types/IBook';
+import { TBook } from '../../../@types/Book';
 
 import {
   CreateBookSchema,
@@ -30,13 +30,13 @@ export type TDeleteBook = z.infer<typeof DeleteBookSchema>;
 
 export interface IBookRepository
   extends IRepository<
-    IBook,
+    TBook,
     TGetBookById,
     TCreateBook,
     TDeleteBook,
     TListBooks,
     Omit<TUpdateBook, 'removeImage'>
   > {
-  findByTitle({ title, userId }: TGetBookByTitle): Promise<IBook | null>;
-  findByAuthor({ author, userId }: TGetBookByAuthor): Promise<IBook[] | null>;
+  findByTitle({ title, userId }: TGetBookByTitle): Promise<TBook | null>;
+  findByAuthor({ author, userId }: TGetBookByAuthor): Promise<TBook[] | null>;
 }
