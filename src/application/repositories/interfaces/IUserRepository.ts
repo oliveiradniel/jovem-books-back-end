@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 
 import { IRepository } from '../../interfaces/IRepository';
 
@@ -36,7 +36,7 @@ export type TDeleteUser = z.infer<typeof DeleteUserSchema>;
 
 export interface IUserRepository
   extends IRepository<
-    User,
+    User | Prisma.UserGetPayload<{ include: { books: true } }>,
     TGetUserById,
     TCreateUser,
     TDeleteUser,

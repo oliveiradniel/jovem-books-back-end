@@ -1,11 +1,18 @@
-export interface IUser {
-  id: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  imagePath: string | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
+import { Prisma, User } from '@prisma/client';
+
+export type TUser =
+  | User
+  | (Prisma.UserGetPayload<{
+      include: {
+        books: {
+          include: {
+            read: true;
+          };
+        };
+        _count: {
+          select: { books: true };
+        };
+      };
+    }> & {
+      booksReading: number;
+    });

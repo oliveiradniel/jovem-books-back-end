@@ -11,5 +11,4 @@ export const UpdateUserSchema = BaseUserSchema.extend({
   //   .nullable()
   //   .default(null),
   removeImage: z.boolean().optional().default(false),
-  password: z.string().optional().nullable().default(null),
 });

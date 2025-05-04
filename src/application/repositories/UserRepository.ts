@@ -1,6 +1,6 @@
 import { prismaClient } from '../lib/prismaClient';
 
-import { IUser } from '../../@types/IUser';
+import { TUser } from '../../@types/IUser';
 
 import {
   TDeleteUser,
@@ -13,29 +13,45 @@ import {
 } from './interfaces/IUserRepository';
 
 export class UserRepository implements IUserRepository {
-  async findById(userId: TGetUserById): Promise<IUser | null> {
-    const user = await prismaClient.user.findUnique({ where: { id: userId } });
+  async findById(userId: TGetUserById): Promise<TUser | null> {
+    const user = await prismaClient.user.findUnique({
+      where: { id: userId },
+      include: {
+        _count: { select: { books: true } },
+      },
+    });
 
-    return user;
+    if (!user) return null;
+
+    const booksReading = await prismaClient.book.count({
+      where: {
+        userId,
+        read: {
+          is: { status: 'READING' },
+        },
+      },
+    });
+
+    return { ...user, booksReading };
   }
 
-  async findByUsername(username: TUsername): Promise<IUser | null> {
+  async findByUsername(username: TUsername): Promise<TUser | null> {
     return await prismaClient.user.findUnique({ where: { username } });
   }
 
-  async findByEmail(email: TEmail): Promise<IUser | null> {
+  async findByEmail(email: TEmail): Promise<TUser | null> {
     return await prismaClient.user.findUnique({
       where: { email },
     });
   }
 
-  async create(data: TCreateUser): Promise<IUser> {
+  async create(data: TCreateUser): Promise<TUser> {
     return await prismaClient.user.create({
       data,
     });
   }
 
-  async update({ userId, ...data }: TUpdateUser): Promise<IUser> {
+  async update({ userId, ...data }: TUpdateUser): Promise<TUser> {
     return await prismaClient.user.update({
       where: { id: userId },
       data,
