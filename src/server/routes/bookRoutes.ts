@@ -30,7 +30,6 @@ const upload = multerConfig({ directory: 'books' });
 
 router.post(
   '/',
-  upload.single('image'),
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeCreateBookController()),
 );

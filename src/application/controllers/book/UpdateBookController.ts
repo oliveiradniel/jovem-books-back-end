@@ -1,4 +1,4 @@
-import { IBook } from '../../../@types/IBook';
+import { TBook } from '../../../@types/Book';
 
 import { verifyBookErrors } from '../../../utils/verifyBookErrors';
 
@@ -50,7 +50,7 @@ export class UpdateBookController implements IController {
 
       return {
         statusCode: 200,
-        body: updatedBook as IBook,
+        body: updatedBook as TBook,
       };
     } catch (error) {
       return verifyBookErrors(error);

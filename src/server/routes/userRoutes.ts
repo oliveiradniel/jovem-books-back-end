@@ -9,7 +9,11 @@ import { makeDeleteUserController } from '../../factories/user/makeDeleteUserCon
 import { makeUpdateUserController } from '../../factories/user/makeUpdateUserController';
 import { makeGetUserByIdController } from '../../factories/user/makeGetUserByIdController';
 
+import { multerConfig } from '../../application/lib/multerConfig';
+
 const router = Router();
+
+const upload = multerConfig({ directory: 'users' });
 
 router.get(
   '/',
@@ -19,6 +23,7 @@ router.get(
 
 router.put(
   '/',
+  upload.single('image'),
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateUserController()),
 );

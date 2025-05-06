@@ -15,7 +15,7 @@ export class UpdateUserController implements IController {
     private readonly getUserById: GetUserByIdUseCase,
   ) {}
 
-  async handle({ body, userId }: IRequest): Promise<IResponse> {
+  async handle({ userId, body, file }: IRequest): Promise<IResponse> {
     try {
       let hashedPassword;
       if (body.password) {
@@ -31,7 +31,9 @@ export class UpdateUserController implements IController {
         lastName: body.lastName ?? user.lastName,
         email: body.email ?? user.email,
         password: hashedPassword ?? user.password,
-        removeImage: body.removeImage,
+        imagePath: body.removeImage ? null : file?.filename ?? user.imagePath,
+        removeImage:
+          (body.removeImage && JSON.parse(body.removeImage)) ?? false,
       };
 
       const data = UpdateUserSchema.parse({
@@ -39,15 +41,16 @@ export class UpdateUserController implements IController {
         updatedAt: new Date(),
       });
 
-      await this.updateUserUseCase.execute({
+      const updatedBook = await this.updateUserUseCase.execute({
         ...data,
       });
 
       return {
-        statusCode: 204,
-        body: null,
+        statusCode: 200,
+        body: updatedBook,
       };
     } catch (error) {
+      console.log(error);
       return verifyUserErrors(error);
     }
   }

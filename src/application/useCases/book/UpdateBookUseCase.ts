@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { IBook } from '../../../@types/IBook';
+import { TBook } from '../../../@types/Book';
 
 import { GetBookByIdUseCase } from './GetBookByIdUseCase';
 import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
@@ -15,7 +15,7 @@ import {
   TUpdateBook,
 } from '../../repositories/interfaces/IBookRepository';
 
-export class UpdateBookUseCase implements IUseCase<TUpdateBook, IBook | null> {
+export class UpdateBookUseCase implements IUseCase<TUpdateBook, TBook | null> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
@@ -27,7 +27,7 @@ export class UpdateBookUseCase implements IUseCase<TUpdateBook, IBook | null> {
     userId,
     removeImage,
     ...data
-  }: TUpdateBook): Promise<IBook | null> {
+  }: TUpdateBook): Promise<TBook | null> {
     const book = await this.getBookByIdUseCase.execute({
       bookId,
       userId,

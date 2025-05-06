@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { GetUserByIdUseCase } from './GetUserByIdUseCase';
 import { GetUserByEmailUseCase } from './GetUserByEmailUseCase';
 import { GetUserByUsernameUseCase } from './GetUserByUsernameUseCase';
@@ -12,7 +15,9 @@ import {
   TUpdateUser,
 } from '../../repositories/interfaces/IUserRepository';
 
-export class UpdateUserUseCase implements IUseCase<TUpdateUser, void> {
+import { TUser } from '../../../@types/User';
+
+export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
@@ -20,8 +25,12 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, void> {
     private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
   ) {}
 
-  async execute({ userId, removeImage, ...data }: TUpdateUser) {
-    await this.getUserByIdUseCase.execute(userId);
+  async execute({
+    userId,
+    removeImage,
+    ...data
+  }: TUpdateUser): Promise<TUser | null> {
+    const user = await this.getUserByIdUseCase.execute(userId);
 
     if (data.email) {
       const userDataWithTheEmailInUse =
@@ -53,9 +62,37 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, void> {
     }
 
     if (!this.userRepository?.update) {
-      return;
+      return null;
     }
 
-    await this.userRepository.update({ userId, ...data });
+    if (removeImage && user.imagePath) {
+      const filePath = path.resolve(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        '..',
+        'uploads',
+        'books',
+        user.imagePath,
+      );
+
+      fs.access(filePath, fs.constants.F_OK, err => {
+        if (err) {
+          console.error('Arquivo não encontrado:', err);
+          return;
+        }
+
+        fs.unlink(filePath, err => {
+          if (err) {
+            console.error('Erro ao apagar o arquivo:', err);
+          } else {
+            console.log('Arquivo apagado com sucesso');
+          }
+        });
+      });
+    }
+
+    return await this.userRepository.update({ userId, ...data });
   }
 }
