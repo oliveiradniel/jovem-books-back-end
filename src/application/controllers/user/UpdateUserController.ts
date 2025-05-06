@@ -41,16 +41,15 @@ export class UpdateUserController implements IController {
         updatedAt: new Date(),
       });
 
-      const updatedBook = await this.updateUserUseCase.execute({
+      const updatedUser = await this.updateUserUseCase.execute({
         ...data,
       });
 
       return {
         statusCode: 200,
-        body: updatedBook,
+        body: updatedUser,
       };
     } catch (error) {
-      console.log(error);
       return verifyUserErrors(error);
     }
   }

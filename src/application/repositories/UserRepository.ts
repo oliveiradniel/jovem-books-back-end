@@ -52,10 +52,24 @@ export class UserRepository implements IUserRepository {
   }
 
   async update({ userId, ...data }: TUpdateUser): Promise<TUser> {
-    return await prismaClient.user.update({
+    const updatedUser = await prismaClient.user.update({
       where: { id: userId },
       data,
+      include: {
+        _count: { select: { books: true } },
+      },
     });
+
+    const booksReading = await prismaClient.book.count({
+      where: {
+        userId,
+        read: {
+          is: { status: 'READING' },
+        },
+      },
+    });
+
+    return { ...updatedUser, booksReading };
   }
 
   async delete(userId: TDeleteUser): Promise<void> {

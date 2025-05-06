@@ -73,7 +73,7 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
         '..',
         '..',
         'uploads',
-        'books',
+        'users',
         user.imagePath,
       );
 
