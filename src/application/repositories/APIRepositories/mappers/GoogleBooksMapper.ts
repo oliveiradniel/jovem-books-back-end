@@ -1,5 +1,5 @@
-import { IGoogleBooks } from '../../../../@types/GoogleBook';
-import { IBookWithTotalItems } from '../../../../@types/IBook';
+import { IGoogleBooks } from '../../../../@types/GoogleBooks';
+import { IBookWithTotalItems } from '../../../../@types/Book';
 
 class GoogleBooksMapper {
   // toPersistence(domainGoogleBooks) {}
@@ -9,7 +9,7 @@ class GoogleBooksMapper {
       id: googleBook.id,
       title: googleBook.volumeInfo.title,
       authors: googleBook.volumeInfo.authors,
-      sinopse: googleBook.volumeInfo.description,
+      sinopse: googleBook.volumeInfo.description ?? null,
       numberOfPages: googleBook.volumeInfo.pageCount ?? null,
       literaryGenre: googleBook.volumeInfo.categories,
       imagePath:

@@ -1,6 +1,6 @@
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookWithTotalItems } from '../../../@types/IBook';
+import { IBookWithTotalItems } from '../../../@types/Book';
 
 import {
   IGoogleBooksAPIRepository,

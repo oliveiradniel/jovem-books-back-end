@@ -1,13 +1,13 @@
 import { z } from 'zod';
 
-import { IBookWithTotalItems } from '../../../@types/IBook';
+import { IBookWithTotalItems } from '../../../@types/Book';
 
 import {
   GetGoogleBooksByAuthorSchema,
   GetGoogleBooksByTitleSchema,
 } from '../../schemas/google-books';
 
-export interface IGetGoogleBookURL {
+export interface IGetGoogleBooksURL {
   queryParam: string;
 }
 

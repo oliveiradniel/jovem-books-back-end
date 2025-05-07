@@ -9,21 +9,23 @@ import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class GetGoogleBooksByTitleController implements IController {
   constructor(
-    private readonly getGoogleBookByTitleUseCase: GetGoogleBooksByTitleUseCase,
+    private readonly getGoogleBooksByTitleUseCase: GetGoogleBooksByTitleUseCase,
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
   ) {}
 
   async handle({ userId, queryParams }: IRequest): Promise<IResponse> {
     try {
-      await this.getUserByIdUseCase.execute({ userId });
+      await this.getUserByIdUseCase.execute(userId);
 
       const title = GetGoogleBooksByTitleSchema.parse(queryParams?.title);
 
-      const googleBook = await this.getGoogleBookByTitleUseCase.execute(title);
+      const googleBooks = await this.getGoogleBooksByTitleUseCase.execute(
+        title,
+      );
 
       return {
         statusCode: 200,
-        body: googleBook,
+        body: googleBooks,
       };
     } catch (error) {
       return verifyGoogleBooksErrors(error);

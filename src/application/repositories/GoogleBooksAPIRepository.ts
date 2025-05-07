@@ -4,18 +4,18 @@ import { env } from '../../config/env';
 
 import GoogleBooksMapper from './APIRepositories/mappers/GoogleBooksMapper';
 
-import { IBookWithTotalItems } from '../../@types/IBook';
-import { IGoogleBooks } from '../../@types/GoogleBook';
+import { IBookWithTotalItems } from '../../@types/Book';
+import { IGoogleBooks } from '../../@types/GoogleBooks';
 
 import {
-  IGetGoogleBookURL,
+  IGetGoogleBooksURL,
   IGoogleBooksAPIRepository,
   TGetGoogleBooksByAuthor,
   TGetGoogleBooksByTitle,
 } from './interfaces/IGoogleBooksAPIRepository';
 
 export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
-  private getURL({ queryParam }: IGetGoogleBookURL): string {
+  private getURL({ queryParam }: IGetGoogleBooksURL): string {
     return `https://www.googleapis.com/books/v1/volumes?q=${queryParam}&langRestrict=pt&printType=books&maxResults=20&key=${env.GOOGLE_API_KEY}`;
   }
 
@@ -32,9 +32,9 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
       return null;
     }
 
-    const books = GoogleBooksMapper.toDomain({ data });
+    const googleBooks = GoogleBooksMapper.toDomain({ data });
 
-    return books;
+    return googleBooks;
   }
 
   async findByAuthor(
@@ -50,8 +50,8 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
       return null;
     }
 
-    const books = GoogleBooksMapper.toDomain({ data });
+    const googleBooks = GoogleBooksMapper.toDomain({ data });
 
-    return books;
+    return googleBooks;
   }
 }
