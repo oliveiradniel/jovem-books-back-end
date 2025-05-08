@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-import { IBookWithTotalItems } from '../../../@types/Book';
-
 import {
   GetGoogleBooksByAuthorSchema,
   GetGoogleBooksByTitleSchema,
 } from '../../schemas/google-books';
+
+import { TGoogleBookResponse } from '../../../@types/GoogleBooks';
 
 export interface IGetGoogleBooksURL {
   queryParam: string;
@@ -22,8 +22,8 @@ export type TGetGoogleBooksByAuthor = z.infer<
 export interface IGoogleBooksAPIRepository {
   findByTitle(
     title: TGetGoogleBooksByTitle,
-  ): Promise<IBookWithTotalItems | null>;
+  ): Promise<TGoogleBookResponse[] | null>;
   findByAuthor(
     author: TGetGoogleBooksByAuthor,
-  ): Promise<IBookWithTotalItems | null>;
+  ): Promise<TGoogleBookResponse[] | null>;
 }

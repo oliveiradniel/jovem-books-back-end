@@ -4,8 +4,7 @@ import { env } from '../../config/env';
 
 import GoogleBooksMapper from './APIRepositories/mappers/GoogleBooksMapper';
 
-import { IBookWithTotalItems } from '../../@types/Book';
-import { IGoogleBooks } from '../../@types/GoogleBooks';
+import { IGoogleBooks, TGoogleBookResponse } from '../../@types/GoogleBooks';
 
 import {
   IGetGoogleBooksURL,
@@ -21,7 +20,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
 
   async findByTitle(
     title: TGetGoogleBooksByTitle,
-  ): Promise<IBookWithTotalItems | null> {
+  ): Promise<TGoogleBookResponse[] | null> {
     const url = this.getURL({
       queryParam: `intitle:${title}`,
     });
@@ -39,7 +38,7 @@ export class GoogleBooksAPIRepository implements IGoogleBooksAPIRepository {
 
   async findByAuthor(
     author: TGetGoogleBooksByAuthor,
-  ): Promise<IBookWithTotalItems | null> {
+  ): Promise<TGoogleBookResponse[] | null> {
     const url = this.getURL({
       queryParam: `inauthor:${author}`,
     });

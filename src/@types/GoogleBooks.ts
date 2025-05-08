@@ -1,3 +1,7 @@
+import { Book } from '@prisma/client';
+
+export type TGoogleBookResponse = Omit<Book, 'createdAt' | 'userId'>;
+
 export interface IGoogleBook {
   id: string;
   volumeInfo: {
@@ -20,7 +24,6 @@ export interface IGoogleBook {
 
 export interface IGoogleBooks {
   data: {
-    totalItems: number;
     items: IGoogleBook[];
   };
 }

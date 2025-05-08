@@ -1,14 +1,14 @@
 import { IUseCase } from '../../interfaces/IUseCase';
 
-import { IBookWithTotalItems } from '../../../@types/Book';
-
 import {
   IGoogleBooksAPIRepository,
   TGetGoogleBooksByAuthor,
 } from '../../repositories/interfaces/IGoogleBooksAPIRepository';
 
+import { TGoogleBookResponse } from '../../../@types/GoogleBooks';
+
 export class GetGoogleBooksByAuthorUseCase
-  implements IUseCase<TGetGoogleBooksByAuthor, IBookWithTotalItems | null>
+  implements IUseCase<TGetGoogleBooksByAuthor, TGoogleBookResponse[] | null>
 {
   constructor(
     private readonly googleBooksRepository: IGoogleBooksAPIRepository,
@@ -16,7 +16,7 @@ export class GetGoogleBooksByAuthorUseCase
 
   async execute(
     author: TGetGoogleBooksByAuthor,
-  ): Promise<IBookWithTotalItems | null> {
+  ): Promise<TGoogleBookResponse[] | null> {
     const googleBooks = await this.googleBooksRepository.findByAuthor(author);
 
     return googleBooks;

@@ -1,10 +1,12 @@
-import { IGoogleBooks } from '../../../../@types/GoogleBooks';
-import { IBookWithTotalItems } from '../../../../@types/Book';
+import {
+  IGoogleBooks,
+  TGoogleBookResponse,
+} from '../../../../@types/GoogleBooks';
 
 class GoogleBooksMapper {
   // toPersistence(domainGoogleBooks) {}
 
-  toDomain({ data }: IGoogleBooks): IBookWithTotalItems {
+  toDomain({ data }: IGoogleBooks): TGoogleBookResponse[] {
     const books = data.items.map(googleBook => ({
       id: googleBook.id,
       title: googleBook.volumeInfo.title,
@@ -22,10 +24,7 @@ class GoogleBooksMapper {
       dateOfPublication: new Date(googleBook.volumeInfo.publishedDate),
     }));
 
-    return {
-      totalItems: data.totalItems,
-      data: books,
-    };
+    return books;
   }
 }
 
