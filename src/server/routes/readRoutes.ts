@@ -5,11 +5,13 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeListReadsController } from '../../factories/read/makeListReadsController';
-import { makeGetReadByBookIdController } from '../../factories/read/makeGetReadByBookdController';
-import { makeCreateReadController } from '../../factories/read/makeCreateReadController';
-import { makeUpdateReadController } from '../../factories/read/makeUpdateReadController';
-import { makeDeleteReadController } from '../../factories/read/makeDeleteReadController';
+import {
+  makeCreateReadController,
+  makeDeleteReadController,
+  makeGetReadByBookIdController,
+  makeListReadsController,
+  makeUpdateReadController,
+} from '../../factories/read';
 
 const router = Router();
 
