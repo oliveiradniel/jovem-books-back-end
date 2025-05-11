@@ -5,11 +5,14 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeListBooksController } from '../../factories/book/makeListBooksController';
-import { makeGetBookByIdController } from '../../factories/book/makeGetBookByIdController';
-import { makeCreateBookController } from '../../factories/book/makeCreateBookController';
-import { makeUpdateBookController } from '../../factories/book/makeUpdateBookController';
-import { makeDeleteBookController } from '../../factories/book/makeDeleteBookController';
+import {
+  makeCreateBookController,
+  makeDeleteBookController,
+  makeGetBookByIdController,
+  makeListBooksController,
+  makeUpdateBookController,
+} from '../../factories/book';
+
 import { multerConfig } from '../../application/lib/multerConfig';
 
 const router = Router();
