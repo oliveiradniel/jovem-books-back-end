@@ -5,9 +5,11 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeDeleteUserController } from '../../factories/user/makeDeleteUserController';
-import { makeUpdateUserController } from '../../factories/user/makeUpdateUserController';
-import { makeGetUserByIdController } from '../../factories/user/makeGetUserByIdController';
+import {
+  makeDeleteUserController,
+  makeGetUserByIdController,
+  makeUpdateUserController,
+} from '../../factories/user';
 
 import { multerConfig } from '../../application/lib/multerConfig';
 
