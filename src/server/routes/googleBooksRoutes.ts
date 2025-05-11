@@ -5,8 +5,10 @@ import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
 
-import { makeGetGoogleBooksByTitleController } from '../../factories/google-books/makeGetGoogleBooksByTitleController';
-import { makeGetGoogleBooksByAuthorController } from '../../factories/google-books/makeGetGoogleBooksByAuthorController';
+import {
+  makeGetGoogleBooksByAuthorController,
+  makeGetGoogleBooksByTitleController,
+} from '../../factories/google-books';
 
 const router = Router();
 
