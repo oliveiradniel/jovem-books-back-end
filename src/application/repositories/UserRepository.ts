@@ -23,16 +23,16 @@ export class UserRepository implements IUserRepository {
 
     if (!user) return null;
 
-    const booksReading = await prismaClient.book.count({
+    const finishedBooks = await prismaClient.book.count({
       where: {
         userId,
         read: {
-          is: { status: 'READING' },
+          is: { status: 'FINISHED' },
         },
       },
     });
 
-    return { ...user, booksReading };
+    return { ...user, finishedBooks };
   }
 
   async findByUsername(username: TUsername): Promise<TUser | null> {
@@ -60,16 +60,16 @@ export class UserRepository implements IUserRepository {
       },
     });
 
-    const booksReading = await prismaClient.book.count({
+    const finishedBooks = await prismaClient.book.count({
       where: {
         userId,
         read: {
-          is: { status: 'READING' },
+          is: { status: 'FINISHED' },
         },
       },
     });
 
-    return { ...updatedUser, booksReading };
+    return { ...updatedUser, finishedBooks };
   }
 
   async delete(userId: TDeleteUser): Promise<void> {

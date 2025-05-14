@@ -14,5 +14,5 @@ export type TUser =
         };
       };
     }> & {
-      booksReading: number;
+      finishedBooks: number;
     });

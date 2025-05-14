@@ -1,6 +1,6 @@
 import { verifyUserErrors } from '../../utils/verifyUserErrors';
 
-import { SignInUseCase } from '../useCases/SignInUseCase';
+import { SignInUseCase } from '../useCases/user/SignInUseCase';
 
 import { SignInSchema } from './../schemas/user/SignInSchema';
 
@@ -20,6 +20,7 @@ export class SignInControler implements IController {
         body: { accessToken },
       };
     } catch (error) {
+      console.log(error);
       return verifyUserErrors(error);
     }
   }
