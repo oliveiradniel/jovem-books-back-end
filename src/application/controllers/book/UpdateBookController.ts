@@ -27,6 +27,8 @@ export class UpdateBookController implements IController {
         userId: id,
       });
 
+      const removeImage = JSON.parse(body.removeImage);
+
       const bookData = {
         userId: id,
         bookId: book.id,
@@ -34,7 +36,7 @@ export class UpdateBookController implements IController {
         authors: body.authors ?? book.authors,
         sinopse: body.sinopse ?? book.sinopse,
         literaryGenre: body.literaryGenre ?? book.literaryGenre,
-        removeImage: body.removeImage,
+        removeImage,
       };
 
       const data = UpdateBookSchema.parse(bookData);
@@ -53,6 +55,7 @@ export class UpdateBookController implements IController {
         body: updatedBook as TBook,
       };
     } catch (error) {
+      console.log(error);
       return verifyBookErrors(error);
     }
   }

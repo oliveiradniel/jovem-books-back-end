@@ -1,4 +1,4 @@
-import { IRead } from '../../../@types/IRead';
+import { TRead } from '../../../@types/Read';
 
 import { GetReadByBookIdUseCase } from './GetReadByBookIdUseCase';
 
@@ -9,13 +9,13 @@ import {
   TCreateRead,
 } from '../../repositories/interfaces/IReadRepository';
 
-export class CreateReadUseCase implements IUseCase<TCreateRead, IRead> {
+export class CreateReadUseCase implements IUseCase<TCreateRead, TRead> {
   constructor(
     private readonly readRepository: IReadRepository,
     private readonly getReadByIdUseCase: GetReadByBookIdUseCase,
   ) {}
 
-  async execute({ bookId, userId, ...data }: TCreateRead): Promise<IRead> {
+  async execute({ bookId, userId, ...data }: TCreateRead): Promise<TRead> {
     await this.getReadByIdUseCase.execute({
       bookId,
       userId,

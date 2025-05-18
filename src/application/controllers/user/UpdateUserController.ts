@@ -24,6 +24,8 @@ export class UpdateUserController implements IController {
 
       const user = await this.getUserById.execute(userId);
 
+      const removeImage = JSON.parse(body.removeImage);
+
       const userData = {
         userId: body.userId ?? user.id,
         username: body.username ?? user.username,
@@ -31,9 +33,8 @@ export class UpdateUserController implements IController {
         lastName: body.lastName ?? user.lastName,
         email: body.email ?? user.email,
         password: hashedPassword ?? user.password,
-        imagePath: body.removeImage ? null : file?.filename ?? user.imagePath,
-        removeImage:
-          (body.removeImage && JSON.parse(body.removeImage)) ?? false,
+        imagePath: removeImage ? null : file?.filename ?? user.imagePath,
+        removeImage,
       };
 
       const data = UpdateUserSchema.parse({
