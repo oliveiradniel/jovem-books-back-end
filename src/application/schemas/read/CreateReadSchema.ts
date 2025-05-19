@@ -1,5 +1,3 @@
 import { BaseReadSchema } from './BaseReadSchema';
 
-export const CreateReadSchema = BaseReadSchema.omit({
-  finishedAt: true,
-});
+export const CreateReadSchema = BaseReadSchema;

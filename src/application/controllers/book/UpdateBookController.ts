@@ -36,18 +36,14 @@ export class UpdateBookController implements IController {
         authors: body.authors ?? book.authors,
         sinopse: body.sinopse ?? book.sinopse,
         literaryGenre: body.literaryGenre ?? book.literaryGenre,
+        imagePath: removeImage ? null : file?.filename ?? book.imagePath,
         removeImage,
       };
 
       const data = UpdateBookSchema.parse(bookData);
 
-      const imagePath = bookData.removeImage
-        ? null
-        : file?.filename ?? book.imagePath;
-
       const updatedBook = await this.updateBookUseCase.execute({
         ...data,
-        imagePath,
       });
 
       return {
