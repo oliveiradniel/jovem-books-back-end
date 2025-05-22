@@ -51,7 +51,6 @@ export class UpdateBookController implements IController {
         body: updatedBook as TBook,
       };
     } catch (error) {
-      console.log(error);
       return verifyBookErrors(error);
     }
   }
