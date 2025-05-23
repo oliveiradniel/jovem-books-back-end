@@ -11,6 +11,8 @@ import {
   makeUpdateUserController,
 } from '../../factories/user';
 
+import { makeGenerateUserAvatarUploadURLController } from '../../factories/s3/makeGenerateUserAvatarUploadURLController';
+
 import { multerConfig } from '../../application/lib/multerConfig';
 
 const router = Router();
@@ -26,9 +28,7 @@ router.get(
 router.get(
   '/upload-avatar',
   middlewareAdapater(makeAuthenticationMiddleware()),
-  (request, response) => {
-    response.json({ message: 'Request Presigned URL' });
-  },
+  routeAdapter(makeGenerateUserAvatarUploadURLController()),
 );
 
 router.put(

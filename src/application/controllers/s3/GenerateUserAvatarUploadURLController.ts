@@ -10,7 +10,7 @@ export class GenerateUserAvatarUploadURLController implements IController {
 
       const { url, key } = await generateUserAvatarUploadURL(
         mimeType,
-        fileSize,
+        Number(fileSize),
       );
 
       return {
