@@ -3,6 +3,8 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 import { randomUUID } from 'node:crypto';
 
+import { env } from '../../config/env';
+
 import { MimeTypeIsNotAllowed } from '../../application/errors/upload/MimeTypeIsNotAllowed';
 import { MimeTypeIsRequired } from '../../application/errors/upload/MimeTypeIsRequired';
 import { VeryLargeFile } from '../../application/errors/upload/VeryLargeFile';
@@ -32,18 +34,18 @@ export async function generateUserAvatarUploadURL(
     'image/png': 'png',
   };
 
-  const Key = `${randomUUID()}.${mimeTypeLabels[mimeType]}`;
+  const Key = `book-cover/${randomUUID()}.${mimeTypeLabels[mimeType]}`;
 
   const s3Client = new S3Client({
-    region: 'us-east-2',
+    region: env.AWS_REGION,
     credentials: {
-      accessKeyId: '',
-      secretAccessKey: '',
+      accessKeyId: env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
     },
   });
 
   const command = new PutObjectCommand({
-    Bucket: 'jovem-books/book-cover',
+    Bucket: env.BUCKET_NAME,
     Key,
     ContentType: mimeType,
   });
