@@ -3,7 +3,29 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 import { randomUUID } from 'node:crypto';
 
-export async function generateUserAvatarUploadURL(mimeType: string) {
+import { MimeTypeIsNotAllowed } from '../../application/errors/upload/MimeTypeIsNotAllowed';
+import { MimeTypeIsRequired } from '../../application/errors/upload/MimeTypeIsRequired';
+import { VeryLargeFile } from '../../application/errors/upload/VeryLargeFile';
+
+export async function generateUserAvatarUploadURL(
+  mimeType: string,
+  fileSize: number,
+) {
+  if (!mimeType) {
+    throw new MimeTypeIsRequired();
+  }
+
+  const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+
+  if (fileSize > MAX_SIZE) {
+    throw new VeryLargeFile();
+  }
+
+  const allowedMimes = ['image/jpeg', 'image/png'];
+  if (!allowedMimes.includes(mimeType)) {
+    throw new MimeTypeIsNotAllowed();
+  }
+
   const mimeTypeLabels: Record<string, string> = {
     'image/jpeg': 'jpg',
     'image/jpg': 'jpg',

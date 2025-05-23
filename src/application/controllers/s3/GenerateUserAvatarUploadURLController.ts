@@ -6,8 +6,12 @@ export class GenerateUserAvatarUploadURLController implements IController {
   async handle(request: IRequest): Promise<IResponse> {
     try {
       const mimeType = request.queryParams?.type as string;
+      const fileSize = request.queryParams?.size as string;
 
-      const { url, key } = await generateUserAvatarUploadURL(mimeType);
+      const { url, key } = await generateUserAvatarUploadURL(
+        mimeType,
+        fileSize,
+      );
 
       return {
         statusCode: 200,
