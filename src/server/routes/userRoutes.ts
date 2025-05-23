@@ -23,6 +23,14 @@ router.get(
   routeAdapter(makeGetUserByIdController()),
 );
 
+router.get(
+  '/upload-avatar',
+  middlewareAdapater(makeAuthenticationMiddleware()),
+  (request, response) => {
+    response.json({ message: 'Request Presigned URL' });
+  },
+);
+
 router.put(
   '/',
   upload.single('image'),
