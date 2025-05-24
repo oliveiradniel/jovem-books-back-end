@@ -53,7 +53,6 @@ export class UpdateUserController implements IController {
         body: updatedUser,
       };
     } catch (error) {
-      console.log(error);
       return verifyUserErrors(error);
     }
   }

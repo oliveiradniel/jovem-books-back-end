@@ -11,16 +11,9 @@ import {
   makeUpdateUserController,
 } from '../../factories/user';
 
-import {
-  makeDeleteUserAvatarFromS3Controller,
-  makeGenerateUserAvatarUploadURLController,
-} from '../../factories/s3';
-
-import { multerConfig } from '../../application/lib/multerConfig';
+import { makeGenerateUserAvatarUploadURLController } from '../../factories/s3';
 
 const router = Router();
-
-const upload = multerConfig({ directory: 'users' });
 
 router.get(
   '/',
@@ -36,7 +29,6 @@ router.get(
 
 router.put(
   '/',
-  upload.single('image'),
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateUserController()),
 );
@@ -45,12 +37,6 @@ router.delete(
   '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteUserController()),
-);
-
-router.delete(
-  '/avatar/:key',
-  middlewareAdapater(makeAuthenticationMiddleware()),
-  routeAdapter(makeDeleteUserAvatarFromS3Controller()),
 );
 
 export default router;
