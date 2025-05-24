@@ -63,7 +63,7 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
       return null;
     }
 
-    if (removeImage && user.imagePath) {
+    if ((removeImage || data.imagePath) && user.imagePath) {
       await deleteObject(user.imagePath);
     }
 

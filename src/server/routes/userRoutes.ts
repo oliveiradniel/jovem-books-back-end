@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import multer from 'multer';
+
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapater';
 
@@ -14,6 +16,8 @@ import {
 import { makeGenerateUserAvatarUploadURLController } from '../../factories/s3';
 
 const router = Router();
+
+const upload = multer();
 
 router.get(
   '/',
@@ -30,6 +34,7 @@ router.get(
 router.put(
   '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
+  upload.single('file'),
   routeAdapter(makeUpdateUserController()),
 );
 
