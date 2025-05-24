@@ -1,8 +1,10 @@
-import { IController, IRequest, IResponse } from '../../interfaces/IController';
+import { verifyUploadImageErrors } from '../../../utils/verifyUploadImageErrors';
 
 import { GeneratePresignedURLUseCase } from '../../useCases/s3/GeneratePresignedURLUseCase';
 
 import { GeneratePreSignedURLSchema } from '../../schemas/s3/GeneratePreSignedURLSchema';
+
+import { IController, IRequest, IResponse } from '../../interfaces/IController';
 
 export class GenerateUserAvatarUploadURLController implements IController {
   constructor(
@@ -26,12 +28,7 @@ export class GenerateUserAvatarUploadURLController implements IController {
         body: { url, key },
       };
     } catch (error) {
-      console.log(error);
-
-      return {
-        statusCode: 400,
-        body: null,
-      };
+      return verifyUploadImageErrors(error);
     }
   }
 }
