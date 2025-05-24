@@ -5,6 +5,8 @@ import { GetUserByUsernameUseCase } from './GetUserByUsernameUseCase';
 import { EmailAlreadyInUse } from '../../errors/user/EmailAlreadyInUse';
 import { UsernameAlreadyInUse } from '../../errors/user/UsernameAlreadyInUse';
 
+import { DeleteObjectUseCase } from '../s3/DeleteObjectUseCase';
+
 import { IUseCase } from '../../interfaces/IUseCase';
 
 import {
@@ -13,7 +15,6 @@ import {
 } from '../../repositories/interfaces/IUserRepository';
 
 import { TUser } from '../../../@types/User';
-import { deleteObject } from '../../../server/s3/deleteObject';
 
 export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
   constructor(
@@ -21,6 +22,7 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
     private readonly getUserByIdUseCase: GetUserByIdUseCase,
     private readonly getUserByEmailUseCase: GetUserByEmailUseCase,
     private readonly getUserByUsernameUseCase: GetUserByUsernameUseCase,
+    private readonly deleteObjectUseCase: DeleteObjectUseCase,
   ) {}
 
   async execute({
@@ -63,8 +65,13 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
       return null;
     }
 
-    if ((removeImage || data.imagePath) && user.imagePath) {
-      await deleteObject(user.imagePath);
+    if (removeImage && user.imagePath) {
+      console.log('aqui');
+      await this.deleteObjectUseCase.execute({ key: user.imagePath });
+    }
+
+    if (user.imagePath && data.imagePath && user.imagePath !== data.imagePath) {
+      await this.deleteObjectUseCase.execute({ key: user.imagePath });
     }
 
     return await this.userRepository.update({ userId, ...data });
