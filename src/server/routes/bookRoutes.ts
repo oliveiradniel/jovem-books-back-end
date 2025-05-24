@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import multer from 'multer';
+
 import { middlewareAdapater } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapater';
 
@@ -13,9 +15,11 @@ import {
   makeUpdateBookController,
 } from '../../factories/book';
 
-import { multerConfig } from '../../application/lib/multerConfig';
+import { makeGenerateBookCoverUploadURLController } from '../../factories/s3/makeGenerateBookCoverUploadURLController';
 
 const router = Router();
+
+const upload = multer();
 
 router.get(
   '/',
@@ -24,12 +28,16 @@ router.get(
 );
 
 router.get(
+  '/upload-cover',
+  middlewareAdapater(makeAuthenticationMiddleware()),
+  routeAdapter(makeGenerateBookCoverUploadURLController()),
+);
+
+router.get(
   '/:id',
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeGetBookByIdController()),
 );
-
-const upload = multerConfig({ directory: 'books' });
 
 router.post(
   '/',
@@ -39,7 +47,7 @@ router.post(
 
 router.put(
   '/:id',
-  upload.single('image'),
+  upload.single('file'),
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeUpdateBookController()),
 );

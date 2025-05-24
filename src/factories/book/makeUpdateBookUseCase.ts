@@ -1,4 +1,5 @@
 import { UpdateBookUseCase } from '../../application/useCases/book/UpdateBookUseCase';
+import { makeDeleteObjectUseCase } from '../s3/makeDeleteObjectUseCase';
 
 import { makeBookRepository } from './makeBookRepository';
 
@@ -10,5 +11,6 @@ export function makeUpdateBookUseCase() {
     makeBookRepository(),
     makeGetBookByIdUseCase(),
     makeGetBookByTitleUseCase(),
+    makeDeleteObjectUseCase(),
   );
 }

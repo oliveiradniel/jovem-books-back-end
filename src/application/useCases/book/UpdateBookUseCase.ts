@@ -1,10 +1,8 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
 import { TBook } from '../../../@types/Book';
 
 import { GetBookByIdUseCase } from './GetBookByIdUseCase';
 import { GetBookByTitleUseCase } from './GetBookByTitleUseCase';
+import { DeleteObjectUseCase } from '../s3/DeleteObjectUseCase';
 
 import { IUseCase } from '../../interfaces/IUseCase';
 
@@ -20,6 +18,7 @@ export class UpdateBookUseCase implements IUseCase<TUpdateBook, TBook | null> {
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
     private readonly getBookByTitleUseCase: GetBookByTitleUseCase,
+    private readonly deleteObjectUseCase: DeleteObjectUseCase,
   ) {}
 
   async execute({
@@ -54,31 +53,11 @@ export class UpdateBookUseCase implements IUseCase<TUpdateBook, TBook | null> {
     }
 
     if (removeImage && book.imagePath) {
-      const filePath = path.resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'uploads',
-        'books',
-        book.imagePath,
-      );
+      await this.deleteObjectUseCase.execute({ key: book.imagePath });
+    }
 
-      fs.access(filePath, fs.constants.F_OK, err => {
-        if (err) {
-          console.error('Arquivo não encontrado:', err);
-          return;
-        }
-
-        fs.unlink(filePath, err => {
-          if (err) {
-            console.error('Erro ao apagar o arquivo:', err);
-          } else {
-            console.log('Arquivo apagado com sucesso');
-          }
-        });
-      });
+    if (book.imagePath && data.imagePath && book.imagePath !== data.imagePath) {
+      await this.deleteObjectUseCase.execute({ key: book.imagePath });
     }
 
     return await this.bookRepository.update({ userId, bookId, ...data });

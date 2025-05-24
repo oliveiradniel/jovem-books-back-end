@@ -17,7 +17,7 @@ export class UpdateBookController implements IController {
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
   ) {}
 
-  async handle({ userId, body, file, params }: IRequest): Promise<IResponse> {
+  async handle({ userId, body, params }: IRequest): Promise<IResponse> {
     try {
       const id = IdUserSchema.parse(userId);
       const bookId = IdBookSchema.parse(params?.id);
@@ -36,7 +36,7 @@ export class UpdateBookController implements IController {
         authors: body.authors ?? book.authors,
         sinopse: body.sinopse ?? book.sinopse,
         literaryGenre: body.literaryGenre ?? book.literaryGenre,
-        imagePath: removeImage ? null : file?.filename ?? book.imagePath,
+        imagePath: removeImage ? null : body.imagePath ?? book.imagePath,
         removeImage,
       };
 
