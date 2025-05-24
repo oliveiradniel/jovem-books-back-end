@@ -15,7 +15,7 @@ export class UpdateUserController implements IController {
     private readonly getUserById: GetUserByIdUseCase,
   ) {}
 
-  async handle({ userId, body, file }: IRequest): Promise<IResponse> {
+  async handle({ userId, body }: IRequest): Promise<IResponse> {
     try {
       let hashedPassword;
       if (body.password) {
@@ -24,7 +24,9 @@ export class UpdateUserController implements IController {
 
       const user = await this.getUserById.execute(userId);
 
-      const removeImage = JSON.parse(body.removeImage);
+      const removeImage = body.removeImage
+        ? JSON.parse(body.removeImage)
+        : false;
 
       const userData = {
         userId: body.userId ?? user.id,
@@ -33,7 +35,7 @@ export class UpdateUserController implements IController {
         lastName: body.lastName ?? user.lastName,
         email: body.email ?? user.email,
         password: hashedPassword ?? user.password,
-        imagePath: removeImage ? null : file?.filename ?? user.imagePath,
+        imagePath: removeImage ? null : body.imagePath ?? user.imagePath,
         removeImage,
       };
 
@@ -51,6 +53,7 @@ export class UpdateUserController implements IController {
         body: updatedUser,
       };
     } catch (error) {
+      console.log(error);
       return verifyUserErrors(error);
     }
   }

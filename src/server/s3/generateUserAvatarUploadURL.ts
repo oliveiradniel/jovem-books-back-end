@@ -30,7 +30,6 @@ export async function generateUserAvatarUploadURL(
 
   const mimeTypeLabels: Record<string, string> = {
     'image/jpeg': 'jpg',
-    'image/jpg': 'jpg',
     'image/png': 'png',
   };
 

@@ -11,7 +11,10 @@ import {
   makeUpdateUserController,
 } from '../../factories/user';
 
-import { makeGenerateUserAvatarUploadURLController } from '../../factories/s3/makeGenerateUserAvatarUploadURLController';
+import {
+  makeDeleteUserAvatarFromS3Controller,
+  makeGenerateUserAvatarUploadURLController,
+} from '../../factories/s3';
 
 import { multerConfig } from '../../application/lib/multerConfig';
 
@@ -42,6 +45,12 @@ router.delete(
   '/',
   middlewareAdapater(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteUserController()),
+);
+
+router.delete(
+  '/avatar/:key',
+  middlewareAdapater(makeAuthenticationMiddleware()),
+  routeAdapter(makeDeleteUserAvatarFromS3Controller()),
 );
 
 export default router;

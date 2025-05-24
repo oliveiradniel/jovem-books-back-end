@@ -1,6 +1,3 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
 import { GetUserByIdUseCase } from './GetUserByIdUseCase';
 import { GetUserByEmailUseCase } from './GetUserByEmailUseCase';
 import { GetUserByUsernameUseCase } from './GetUserByUsernameUseCase';
@@ -16,6 +13,7 @@ import {
 } from '../../repositories/interfaces/IUserRepository';
 
 import { TUser } from '../../../@types/User';
+import { deleteObject } from '../../../server/s3/deleteObject';
 
 export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
   constructor(
@@ -66,31 +64,7 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
     }
 
     if (removeImage && user.imagePath) {
-      const filePath = path.resolve(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'uploads',
-        'users',
-        user.imagePath,
-      );
-
-      fs.access(filePath, fs.constants.F_OK, err => {
-        if (err) {
-          console.error('Arquivo não encontrado:', err);
-          return;
-        }
-
-        fs.unlink(filePath, err => {
-          if (err) {
-            console.error('Erro ao apagar o arquivo:', err);
-          } else {
-            console.log('Arquivo apagado com sucesso');
-          }
-        });
-      });
+      await deleteObject(user.imagePath);
     }
 
     return await this.userRepository.update({ userId, ...data });
