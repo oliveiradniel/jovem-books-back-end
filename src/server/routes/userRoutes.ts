@@ -6,6 +6,7 @@ import { middlewareAdapater } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
+import { limiter } from '../middlewares/limiter';
 
 import {
   makeDeleteUserController,
@@ -28,6 +29,7 @@ router.get(
 router.get(
   '/upload-avatar',
   middlewareAdapater(makeAuthenticationMiddleware()),
+  limiter,
   routeAdapter(makeGenerateUserAvatarUploadURLController()),
 );
 

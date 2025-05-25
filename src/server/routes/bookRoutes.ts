@@ -6,6 +6,7 @@ import { middlewareAdapater } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapater';
 
 import { makeAuthenticationMiddleware } from '../../factories/makeAuthenticationMiddlware';
+import { limiter } from '../middlewares/limiter';
 
 import {
   makeCreateBookController,
@@ -30,6 +31,7 @@ router.get(
 router.get(
   '/upload-cover',
   middlewareAdapater(makeAuthenticationMiddleware()),
+  limiter,
   routeAdapter(makeGenerateBookCoverUploadURLController()),
 );
 
