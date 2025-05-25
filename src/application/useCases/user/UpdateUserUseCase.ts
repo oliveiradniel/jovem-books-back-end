@@ -66,7 +66,6 @@ export class UpdateUserUseCase implements IUseCase<TUpdateUser, TUser | null> {
     }
 
     if (removeImage && user.imagePath) {
-      console.log('aqui');
       await this.deleteObjectUseCase.execute({ key: user.imagePath });
     }
 

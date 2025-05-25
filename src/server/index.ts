@@ -1,5 +1,3 @@
-import path from 'node:path';
-
 import express from 'express';
 
 import { cors } from './middlewares/cors';
@@ -17,7 +15,6 @@ import { routeAdapter } from './adapters/routeAdapater';
 
 import { makeSignInController } from '../factories/makeSignInController';
 import { makeCreateUserController } from '../factories/user/makeCreateUserController';
-import { multerConfig } from '../application/lib/multerConfig';
 
 const app = express();
 
@@ -26,25 +23,9 @@ const { PORT } = env;
 app.use(cors);
 app.use(express.json());
 
-app.use(
-  '/uploads/users',
-  express.static(path.resolve(__dirname, '..', '..', 'uploads', 'users')),
-);
-
-app.use(
-  '/uploads/books',
-  express.static(path.resolve(__dirname, '..', '..', 'uploads', 'books')),
-);
-
 app.post('/sign-in', routeAdapter(makeSignInController()));
 
-const upload = multerConfig({ directory: 'users' });
-
-app.post(
-  '/sign-up',
-  upload.single('image'),
-  routeAdapter(makeCreateUserController()),
-);
+app.post('/sign-up', routeAdapter(makeCreateUserController()));
 
 app.use('/users', userRoutes);
 

@@ -1,5 +1,3 @@
-import multer from 'multer';
-
 export interface IRequest {
   headers: Record<string, string>;
 }
@@ -14,5 +12,5 @@ export interface IData {
 }
 
 export interface IMiddleware {
-  handle(request: IRequest): Promise<IResponse | IData> | multer.Multer;
+  handle(request: IRequest): Promise<IResponse | IData>;
 }
