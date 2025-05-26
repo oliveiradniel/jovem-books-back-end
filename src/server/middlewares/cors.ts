@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 export function cors(request: Request, response: Response, next: NextFunction) {
   const allowedOrigins = [
     'http://localhost:5173',
-    'jovem-books-front-end.vercel.app',
+    'https://jovem-books-front-end.vercel.app/',
   ];
 
   const origin = request.header('origin')!;
