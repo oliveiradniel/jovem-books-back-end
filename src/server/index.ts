@@ -18,7 +18,7 @@ import { makeCreateUserController } from '../factories/user/makeCreateUserContro
 
 const app = express();
 
-const { PORT } = env;
+const PORT = process.env.PORT || env.PORT;
 
 app.use(cors);
 app.use(express.json());
@@ -40,5 +40,5 @@ app.use('/book-collection', bookCollectionRoutes);
 app.use('/reads', readRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server started at http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
