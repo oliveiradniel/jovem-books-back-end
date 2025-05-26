@@ -1,4 +1,4 @@
-import { IRead } from '../../../@types/IRead';
+import { TRead } from '../../../@types/Read';
 
 import { GetReadByBookIdUseCase } from './GetReadByBookIdUseCase';
 
@@ -9,7 +9,7 @@ import {
   TUpdateRead,
 } from '../../repositories/interfaces/IReadRepository';
 
-export class UpdateReadUseCase implements IUseCase<TUpdateRead, IRead | null> {
+export class UpdateReadUseCase implements IUseCase<TUpdateRead, TRead | null> {
   constructor(
     private readonly readRepository: IReadRepository,
     private readonly getReadByBookIdUseCase: GetReadByBookIdUseCase,
@@ -19,7 +19,7 @@ export class UpdateReadUseCase implements IUseCase<TUpdateRead, IRead | null> {
     userId,
     bookId,
     ...data
-  }: TUpdateRead): Promise<IRead | null> {
+  }: TUpdateRead): Promise<TRead | null> {
     await this.getReadByBookIdUseCase.execute({ bookId, userId });
 
     if (!this.readRepository?.update) {

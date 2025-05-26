@@ -20,7 +20,7 @@ export class GetCollectionByIdUseCase implements IUseCase<IInput, Collection> {
   ) {}
 
   async execute({ collectionId, userId }: IInput): Promise<Collection> {
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     const collection = await this.collectionRepository.findById({
       collectionId,

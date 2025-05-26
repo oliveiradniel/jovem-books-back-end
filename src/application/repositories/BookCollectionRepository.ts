@@ -63,10 +63,12 @@ export class BookCollectionRepository implements IBookCollectionRepository {
     return bookCollection;
   }
 
-  async create(data: ICreate): Promise<void> {
-    await prismaClient.bookCollection.create({
+  async create(data: ICreate): Promise<BookCollection> {
+    const bookCollection = await prismaClient.bookCollection.create({
       data,
     });
+
+    return bookCollection;
   }
 
   async delete({ bookCollectionId, userId }: IDelete): Promise<void> {

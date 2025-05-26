@@ -25,7 +25,7 @@ export class UpdateCollectionUseCase implements IUseCase<IInput, void> {
   ) {}
 
   async execute({ collectionId, userId, data }: IInput): Promise<void> {
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     await this.getCollectionByIdUseCase.execute({
       collectionId,

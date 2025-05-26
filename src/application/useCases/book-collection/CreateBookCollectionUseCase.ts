@@ -25,7 +25,7 @@ export class CreateBookCollectionUseCase implements IUseCase<IInput, void> {
 
     await this.getCollectionByIdUseCase.execute({ collectionId, userId });
 
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     await this.bookCollectionRepository.create({
       bookId,

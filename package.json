@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
     "generate-env-example": "tsx src/generateEnvExample.ts"
   },
   "devDependencies": {

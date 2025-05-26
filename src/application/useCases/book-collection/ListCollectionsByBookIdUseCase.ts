@@ -24,7 +24,7 @@ export class ListCollectionsByBookIdUseCase
   async execute({ bookId, userId }: IInput): Promise<Collection[]> {
     await this.getBookByIdUseCase.execute({ bookId, userId });
 
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     const collections =
       await this.bookCollectionRepository.listCollectionsByBookId({

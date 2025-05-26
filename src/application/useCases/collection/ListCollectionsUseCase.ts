@@ -25,7 +25,7 @@ export class ListCollectionsUseCase
     userId,
     orderBy = 'asc',
   }: IInput): Promise<Collection[] | void> {
-    await this.getUserByIdUseCase.execute({ userId });
+    await this.getUserByIdUseCase.execute(userId);
 
     if (!this.collectionRepository?.list) {
       return;

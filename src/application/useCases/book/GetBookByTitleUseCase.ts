@@ -1,4 +1,4 @@
-import { IBook } from '../../../@types/IBook';
+import { TBook } from '../../../@types/Book';
 
 import { GetUserByIdUseCase } from '../user/GetUserByIdUseCase';
 
@@ -12,7 +12,7 @@ import {
 } from '../../repositories/interfaces/IBookRepository';
 
 export class GetBookByTitleUseCase
-  implements IUseCase<TGetBookByTitle, IBook | null>
+  implements IUseCase<TGetBookByTitle, TBook | null>
 {
   constructor(
     private readonly bookRepository: IBookRepository,
@@ -23,7 +23,7 @@ export class GetBookByTitleUseCase
     title,
     userId,
     shouldReturn = false,
-  }: TGetBookByTitle): Promise<IBook | null> {
+  }: TGetBookByTitle): Promise<TBook | null> {
     await this.getUserByIdUseCase.execute(userId);
 
     const book = await this.bookRepository.findByTitle({

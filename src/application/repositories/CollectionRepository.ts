@@ -52,11 +52,13 @@ export class CollectionRepository implements ICollectionRepository {
     });
   }
 
-  async update({ collectionId, userId, data }: IUpdate): Promise<void> {
-    await prismaClient.collection.update({
+  async update({ collectionId, userId, data }: IUpdate): Promise<Collection> {
+    const collection = await prismaClient.collection.update({
       where: { id: collectionId, userId },
       data,
     });
+
+    return collection;
   }
 
   async delete({ collectionId, userId }: IDelete): Promise<void> {

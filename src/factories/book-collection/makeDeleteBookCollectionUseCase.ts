@@ -4,10 +4,12 @@ import { makeGetBookByIdUseCase } from '../book/makeGetBookByIdUseCase';
 import { makeGetCollectionByIdUseCase } from '../collection/makeGetCollectionByIdUseCase';
 import { makeGetUserByIdUseCase } from '../user/makeGetUserByIdUseCase';
 import { makeBookCollectionRepository } from './makeBookCollectionRepository';
+import { makeGetBookCollectionByIdUseCase } from './makeGetBookCollectionByIdUseCase';
 
 export function makeDeleteBookCollectionUseCase() {
   return new DeleteBookCollectionUseCase(
     makeBookCollectionRepository(),
+    makeGetBookCollectionByIdUseCase(),
     makeGetBookByIdUseCase(),
     makeGetCollectionByIdUseCase(),
     makeGetUserByIdUseCase(),
