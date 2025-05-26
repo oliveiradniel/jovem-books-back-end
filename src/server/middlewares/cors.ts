@@ -7,6 +7,7 @@ export function cors(request: Request, response: Response, next: NextFunction) {
   ];
 
   const origin = request.header('origin')!;
+  console.log(origin);
 
   const isAllowed = allowedOrigins.includes(origin);
 
