@@ -21,10 +21,12 @@ export class DeleteBookUseCase implements IUseCase<TDeleteBook, void> {
       userId,
     });
 
+    const imagePath = book.imagePath;
+
     await this.bookRepository.delete({ bookId, userId });
 
-    if (book.imagePath) {
-      await this.deleteObjectUseCase.execute({ key: book.imagePath });
+    if (imagePath) {
+      await this.deleteObjectUseCase.execute({ key: imagePath });
     }
   }
 }

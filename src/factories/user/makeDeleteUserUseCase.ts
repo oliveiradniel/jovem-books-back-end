@@ -2,12 +2,15 @@ import { DeleteUserUseCase } from '../../application/useCases/user/DeleteUserUse
 
 import { makeUserRepository } from './makeUserRepository';
 import { makeGetUserByIdUseCase } from './makeGetUserByIdUseCase';
-import { makeDeleteObjectUseCase } from '../book';
+import { makeDeleteObjectUseCase, makeListBooksUseCase } from '../book';
+import { makeDeleteObjectsUseCase } from '../s3/makeDeleteObjectsUseCase';
 
 export function makeDeleteUserUseCase() {
   return new DeleteUserUseCase(
     makeUserRepository(),
     makeGetUserByIdUseCase(),
+    makeListBooksUseCase(),
     makeDeleteObjectUseCase(),
+    makeDeleteObjectsUseCase(),
   );
 }
