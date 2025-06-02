@@ -1,3 +1,4 @@
+import { makeDeleteObjectUseCase } from '../s3/makeDeleteObjectUseCase';
 import { makeBookRepository } from './makeBookRepository';
 import { makeCreateBookController } from './makeCreateBookController';
 import { makeCreateBookUseCase } from './makeCreateBookUseCase';
@@ -24,4 +25,5 @@ export {
   makeListBooksUseCase,
   makeUpdateBookController,
   makeUpdateBookUseCase,
+  makeDeleteObjectUseCase,
 };

@@ -6,19 +6,25 @@ import {
   IBookRepository,
   TDeleteBook,
 } from '../../repositories/interfaces/IBookRepository';
+import { DeleteObjectUseCase } from '../s3/DeleteObjectUseCase';
 
 export class DeleteBookUseCase implements IUseCase<TDeleteBook, void> {
   constructor(
     private readonly bookRepository: IBookRepository,
     private readonly getBookByIdUseCase: GetBookByIdUseCase,
+    private readonly deleteObjectUseCase: DeleteObjectUseCase,
   ) {}
 
   async execute({ userId, bookId }: TDeleteBook): Promise<void> {
-    await this.getBookByIdUseCase.execute({
+    const book = await this.getBookByIdUseCase.execute({
       bookId,
       userId,
     });
 
     await this.bookRepository.delete({ bookId, userId });
+
+    if (book.imagePath) {
+      await this.deleteObjectUseCase.execute({ key: book.imagePath });
+    }
   }
 }

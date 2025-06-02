@@ -23,6 +23,7 @@ export class DeleteBookController implements IController {
         body: null,
       };
     } catch (error) {
+      console.log(error);
       return verifyBookErrors(error);
     }
   }
