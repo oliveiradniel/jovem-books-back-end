@@ -14,6 +14,7 @@ export class AuthenticationMiddleware implements IMiddleware {
     const { authorization } = headers;
 
     if (!authorization) {
+      console.log('Invalid access token');
       return {
         statusCode: 401,
         body: { error: 'Invalid access token' },
@@ -24,6 +25,7 @@ export class AuthenticationMiddleware implements IMiddleware {
       const [bearer, token] = authorization.split(' ');
 
       if (bearer !== 'Bearer') {
+        console.log('Invalid access token');
         return {
           statusCode: 401,
           body: { error: 'Invalid access token' },
