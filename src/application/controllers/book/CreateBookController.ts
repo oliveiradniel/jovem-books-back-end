@@ -18,6 +18,7 @@ export class CreateBookController implements IController {
         sinopse: body.sinopse,
         numberOfPages: Number(body.numberOfPages),
         literaryGenre: body.literaryGenre,
+        imagePath: body.imagePath || null,
       };
 
       const data = CreateBookSchema.parse(bookData);

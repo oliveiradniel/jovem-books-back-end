@@ -38,6 +38,8 @@ export class AuthenticationMiddleware implements IMiddleware {
         },
       };
     } catch {
+      console.log('Invalid access token');
+
       return {
         statusCode: 401,
         body: {

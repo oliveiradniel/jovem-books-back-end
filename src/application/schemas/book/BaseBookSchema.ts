@@ -23,4 +23,8 @@ export const BaseBookSchema = z.object({
       message: 'Literary genre required',
     })
     .min(1, 'The genre literary array needs at least one genre literary'),
+  imagePath: z
+    .string({ message: 'Image path must be a string' })
+    .nullable()
+    .default(null),
 });
