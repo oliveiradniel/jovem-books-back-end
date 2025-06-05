@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 
 export function cors(request: Request, response: Response, next: NextFunction) {
   const allowedOrigins = [
+    'www.jovembooks.com.br',
+    'www.jovembooks.com',
     'http://localhost:5173',
     'https://jovem-books-front-end.vercel.app',
     'https://jovem-books-front-end-git-main-daniels-projects-084e3000.vercel.app',
