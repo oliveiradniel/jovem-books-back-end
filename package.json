@@ -5,10 +5,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "prisma:generate": "yarn prisma generate",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "generate-env-example": "tsx src/generateEnvExample.ts"
+    "prisma:generate": "npx prisma generate --schema=prisma/schema.prisma",
+    "prisma:deploy": "yarn prisma migrate deploy",
+    "build": "yarn prisma:generate && tsc",
+    "start": "yarn prisma:deploy && node dist/index.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
