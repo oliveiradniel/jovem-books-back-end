@@ -1,5 +1,4 @@
 export const env = {
-  PORT: Number(process.env.PORT),
   JWT_SECRET: process.env.JWT_SECRET!,
   GOOGLE_API_KEY: process.env.GOOGLE_API_KEY!,
   AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID!,

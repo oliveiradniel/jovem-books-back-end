@@ -2,8 +2,6 @@ import express from 'express';
 
 import { cors } from './middlewares/cors';
 
-import { env } from '../config/env';
-
 import userRoutes from './routes/userRoutes';
 import bookRoutes from './routes/bookRoutes';
 import collectionRoutes from './routes/collectionRoutes';
@@ -18,7 +16,7 @@ import { makeCreateUserController } from '../factories/user/makeCreateUserContro
 
 const app = express();
 
-const PORT = process.env.PORT || env.PORT;
+const PORT = process.env.PORT || '3001';
 
 app.use(cors);
 app.use(express.json());
