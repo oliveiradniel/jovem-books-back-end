@@ -17,7 +17,9 @@ export const BaseBookSchema = z.object({
     .string({ message: 'Sinopse must be a string' })
     .nullable()
     .default(null),
-  numberOfPages: z.number({ message: 'Number of pages must be a number' }),
+  numberOfPages: z
+    .number({ message: 'Number of pages must be a number' })
+    .gt(0, { message: 'Number of pages must be greater than 0' }),
   literaryGenre: z
     .array(z.string({ message: 'Literary genre must be a string' }), {
       message: 'Literary genre required',
